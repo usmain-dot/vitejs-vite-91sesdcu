@@ -5,8 +5,6 @@ import {
   Phone,
   Clock,
   Globe,
-  Menu,
-  X,
   Home,
   Briefcase,
   Heart,
@@ -17,10 +15,6 @@ import {
   Filter,
   MessageSquare,
   Calendar,
-  Users,
-  FileText,
-  Sparkles,
-  Map,
   Edit,
   Trash2,
 } from 'lucide-react';
@@ -407,7 +401,6 @@ export default function BridgeApp() {
   const [selectedCategory, setSelectedCategory] = useState<
     'all' | Service['category']
   >('all');
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [services, setServices] = useState<Service[]>(initialServices);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
