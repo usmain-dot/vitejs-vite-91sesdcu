@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Phone, Clock, Globe, Menu, X, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Map, Edit, Trash2 } from 'lucide-react';
+import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Edit, Trash2 } from 'lucide-react';
 
 // Types
 interface Service {
@@ -266,7 +266,6 @@ export default function BridgeApp() {
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | Service['category']>('all');
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [services, setServices] = useState<Service[]>(initialServices);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
