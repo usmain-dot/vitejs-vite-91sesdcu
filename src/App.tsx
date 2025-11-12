@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Edit, Trash2 } from 'lucide-react';
+import { Search, MapPin, Phone, Clock, Globe, Menu, X, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Map, Edit, Trash2 } from 'lucide-react';
 
 // Types
 interface Service {
@@ -115,16 +115,136 @@ const translations: Record<LanguageCode, Translation> = {
 };
 
 const initialServices: Service[] = [
-  { id: 1, name: "NYC Housing Connect", category: "housing", address: "100 Gold Street, New York, NY 10038", phone: "(212) 555-0100", hours: "Mon-Fri: 9AM-5PM", isOpen: true, distance: 0.8, lat: 40.7128, lng: -74.0060, description: "Affordable housing lottery and application assistance" },
-  { id: 2, name: "Mount Sinai Community Health", category: "healthcare", address: "1468 Madison Ave, New York, NY 10029", phone: "(212) 555-0200", hours: "Mon-Sat: 8AM-8PM", isOpen: true, distance: 1.2, lat: 40.7889, lng: -73.9520, description: "Free and low-cost healthcare services" },
-  { id: 3, name: "Legal Aid Society", category: "legal", address: "199 Water Street, New York, NY 10038", phone: "(212) 555-0300", hours: "Mon-Fri: 9AM-5PM", isOpen: false, distance: 0.5, lat: 40.7092, lng: -74.0059, description: "Free legal representation and advice" },
-  { id: 4, name: "NYC Career Center", category: "employment", address: "215 W 125th St, New York, NY 10027", phone: "(212) 555-0400", hours: "Mon-Fri: 9AM-6PM", isOpen: true, distance: 2.1, lat: 40.8095, lng: -73.9481, description: "Job training, resume help, and placement services" },
-  { id: 5, name: "City University Adult Learning", category: "education", address: "535 E 80th St, New York, NY 10075", phone: "(212) 555-0500", hours: "Mon-Thu: 6PM-9PM", isOpen: false, distance: 1.8, lat: 40.7721, lng: -73.9506, description: "GED classes, vocational training, and certifications" },
-  { id: 6, name: "Food Bank For NYC", category: "food", address: "355 Food Center Dr, Bronx, NY 10474", phone: "(212) 555-0600", hours: "Daily: 8AM-6PM", isOpen: true, distance: 3.5, lat: 40.8100, lng: -73.8800, description: "Emergency food assistance and meal programs" },
-  { id: 7, name: "International Language Institute", category: "language", address: "250 W 57th St, New York, NY 10107", phone: "(212) 555-0700", hours: "Mon-Sat: 9AM-8PM", isOpen: true, distance: 1.5, lat: 40.7650, lng: -73.9808, description: "Free ESL classes and cultural orientation" },
-  { id: 8, name: "Brooklyn Family Services", category: "housing", address: "1420 Bushwick Ave, Brooklyn, NY 11207", phone: "(718) 555-0800", hours: "Mon-Fri: 9AM-5PM", isOpen: true, distance: 4.2, lat: 40.6928, lng: -73.9103, description: "Emergency shelter and housing assistance" },
-  { id: 9, name: "Elmhurst Hospital Center", category: "healthcare", address: "79-01 Broadway, Queens, NY 11373", phone: "(718) 555-0900", hours: "24/7", isOpen: true, distance: 5.1, lat: 40.7447, lng: -73.8826, description: "Emergency care and multilingual health services" },
-  { id: 10, name: "Queens Public Library - Job Center", category: "employment", address: "89-11 Merrick Blvd, Queens, NY 11432", phone: "(718) 555-1000", hours: "Mon-Sat: 10AM-6PM", isOpen: true, distance: 6.3, lat: 40.7053, lng: -73.7949, description: "Free computer access, resume workshops, and job search assistance" }
+  {
+    id: 1,
+    name: "International Rescue Committee (IRC) NYC",
+    category: "employment",
+    address: "122 East 42nd Street, New York, NY 10168",
+    phone: "(212) 377-4728",
+    hours: "Mon-Fri: 8AM-5PM",
+    isOpen: true,
+    distance: 1.2,
+    lat: 40.7516,
+    lng: -73.9771,
+    description: "Job training, resume help, ESL classes, and resettlement services for refugees and asylum seekers"
+  },
+  {
+    id: 2,
+    name: "Catholic Charities of New York",
+    category: "housing",
+    address: "1011 1st Avenue, New York, NY 10022",
+    phone: "(212) 371-1000",
+    hours: "Mon-Fri: 9AM-5PM",
+    isOpen: true,
+    distance: 2.3,
+    lat: 40.7549,
+    lng: -73.9681,
+    description: "Emergency shelter, transitional housing, and permanent supportive housing for displaced families"
+  },
+  {
+    id: 3,
+    name: "NYC Health + Hospitals/Bellevue",
+    category: "healthcare",
+    address: "462 1st Avenue, New York, NY 10016",
+    phone: "(212) 562-4141",
+    hours: "24/7 Emergency Care",
+    isOpen: true,
+    distance: 0.8,
+    lat: 40.7390,
+    lng: -73.9754,
+    description: "Full-service hospital with multilingual staff and specialized refugee health program"
+  },
+  {
+    id: 4,
+    name: "The Legal Aid Society",
+    category: "legal",
+    address: "199 Water Street, New York, NY 10038",
+    phone: "(212) 577-3300",
+    hours: "Mon-Fri: 9AM-5PM",
+    isOpen: true,
+    distance: 3.1,
+    lat: 40.7065,
+    lng: -74.0047,
+    description: "Free legal representation for immigration, housing, and family law matters"
+  },
+  {
+    id: 5,
+    name: "Interfaith Center of New York",
+    category: "language",
+    address: "40 Broad Street, Suite 1600, New York, NY 10004",
+    phone: "(212) 870-3510",
+    hours: "Mon-Fri: 9AM-6PM",
+    isOpen: true,
+    distance: 3.5,
+    lat: 40.7058,
+    lng: -74.0113,
+    description: "Free ESL classes, cultural orientation, and community integration programs"
+  },
+  {
+    id: 6,
+    name: "Food Bank For New York City",
+    category: "food",
+    address: "39 Broadway, 10th Floor, New York, NY 10006",
+    phone: "(212) 566-7855",
+    hours: "Mon-Fri: 9AM-5PM",
+    isOpen: true,
+    distance: 3.2,
+    lat: 40.7074,
+    lng: -74.0125,
+    description: "Emergency food assistance, meal programs, and nutrition education citywide"
+  },
+  {
+    id: 7,
+    name: "CUNY Adult Education Program",
+    category: "education",
+    address: "205 East 42nd Street, New York, NY 10017",
+    phone: "(646) 664-2947",
+    hours: "Mon-Thu: 6PM-9PM",
+    isOpen: false,
+    distance: 1.5,
+    lat: 40.7505,
+    lng: -73.9733,
+    description: "GED classes, vocational training, and college preparation programs"
+  },
+  {
+    id: 8,
+    name: "New York Legal Assistance Group (NYLAG)",
+    category: "legal",
+    address: "7 Hanover Square, 18th Floor, New York, NY 10004",
+    phone: "(212) 613-5000",
+    hours: "Mon-Fri: 9AM-6PM",
+    isOpen: true,
+    distance: 3.3,
+    lat: 40.7047,
+    lng: -74.0095,
+    description: "Free immigration law services, housing rights advocacy, and family law assistance"
+  },
+  {
+    id: 9,
+    name: "Coalition for the Homeless",
+    category: "housing",
+    address: "129 Fulton Street, New York, NY 10038",
+    phone: "(212) 776-2000",
+    hours: "Mon-Fri: 9AM-5PM",
+    isOpen: true,
+    distance: 2.9,
+    lat: 40.7105,
+    lng: -74.0048,
+    description: "Emergency shelter placement, eviction prevention, and housing assistance programs"
+  },
+  {
+    id: 10,
+    name: "Mount Sinai Immigrant Health Program",
+    category: "healthcare",
+    address: "1468 Madison Avenue, New York, NY 10029",
+    phone: "(212) 241-6500",
+    hours: "Mon-Sat: 8AM-8PM",
+    isOpen: true,
+    distance: 4.2,
+    lat: 40.7889,
+    lng: -73.9520,
+    description: "Multilingual healthcare, mental health services, and health insurance enrollment assistance"
+  }
 ];
 
 const categoryIcons = {
@@ -146,6 +266,7 @@ export default function BridgeApp() {
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | Service['category']>('all');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [services, setServices] = useState<Service[]>(initialServices);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
