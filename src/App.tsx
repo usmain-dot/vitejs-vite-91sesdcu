@@ -360,8 +360,9 @@ export default function BridgeApp() {
   };
 
   return (
-    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
-      <header className="shadow-lg sticky top-0 z-50" style={{ background: '#2a9df4' }}>
+    <div className={`${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ minHeight: '100vh', background: '#f9fafb' }}>
+      <div style={{ padding: '96px', paddingTop: '0' }}>
+      <header className="shadow-lg sticky top-0 z-50" style={{ background: '#2a9df4', marginLeft: '-96px', marginRight: '-96px', marginBottom: '96px' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -410,7 +411,7 @@ export default function BridgeApp() {
         </div>
       </header>
 
-      <div className="shadow-sm" style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb' }}>
+      <div className="shadow-sm" style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb', marginLeft: '-96px', marginRight: '-96px', marginBottom: '48px' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8">
           <div className="relative">
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center" style={{ color: '#64748b' }}>
@@ -425,7 +426,7 @@ export default function BridgeApp() {
         </div>
       </div>
 
-      <div className="bg-white border-b sticky top-20 z-40" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+      <div className="bg-white border-b sticky top-20 z-40" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginLeft: '-96px', marginRight: '-96px', marginBottom: '48px' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
           <div className="flex gap-2 overflow-x-auto pb-2">
             {categories.map(cat => {
@@ -444,10 +445,10 @@ export default function BridgeApp() {
         </div>
       </div>
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-12">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">{filteredServices.length} {selectedCategory === 'all' ? t.allServices : categories.find(c => c.id === selectedCategory)?.label}</h2>
-          <p className="text-gray-600">Click on any service to get directions or contact information</p>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl" style={{ marginBottom: '96px' }}>
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">{filteredServices.length} {selectedCategory === 'all' ? t.allServices : categories.find(c => c.id === selectedCategory)?.label}</h2>
+          <p className="text-gray-600 text-lg">Click on any service to get directions or contact information</p>
         </div>
 
         {filteredServices.length === 0 ? (
@@ -456,20 +457,20 @@ export default function BridgeApp() {
             <p className="text-gray-500 text-lg">{t.noResults}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
           </div>
         )}
       </main>
 
       {/* Phase 2 & 3 Features */}
-      <section className="py-16" style={{ background: '#f9fafb' }}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <div className="mb-16">
-            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
-            <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
-          </div></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+      <section className="py-20" style={{ background: '#f9fafb', marginLeft: '-96px', marginRight: '-96px', paddingLeft: '96px', paddingRight: '96px' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="mb-20">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
+          <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
+        </div></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
               <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
@@ -504,7 +505,7 @@ export default function BridgeApp() {
           </div>
         </div>
 
-        <div className="mb-16">
+        <div className="mb-20">
           <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
           <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
         </div>
@@ -544,12 +545,13 @@ export default function BridgeApp() {
         </div>
       </section>
 
-      <footer className="text-white py-12" style={{ background: '#1e293b' }}>
+      <footer className="text-white py-16" style={{ background: '#1e293b', marginLeft: '-96px', marginRight: '-96px', marginBottom: '-96px' }}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center">
           <p className="text-gray-200">© 2025 Bridge. {t.tagline}</p>
           <p className="text-gray-400 text-sm mt-2">Serving communities across New York State</p>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
