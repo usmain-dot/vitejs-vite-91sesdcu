@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Edit, Trash2 } from 'lucide-react';
+import { Search, MapPin, Phone, Clock, Globe, Menu, X, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Map, Edit, Trash2 } from 'lucide-react';
 
 // Types
 interface Service {
@@ -266,6 +266,7 @@ export default function BridgeApp() {
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | Service['category']>('all');
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [services, setServices] = useState<Service[]>(initialServices);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
@@ -296,7 +297,7 @@ export default function BridgeApp() {
   const ServiceCard: React.FC<{ service: Service }> = ({ service }) => {
     const Icon = categoryIcons[service.category];
     return (
-      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all" style={{ border: '1px solid #e5e7eb' }}>
+      <div className="bg-white rounded-lg shadow-md p-8 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg" style={{ backgroundColor: categoryColors[service.category].bg }}>
@@ -360,9 +361,9 @@ export default function BridgeApp() {
   };
 
   return (
-    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f8fafc' }}>
+    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
       <header className="shadow-lg sticky top-0 z-50" style={{ background: '#2a9df4' }}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-white p-3 rounded-xl shadow-md relative" style={{ background: 'white' }}>
@@ -410,23 +411,23 @@ export default function BridgeApp() {
         </div>
       </header>
 
-      <div className="shadow-sm" style={{ background: '#f8fafc' }}>
-        <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="shadow-sm" style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8">
           <div className="relative">
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center" style={{ color: '#64748b' }}>
               <Search className="w-5 h-5" />
             </div>
             <input type="text" placeholder={t.search} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border rounded-lg transition-all"
-              style={{ borderColor: '#e2e8f0', outline: 'none', backgroundColor: 'white' }}
+              className="w-full pl-12 pr-4 py-4 border rounded-xl transition-all text-lg"
+              style={{ borderColor: '#cbd5e1', outline: 'none', backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
               onFocus={(e) => e.target.style.borderColor = '#2a9df4'}
               onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
           </div>
         </div>
       </div>
 
-      <div className="bg-white border-b sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-white border-b sticky top-20 z-40" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
           <div className="flex gap-2 overflow-x-auto pb-2">
             {categories.map(cat => {
               const Icon = cat.icon;
@@ -444,9 +445,10 @@ export default function BridgeApp() {
         </div>
       </div>
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">{filteredServices.length} {selectedCategory === 'all' ? t.allServices : categories.find(c => c.id === selectedCategory)?.label}</h2>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-12">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">{filteredServices.length} {selectedCategory === 'all' ? t.allServices : categories.find(c => c.id === selectedCategory)?.label}</h2>
+          <p className="text-gray-600">Click on any service to get directions or contact information</p>
         </div>
 
         {filteredServices.length === 0 ? (
@@ -455,20 +457,21 @@ export default function BridgeApp() {
             <p className="text-gray-500 text-lg">{t.noResults}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
           </div>
         )}
       </main>
 
       {/* Phase 2 & 3 Features */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-3" style={{ color: '#1e293b' }}>{t.phase2}</h2>
-          <p className="text-center text-gray-600">Enhanced features launching soon</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#10b981' }}>
+      <section className="py-16" style={{ background: '#f9fafb' }}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+          <div className="mb-16">
+            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
+            <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
+          </div></div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
               <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
             </div>
@@ -502,12 +505,12 @@ export default function BridgeApp() {
           </div>
         </div>
 
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-3" style={{ color: '#1e293b' }}>{t.phase3}</h2>
-          <p className="text-center text-gray-600">Advanced capabilities for personalized support</p>
+        <div className="mb-16">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
+          <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#2a9df4' }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#2a9df4' }}>
             <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
               <Sparkles className="w-8 h-8" style={{ color: '#2a9df4' }} />
             </div>
@@ -542,8 +545,8 @@ export default function BridgeApp() {
         </div>
       </section>
 
-      <footer className="text-white mt-16 py-8" style={{ background: '#1e293b' }}>
-        <div className="max-w-7xl mx-auto px-4 text-center">
+      <footer className="text-white py-12" style={{ background: '#1e293b' }}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center">
           <p className="text-gray-200">© 2025 Bridge. {t.tagline}</p>
           <p className="text-gray-400 text-sm mt-2">Serving communities across New York State</p>
         </div>
