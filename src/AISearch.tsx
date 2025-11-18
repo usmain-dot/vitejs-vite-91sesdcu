@@ -3,7 +3,7 @@
 // DO NOT use this in production - it exposes API keys!
 import { callClaude } from './utils/anthropicApi';
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Loader, Sparkles, AlertTriangle, Settings } from 'lucide-react';
+import {  X, Send, Loader, Sparkles, AlertTriangle, Settings } from 'lucide-react';
 
 interface Service {
   id: number;
@@ -33,8 +33,7 @@ interface AISearchProps {
   language: string;
 }
 
-export default function AISearch({ services, onServiceSelect, language }: AISearchProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function AISearch({ services, onServiceSelect, language: _language }: AISearchProps) {  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
