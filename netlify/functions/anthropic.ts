@@ -1,4 +1,4 @@
-import { Handler } from '@netlify/functions';
+import type { Handler } from '@netlify/functions';
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -37,6 +37,9 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (error) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Request failed' }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Request failed' }),
+    };
   }
 };
