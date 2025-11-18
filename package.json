@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:functions": "tsc --project tsconfig.node.json"
+
   },
   "dependencies": {
     "@netlify/functions": "^5.1.0",
