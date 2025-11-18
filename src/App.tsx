@@ -1,5 +1,13 @@
-import React, { useState, useMemo } from 'react';
-import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, Edit, Trash2 } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, LogOut, Settings } from 'lucide-react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import type { User } from 'firebase/auth';
+import { auth } from './firebase';
+import Auth from './Auth';
+import Messages from './Messages';
+import Appointments from './Appointments';
+import Admin from './Admin';
+import AISearch from './AISearch';
 
 // Types
 interface Service {
@@ -29,8 +37,6 @@ interface Translation {
   food: string;
   language: string;
   filters: string;
-  mapView: string;
-  listView: string;
   open: string;
   closed: string;
   callNow: string;
@@ -39,7 +45,6 @@ interface Translation {
   bookAppointment: string;
   noResults: string;
   distance: string;
-  adminPanel: string;
   comingSoon: string;
   phase2: string;
   phase3: string;
@@ -49,6 +54,9 @@ interface Translation {
   aiMatching: string;
   documents: string;
   caseManagement: string;
+  signIn: string;
+  loginToMessage: string;
+  loginToBook: string;
 }
 
 type LanguageCode = 'en' | 'es' | 'ar' | 'he' | 'sw';
@@ -58,59 +66,64 @@ const translations: Record<LanguageCode, Translation> = {
     appName: "Bridge", tagline: "Connecting communities to essential services", search: "Search services...",
     allServices: "All Services", housing: "Housing", healthcare: "Healthcare", legal: "Legal Aid",
     employment: "Employment", education: "Education", food: "Food Assistance", language: "Language Classes",
-    filters: "Filters", mapView: "Map View", listView: "List View", open: "Open", closed: "Closed",
+    filters: "Filters", open: "Open", closed: "Closed",
     callNow: "Call Now", getDirections: "Get Directions", sendMessage: "Send Message",
     bookAppointment: "Book Appointment", noResults: "No services found. Try adjusting your filters.",
-    distance: "mi away", adminPanel: "Admin Panel", comingSoon: "Coming Soon", phase2: "Phase 2 Features",
+    distance: "mi away", comingSoon: "Coming Soon", phase2: "Phase 2 Features",
     phase3: "Phase 3 Features", messaging: "Direct Messaging", scheduling: "Appointment Scheduling",
     forums: "Community Forums", aiMatching: "AI Service Matching", documents: "Document Storage",
-    caseManagement: "Case Management"
+    caseManagement: "Case Management", signIn: "Sign In", 
+    loginToMessage: "Sign in to send messages", loginToBook: "Sign in to book appointments"
   },
   es: {
     appName: "Bridge", tagline: "Conectando comunidades con servicios esenciales", search: "Buscar servicios...",
     allServices: "Todos los Servicios", housing: "Vivienda", healthcare: "Salud", legal: "Ayuda Legal",
     employment: "Empleo", education: "Educación", food: "Asistencia Alimentaria", language: "Clases de Idiomas",
-    filters: "Filtros", mapView: "Vista de Mapa", listView: "Vista de Lista", open: "Abierto", closed: "Cerrado",
+    filters: "Filtros", open: "Abierto", closed: "Cerrado",
     callNow: "Llamar Ahora", getDirections: "Obtener Direcciones", sendMessage: "Enviar Mensaje",
     bookAppointment: "Reservar Cita", noResults: "No se encontraron servicios.", distance: "mi de distancia",
-    adminPanel: "Panel de Administración", comingSoon: "Próximamente", phase2: "Funciones Fase 2",
+    comingSoon: "Próximamente", phase2: "Funciones Fase 2",
     phase3: "Funciones Fase 3", messaging: "Mensajería Directa", scheduling: "Programación de Citas",
     forums: "Foros Comunitarios", aiMatching: "Coincidencia de IA", documents: "Almacenamiento de Documentos",
-    caseManagement: "Gestión de Casos"
+    caseManagement: "Gestión de Casos", signIn: "Iniciar Sesión",
+    loginToMessage: "Inicie sesión para enviar mensajes", loginToBook: "Inicie sesión para reservar citas"
   },
   ar: {
     appName: "Bridge", tagline: "ربط المجتمعات بالخدمات الأساسية", search: "البحث عن الخدمات...",
     allServices: "جميع الخدمات", housing: "الإسكان", healthcare: "الرعاية الصحية", legal: "المساعدة القانونية",
     employment: "التوظيف", education: "التعليم", food: "المساعدات الغذائية", language: "دروس اللغة",
-    filters: "التصفية", mapView: "عرض الخريطة", listView: "عرض القائمة", open: "مفتوح", closed: "مغلق",
+    filters: "التصفية", open: "مفتوح", closed: "مغلق",
     callNow: "اتصل الآن", getDirections: "الحصول على الاتجاهات", sendMessage: "إرسال رسالة",
     bookAppointment: "حجز موعد", noResults: "لم يتم العثور على خدمات.", distance: "ميل بعيدا",
-    adminPanel: "لوحة الإدارة", comingSoon: "قريبا", phase2: "ميزات المرحلة 2", phase3: "ميزات المرحلة 3",
+    comingSoon: "قريبا", phase2: "ميزات المرحلة 2", phase3: "ميزات المرحلة 3",
     messaging: "المراسلة المباشرة", scheduling: "جدولة المواعيد", forums: "المنتديات المجتمعية",
-    aiMatching: "مطابقة الذكاء الاصطناعي", documents: "تخزين المستندات", caseManagement: "إدارة الحالات"
+    aiMatching: "مطابقة الذكاء الاصطناعي", documents: "تخزين المستندات", caseManagement: "إدارة الحالات",
+    signIn: "تسجيل الدخول", loginToMessage: "تسجيل الدخول لإرسال الرسائل", loginToBook: "تسجيل الدخول لحجز المواعيد"
   },
   he: {
     appName: "Bridge", tagline: "חיבור קהילות לשירותים חיוניים", search: "חיפוש שירותים...",
     allServices: "כל השירותים", housing: "דיור", healthcare: "בריאות", legal: "סיוע משפטי",
     employment: "תעסוקה", education: "חינוך", food: "סיוע במזון", language: "שיעורי שפה",
-    filters: "מסננים", mapView: "תצוגת מפה", listView: "תצוגת רשימה", open: "פתוח", closed: "סגור",
+    filters: "מסננים", open: "פתוח", closed: "סגור",
     callNow: "התקשר עכשיו", getDirections: "קבל הוראות הגעה", sendMessage: "שלח הודעה",
     bookAppointment: "קבע פגישה", noResults: "לא נמצאו שירותים.", distance: "מייל משם",
-    adminPanel: "פאנל ניהול", comingSoon: "בקרוב", phase2: "תכונות שלב 2", phase3: "תכונות שלב 3",
+    comingSoon: "בקרוב", phase2: "תכונות שלב 2", phase3: "תכונות שלב 3",
     messaging: "הודעות ישירות", scheduling: "תזמון פגישות", forums: "פורומים קהילתיים",
-    aiMatching: "התאמת AI", documents: "אחסון מסמכים", caseManagement: "ניהול מקרים"
+    aiMatching: "התאמת AI", documents: "אחסון מסמכים", caseManagement: "ניהול מקרים",
+    signIn: "התחבר", loginToMessage: "התחבר לשליחת הודעות", loginToBook: "התחבר לקביעת פגישות"
   },
   sw: {
     appName: "Bridge", tagline: "Kuunganisha jamii na huduma muhimu", search: "Tafuta huduma...",
     allServices: "Huduma Zote", housing: "Makazi", healthcare: "Huduma ya Afya", legal: "Msaada wa Kisheria",
     employment: "Ajira", education: "Elimu", food: "Msaada wa Chakula", language: "Madarasa ya Lugha",
-    filters: "Vichujio", mapView: "Mtazamo wa Ramani", listView: "Mtazamo wa Orodha", open: "Wazi", closed: "Imefungwa",
+    filters: "Vichujio", open: "Wazi", closed: "Imefungwa",
     callNow: "Piga Simu Sasa", getDirections: "Pata Maelekezo", sendMessage: "Tuma Ujumbe",
     bookAppointment: "Weka Miadi", noResults: "Hakuna huduma zilizopatikana.", distance: "maili mbali",
-    adminPanel: "Paneli ya Msimamizi", comingSoon: "Inakuja Hivi Karibuni", phase2: "Vipengele vya Awamu ya 2",
+    comingSoon: "Inakuja Hivi Karibuni", phase2: "Vipengele vya Awamu ya 2",
     phase3: "Vipengele vya Awamu ya 3", messaging: "Ujumbe wa Moja kwa Moja", scheduling: "Ratiba ya Miadi",
     forums: "Majukwaa ya Jamii", aiMatching: "Uoanishaji wa AI", documents: "Uhifadhi wa Hati",
-    caseManagement: "Usimamizi wa Kesi"
+    caseManagement: "Usimamizi wa Kesi", signIn: "Ingia", 
+    loginToMessage: "Ingia kutuma ujumbe", loginToBook: "Ingia kuweka miadi"
   }
 };
 
@@ -253,22 +266,79 @@ const categoryIcons = {
 };
 
 const categoryColors: Record<Service['category'], { bg: string; text: string }> = {
-  housing: { bg: '#dbeafe', text: '#1e40af' },      // Soft blue - trust & stability
-  healthcare: { bg: '#dcfce7', text: '#15803d' },   // Soft green - health & healing
-  legal: { bg: '#e0e7ff', text: '#4338ca' },        // Soft indigo - professionalism
-  employment: { bg: '#fef3c7', text: '#b45309' },   // Soft amber - opportunity
-  education: { bg: '#e9d5ff', text: '#7e22ce' },    // Soft purple - knowledge
-  food: { bg: '#fed7aa', text: '#c2410c' },         // Soft orange - warmth & care
-  language: { bg: '#ccfbf1', text: '#0f766e' }      // Soft teal - communication
+  housing: { bg: '#dbeafe', text: '#1e40af' },
+  healthcare: { bg: '#dcfce7', text: '#15803d' },
+  legal: { bg: '#e0e7ff', text: '#4338ca' },
+  employment: { bg: '#fef3c7', text: '#b45309' },
+  education: { bg: '#e9d5ff', text: '#7e22ce' },
+  food: { bg: '#fed7aa', text: '#c2410c' },
+  language: { bg: '#ccfbf1', text: '#0f766e' }
 };
 
-export default function BridgeApp() {
-  const [language, setLanguage] = useState<LanguageCode>('en');
+export default function App() {
+  const [services] = useState<Service[]>(initialServices);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | Service['category']>('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [language, setLanguage] = useState<LanguageCode>('en');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
-  const [services, setServices] = useState<Service[]>(initialServices);
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+  const [showAppointments, setShowAppointments] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [selectedService, setSelectedService] = useState<{ id: number; name: string } | null>(null);
+
+  // Check authentication status
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  // Handle protected actions (messaging, appointments)
+  const handleProtectedAction = (actionType: 'message' | 'appointment', service?: Service) => {
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      if (service) {
+        setSelectedService({ id: service.id, name: service.name });
+        if (actionType === 'message') {
+          setShowMessages(true);
+        } else {
+          setShowAppointments(true);
+        }
+      }
+    }
+  };
+
+  // Handle AI service selection
+  const handleAIServiceSelect = (serviceId: number) => {
+    const service = services.find(s => s.id === serviceId);
+    if (service) {
+      // Scroll to the service card
+      const element = document.getElementById(`service-${serviceId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Highlight the service briefly
+        element.style.boxShadow = '0 0 0 3px #667eea';
+        setTimeout(() => {
+          element.style.boxShadow = '';
+        }, 2000);
+      }
+    }
+  };
 
   const t = translations[language];
   const isRTL = language === 'ar' || language === 'he';
@@ -296,7 +366,7 @@ export default function BridgeApp() {
   const ServiceCard: React.FC<{ service: Service }> = ({ service }) => {
     const Icon = categoryIcons[service.category];
     return (
-      <div className="bg-white rounded-lg shadow-md p-8 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
+      <div id={`service-${service.id}`} className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg" style={{ backgroundColor: categoryColors[service.category].bg }}>
@@ -309,25 +379,15 @@ export default function BridgeApp() {
               </span>
             </div>
           </div>
-          {showAdminPanel && (
-            <div className="flex gap-2">
-              <button className="text-blue-600 hover:text-blue-800">
-                <Edit className="w-4 h-4" />
-              </button>
-              <button onClick={() => setServices(services.filter(s => s.id !== service.id))} className="text-red-600 hover:text-red-800">
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          )}
         </div>
         <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-        <div className="space-y-2 text-sm text-gray-700">
+        <div className="space-y-2 text-sm text-gray-700 mb-4">
           <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /><span>{service.address}</span></div>
           <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><span>{service.phone}</span></div>
           <div className="flex items-center gap-2"><Clock className="w-4 h-4" /><span>{service.hours}</span></div>
           <div className="flex items-center gap-2 text-blue-600 font-medium"><MapPin className="w-4 h-4" /><span>{service.distance} {t.distance}</span></div>
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="grid grid-cols-2 gap-2">
           <button 
             onClick={() => window.location.href = `tel:${service.phone}`}
             className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
@@ -341,16 +401,14 @@ export default function BridgeApp() {
             <MapPin className="w-4 h-4" />{t.getDirections}
           </button>
           <button 
-            onClick={() => alert(`${t.comingSoon}: ${t.messaging}`)}
+            onClick={() => handleProtectedAction('message', service)}
             className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            title={t.comingSoon} 
             style={{ background: '#10b981' }}>
             <MessageSquare className="w-4 h-4" />{t.sendMessage}
           </button>
           <button 
-            onClick={() => alert(`${t.comingSoon}: ${t.scheduling}`)}
+            onClick={() => handleProtectedAction('appointment', service)}
             className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            title={t.comingSoon} 
             style={{ background: '#f59e0b' }}>
             <Calendar className="w-4 h-4" />{t.bookAppointment}
           </button>
@@ -359,42 +417,86 @@ export default function BridgeApp() {
     );
   };
 
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#f9fafb' }}>
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#2a9df4' }}></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ minHeight: '100vh', background: '#f9fafb' }}>
-      <div style={{ padding: '96px', paddingTop: '0' }}>
-      <header className="shadow-lg sticky top-0 z-50" style={{ background: '#2a9df4', marginLeft: '-96px', marginRight: '-96px', marginBottom: '96px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
+    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
+      {/* Header */}
+      <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
+        <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="bg-white p-3 rounded-xl shadow-md relative" style={{ background: 'white' }}>
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Bridge arch */}
-                  <path d="M2 20 Q14 8 26 20" stroke="#2a9df4" strokeWidth="3" strokeLinecap="round" fill="none"/>
-                  {/* Bridge supports */}
-                  <line x1="8" y1="16" x2="8" y2="24" stroke="#2a9df4" strokeWidth="2.5"/>
-                  <line x1="20" y1="16" x2="20" y2="24" stroke="#2a9df4" strokeWidth="2.5"/>
-                  {/* People icons */}
-                  <circle cx="6" cy="10" r="2" fill="#f59e0b"/>
-                  <circle cx="14" cy="6" r="2" fill="#10b981"/>
-                  <circle cx="22" cy="10" r="2" fill="#8b5cf6"/>
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <path d="M4 20 Q16 8, 28 20" stroke="#2a9df4" strokeWidth="3" fill="none" />
+                  <rect x="4" y="20" width="2" height="8" fill="#2a9df4" />
+                  <rect x="26" y="20" width="2" height="8" fill="#2a9df4" />
+                  <circle cx="10" cy="24" r="2" fill="#f59e0b" />
+                  <circle cx="16" cy="24" r="2" fill="#10b981" />
+                  <circle cx="22" cy="24" r="2" fill="#8b5cf6" />
                 </svg>
               </div>
               <div>
-                <h1 className="text-3xl font-bold" style={{ color: '#ffffff' }}>{t.appName}</h1>
-                <p className="text-sm" style={{ color: '#ffffff', opacity: 0.95 }}>{t.tagline}</p>
+                <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
+                <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <button onClick={() => setShowAdminPanel(!showAdminPanel)} 
-                className="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg transition-all shadow-sm text-white"
-                style={{ background: showAdminPanel ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)', border: showAdminPanel ? '2px solid white' : 'none' }}>
-                <Edit className="w-5 h-5" /><span>{t.adminPanel}</span>
-              </button>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6">
+              {user ? (
+                <>
+                  <button
+                    onClick={() => setShowAdmin(true)}
+                    className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+                    title="Admin Dashboard"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span className="text-sm">Admin</span>
+                  </button>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
+                      <p className="text-xs text-blue-100">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span className="text-sm">Logout</span>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm">{t.signIn}</span>
+                </button>
+              )}
+
+              {/* Language Selector */}
               <div className="relative">
-                <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} 
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all shadow-sm text-white"
-                  style={{ background: 'rgba(255,255,255,0.15)' }}>
-                  <Globe className="w-5 h-5" /><span className="hidden sm:inline">{language.toUpperCase()}</span>
+                <button 
+                  onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
+                >
+                  <Globe className="w-5 h-5" />
+                  <span className="text-sm">{language.toUpperCase()}</span>
                 </button>
                 {showLanguageMenu && (
                   <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
@@ -411,147 +513,209 @@ export default function BridgeApp() {
         </div>
       </header>
 
-      <div className="shadow-sm" style={{ background: '#ffffff', borderBottom: '1px solid #e5e7eb', marginLeft: '-96px', marginRight: '-96px', marginBottom: '48px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-8">
-          <div className="relative">
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center" style={{ color: '#64748b' }}>
-              <Search className="w-5 h-5" />
+      {/* Main Content */}
+      <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+        <div className="max-w-7xl mx-auto">
+          {/* Search Bar */}
+          <div className="mb-8 px-4">
+            <div className="relative max-w-2xl mx-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder={t.search}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-            <input type="text" placeholder={t.search} value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 border rounded-xl transition-all text-lg"
-              style={{ borderColor: '#cbd5e1', outline: 'none', backgroundColor: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
-              onFocus={(e) => e.target.style.borderColor = '#2a9df4'}
-              onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
           </div>
-        </div>
-      </div>
 
-      <div className="bg-white border-b sticky top-20 z-40" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.05)', marginLeft: '-96px', marginRight: '-96px', marginBottom: '48px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-5">
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {categories.map(cat => {
-              const Icon = cat.icon;
-              return (
-                <button key={cat.id} onClick={() => setSelectedCategory(cat.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all"
-                  style={selectedCategory === cat.id 
-                    ? { background: '#2a9df4', color: 'white', boxShadow: '0 2px 4px rgba(42,157,244,0.3)' } 
-                    : { background: 'white', color: '#475569', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <Icon className="w-4 h-4" />{cat.label}
-                </button>
-              );
-            })}
+          {/* Category Filter */}
+          <div className="mb-8 px-4">
+            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide max-w-6xl mx-auto">
+              {categories.map(cat => {
+                const Icon = cat.icon;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all"
+                    style={selectedCategory === cat.id 
+                      ? { background: '#2a9df4', color: 'white', boxShadow: '0 2px 4px rgba(42,157,244,0.3)' } 
+                      : { background: 'white', color: '#475569', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {cat.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </div>
 
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl" style={{ marginBottom: '96px' }}>
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-3">{filteredServices.length} {selectedCategory === 'all' ? t.allServices : categories.find(c => c.id === selectedCategory)?.label}</h2>
-          <p className="text-gray-600 text-lg">Click on any service to get directions or contact information</p>
+          {/* Services Grid */}
+          {filteredServices.length === 0 ? (
+            <div className="text-center py-16 px-4">
+              <p className="text-gray-500 text-lg">{t.noResults}</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
+              {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
+            </div>
+          )}
         </div>
-
-        {filteredServices.length === 0 ? (
-          <div className="text-center py-12">
-            <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">{t.noResults}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-            {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
-          </div>
-        )}
       </main>
 
       {/* Phase 2 & 3 Features */}
-      <section className="py-20" style={{ background: '#f9fafb', marginLeft: '-96px', marginRight: '-96px', paddingLeft: '96px', paddingRight: '96px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <div className="mb-20">
-          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
-          <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
-        </div></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
-              <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
+      <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
+        <div className="container mx-auto max-w-7xl">
+          <div className="mb-16">
+            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
+            <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
+                <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.messaging}</h3>
+              <p className="text-gray-600 text-sm">Real-time chat with service providers for quick questions and support</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#d1fae5', color: '#059669' }}>
+                {t.comingSoon}
+              </div>
             </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.messaging}</h3>
-            <p className="text-gray-600 text-sm">Real-time chat with service providers for quick questions and support</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#d1fae5', color: '#059669' }}>
-              {t.comingSoon}
+            
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#f59e0b' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fed7aa' }}>
+                <Calendar className="w-8 h-8" style={{ color: '#f59e0b' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.scheduling}</h3>
+              <p className="text-gray-600 text-sm">Book and manage appointments directly through the platform</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fed7aa', color: '#c2410c' }}>
+                {t.comingSoon}
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#8b5cf6' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#e9d5ff' }}>
+                <Users className="w-8 h-8" style={{ color: '#8b5cf6' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.forums}</h3>
+              <p className="text-gray-600 text-sm">Connect with community members and share experiences</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#e9d5ff', color: '#7e22ce' }}>
+                {t.comingSoon}
+              </div>
             </div>
           </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#f59e0b' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fed7aa' }}>
-              <Calendar className="w-8 h-8" style={{ color: '#f59e0b' }} />
-            </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.scheduling}</h3>
-            <p className="text-gray-600 text-sm">Book and manage appointments directly through the platform</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fed7aa', color: '#c2410c' }}>
-              {t.comingSoon}
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#8b5cf6' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#e9d5ff' }}>
-              <Users className="w-8 h-8" style={{ color: '#8b5cf6' }} />
-            </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.forums}</h3>
-            <p className="text-gray-600 text-sm">Connect with community members and share experiences</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#e9d5ff', color: '#7e22ce' }}>
-              {t.comingSoon}
-            </div>
-          </div>
-        </div>
 
-        <div className="mb-20">
-          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
-          <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#2a9df4' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
-              <Sparkles className="w-8 h-8" style={{ color: '#2a9df4' }} />
-            </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.aiMatching}</h3>
-            <p className="text-gray-600 text-sm">AI-powered recommendations based on your unique needs</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#dbeafe', color: '#1e40af' }}>
-              {t.comingSoon}
-            </div>
+          <div className="mb-16">
+            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
+            <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
           </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#06b6d4' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#ccfbf1' }}>
-              <FileText className="w-8 h-8" style={{ color: '#06b6d4' }} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#2a9df4' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
+                <Sparkles className="w-8 h-8" style={{ color: '#2a9df4' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.aiMatching}</h3>
+              <p className="text-gray-600 text-sm">AI-powered recommendations based on your unique needs</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#dbeafe', color: '#1e40af' }}>
+                {t.comingSoon}
+              </div>
             </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.documents}</h3>
-            <p className="text-gray-600 text-sm">Secure storage for important documents and records</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#ccfbf1', color: '#0f766e' }}>
-              {t.comingSoon}
+            
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#06b6d4' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#ccfbf1' }}>
+                <FileText className="w-8 h-8" style={{ color: '#06b6d4' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.documents}</h3>
+              <p className="text-gray-600 text-sm">Secure storage for important documents and records</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#ccfbf1', color: '#0f766e' }}>
+                {t.comingSoon}
+              </div>
             </div>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-md p-6 text-center border-t-4" style={{ borderColor: '#ec4899' }}>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fce7f3' }}>
-              <Briefcase className="w-8 h-8" style={{ color: '#ec4899' }} />
-            </div>
-            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.caseManagement}</h3>
-            <p className="text-gray-600 text-sm">Track your service journey and document progress</p>
-            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fce7f3', color: '#be185d' }}>
-              {t.comingSoon}
+            
+            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#ec4899' }}>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fce7f3' }}>
+                <Briefcase className="w-8 h-8" style={{ color: '#ec4899' }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.caseManagement}</h3>
+              <p className="text-gray-600 text-sm">Track your service journey and document progress</p>
+              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fce7f3', color: '#be185d' }}>
+                {t.comingSoon}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="text-white py-16" style={{ background: '#1e293b', marginLeft: '-96px', marginRight: '-96px', marginBottom: '-96px' }}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center">
-          <p className="text-gray-200">© 2025 Bridge. {t.tagline}</p>
-          <p className="text-gray-400 text-sm mt-2">Serving communities across New York State</p>
+      <footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
+  <div className="container mx-auto max-w-7xl text-center">
+    <p style={{ color: '#ffffff !important', fontSize: '16px', fontWeight: '500', marginBottom: '8px', textShadow: '0 0 1px #ffffff' }}>
+      © 2025 Bridge. {t.tagline}
+    </p>
+    <p style={{ color: '#ffffff !important', fontSize: '14px', marginTop: '8px', textShadow: '0 0 1px #ffffff' }}>
+      Serving communities across New York State
+    </p>
+  </div>
+</footer>
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowAuthModal(false)}>
+          <div className="bg-white rounded-2xl max-w-md w-full relative" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShowAuthModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <Auth onAuthSuccess={() => setShowAuthModal(false)} />
+          </div>
         </div>
-      </footer>
-      </div>
+      )}
+
+      {/* Messages Modal */}
+      {showMessages && (
+        <div className="fixed inset-0 bg-white z-50">
+          <Messages
+            serviceId={selectedService?.id}
+            serviceName={selectedService?.name}
+            onClose={() => {
+              setShowMessages(false);
+              setSelectedService(null);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Appointments Modal */}
+      {showAppointments && (
+        <div className="fixed inset-0 bg-white z-50">
+          <Appointments
+            serviceId={selectedService?.id}
+            serviceName={selectedService?.name}
+            onClose={() => {
+              setShowAppointments(false);
+              setSelectedService(null);
+            }}
+          />
+        </div>
+      )}
+
+      {/* Admin Dashboard */}
+      {showAdmin && (
+        <div className="fixed inset-0 bg-white z-50">
+          <Admin onClose={() => setShowAdmin(false)} />
+        </div>
+      )}
+
+      {/* AI Search Assistant */}
+      <AISearch
+        services={services}
+        onServiceSelect={handleAIServiceSelect}
+        language={language}
+      />
     </div>
   );
 }
