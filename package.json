@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:functions": "tsc --project tsconfig.node.json"
-
   },
   "dependencies": {
     "@netlify/functions": "^5.1.0",
