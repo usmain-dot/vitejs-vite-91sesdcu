@@ -38,8 +38,6 @@ export default function AISearch({ services, onServiceSelect, language: _languag
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [anthropicKey, setAnthropicKey] = useState('');
-  const [braveKey, setBraveKey] = useState('');
-  const [showApiKeyInput, setShowApiKeyInput] = useState(true);
   const [enableWebSearch, setEnableWebSearch] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -186,7 +184,8 @@ When helping users:
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ height: showApiKeyInput ? 'auto' : '600px', maxHeight: '90vh' }}>
+    <div className="fixed bottom-6 right-6 z-50 w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden" style={{ height: '600px', maxHeight: '90vh' }}>
+
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -261,34 +260,7 @@ When helping users:
             </div>
 
             {/* Enable Web Search Toggle */}
-            {braveKey && (
-              <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
-                <input
-                  type="checkbox"
-                  id="enableWebSearch"
-                  checked={enableWebSearch}
-                  onChange={(e) => setEnableWebSearch(e.target.checked)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="enableWebSearch" className="text-sm text-gray-700 cursor-pointer">
-                  Enable web search for additional resources
-                </label>
-              </div>
-            )}
 
-            <button
-              onClick={() => {
-                if (anthropicKey) {
-                  setShowApiKeyInput(false);
-                } else {
-                  alert('Please enter your Anthropic API key first!');
-                }
-              }}
-              disabled={!anthropicKey}
-              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-            >
-              Start Using AI Search
-            </button>
           </div>
         </div>
       )}
