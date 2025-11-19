@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "build:functions": "tsc --project tsconfig.node.json"
-  },
+    "scripts": {
+      "dev": "vite",
+      "build:functions": "tsc --project netlify/functions/tsconfig.json",
+      "build:app": "tsc -b tsconfig.app.json && vite build",
+      "build": "npm run build:functions && npm run build:app",
+      "lint": "eslint .",
+      "preview": "vite preview"
+    }
+      },
   "dependencies": {
     "@netlify/functions": "^5.1.0",
     "firebase": "^12.6.0",
