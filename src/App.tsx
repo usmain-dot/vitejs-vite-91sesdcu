@@ -714,7 +714,7 @@ export default function App() {
       <AISearch
         services={services}
         onServiceSelect={handleAIServiceSelect}
-        language={language}
+      
       />
     </div>
   );
