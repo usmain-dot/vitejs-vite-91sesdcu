@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bridge-nyc.netlify.app/sitemap.xml
