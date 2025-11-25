@@ -66,7 +66,7 @@ When helping users:
 4. Keep responses concise and helpful
 5. Always mention the service name clearly so I can highlight it`;
 
-      const response = await fetch('/.netlify/functions/anthropic', {
+      const response = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
