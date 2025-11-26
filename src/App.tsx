@@ -6,7 +6,6 @@ import { auth } from './firebase';
 import Auth from './Auth';
 import Messages from './Messages';
 import Appointments from './Appointments';
-import AdminSetup from './components/AdminSetup';
 import Admin from './Admin';
 import AISearch from './AISearch';
 
