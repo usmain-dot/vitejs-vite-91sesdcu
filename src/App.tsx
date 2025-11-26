@@ -7,6 +7,7 @@ import Auth from './Auth';
 import Messages from './Messages';
 import Appointments from './Appointments';
 import AdminSetup from './components/AdminSetup';
+import ServiceImporter from './ServiceImporter';
 import Admin from './Admin';
 import AISearch from './AISearch';
 
