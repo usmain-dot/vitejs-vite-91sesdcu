@@ -276,7 +276,8 @@ const categoryColors: Record<Service['category'], { bg: string; text: string }> 
 };
 
 export default function App() {
-  const [services] = useState<Service[]>(initialServices);
+  const [services, setServices] = useState<Service[]>([]);
+  const [servicesLoading, setServicesLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [language, setLanguage] = useState<LanguageCode>('en');
@@ -339,6 +340,45 @@ export default function App() {
       }
     }
   };
+  // Load services from Firestore
+useEffect(() => {
+  const loadServices = async () => {
+    try {
+      const servicesRef = collection(db, 'services');
+      const q = query(servicesRef, orderBy('name'));
+      const querySnapshot = await getDocs(q);
+      
+      const loadedServices: Service[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        loadedServices.push({
+          id: parseInt(doc.id) || Math.random(), // Use doc ID or generate random number
+          name: data.name || '',
+          category: data.category || 'housing',
+          address: data.address || '',
+          phone: data.phone || '',
+          hours: data.hours || '',
+          isOpen: true, // Default to open
+          distance: 0, // Will calculate later
+          lat: data.lat || 0,
+          lng: data.lng || 0,
+          description: data.description || ''
+        });
+      });
+      
+      setServices(loadedServices);
+      console.log(`Loaded ${loadedServices.length} services from Firestore`);
+    } catch (error) {
+      console.error('Error loading services:', error);
+      // Fallback to initial services if Firestore fails
+      setServices(initialServices);
+    } finally {
+      setServicesLoading(false);
+    }
+  };
+
+  loadServices();
+}, []);
 
   const t = translations[language];
   const isRTL = language === 'ar' || language === 'he';
@@ -417,17 +457,17 @@ export default function App() {
     );
   };
 
-  // Show loading while checking auth
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#f9fafb' }}>
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#2a9df4' }}></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
+  // Show loading while checking auth OR loading services
+if (authLoading || servicesLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: '#f9fafb' }}>
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#2a9df4' }}></div>
+        <p className="text-gray-600">Loading services...</p>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
