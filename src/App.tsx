@@ -3,6 +3,7 @@ import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, Gra
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { auth, db } from './firebase';
 import { auth } from './firebase';
 import Auth from './Auth';
 import Messages from './Messages';
