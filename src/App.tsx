@@ -258,6 +258,18 @@ const initialServices: Service[] = [
     lat: 40.7889,
     lng: -73.9520,
     description: "Multilingual healthcare, mental health services, and health insurance enrollment assistance"
+  },
+  {
+    id: 11,
+    name: "NYC Well - Mental Health Support",
+    category: "mental health",
+    address: "New York, NY (Call, Text, or Chat)",
+    phone: "1-888-692-9355",
+    hours: "24/7",
+    website: "https://nycwell.cityofnewyork.us",
+    description: "Free, confidential mental health support via phone, text, or chat. Available 24/7 in over 200 languages.",
+    email: "info@nycwell.org",
+    active: true,
   }
 ];
 
