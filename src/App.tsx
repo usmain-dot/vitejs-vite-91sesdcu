@@ -410,8 +410,8 @@ useEffect(() => {
       <div id={`service-${service.id}`} className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg" style={{ backgroundColor: categoryColors[service.category].bg }}>
-              <Icon className="w-6 h-6" style={{ color: categoryColors[service.category].text }} />
+            <div className="p-2 rounded-lg" style={{ backgroundColor: categoryColors[service.category]?.bg || '#e5e7eb' }}>
+            <Icon className="w-6 h-6" style={{ color: categoryColors[service.category]?.text || '#374151' }} />
             </div>
             <div>
               <h3 className="font-semibold text-lg">{service.name}</h3>
