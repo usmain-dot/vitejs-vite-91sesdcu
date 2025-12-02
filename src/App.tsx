@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, LogOut, Settings } from 'lucide-react';
+import { Search, MapPin, Phone, Clock, Globe, Home, Briefcase, Heart, Scale, GraduationCap, UtensilsCrossed, Languages, Filter, MessageSquare, Calendar, Users, FileText, Sparkles, LogOut, Settings, Building2 } from 'lucide-react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
@@ -405,7 +405,7 @@ useEffect(() => {
   }, [selectedCategory, searchQuery, services]);
 
   const ServiceCard: React.FC<{ service: Service }> = ({ service }) => {
-    const Icon = categoryIcons[service.category];
+    const Icon = categoryIcons[service.category] || Building2;
     return (
       <div id={`service-${service.id}`} className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
         <div className="flex items-start justify-between mb-3">
