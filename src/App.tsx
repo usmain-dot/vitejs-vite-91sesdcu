@@ -262,18 +262,27 @@ const initialServices: Service[] = [
 ];
 
 const categoryIcons = {
-  housing: Home, healthcare: Heart, legal: Scale, employment: Briefcase,
-  education: GraduationCap, food: UtensilsCrossed, language: Languages
+  housing: Home, 
+  healthcare: Heart, 
+  legal: Scale, 
+  employment: Briefcase,
+  education: GraduationCap, 
+  food: UtensilsCrossed, 
+  language: Languages,
+  'mental health': Heart,
+  childcare: Users
 };
 
-const categoryColors: Record<Service['category'], { bg: string; text: string }> = {
+const categoryColors: Record<string, { bg: string; text: string }> = {
   housing: { bg: '#dbeafe', text: '#1e40af' },
   healthcare: { bg: '#dcfce7', text: '#15803d' },
   legal: { bg: '#e0e7ff', text: '#4338ca' },
   employment: { bg: '#fef3c7', text: '#b45309' },
   education: { bg: '#e9d5ff', text: '#7e22ce' },
   food: { bg: '#fed7aa', text: '#c2410c' },
-  language: { bg: '#ccfbf1', text: '#0f766e' }
+  language: { bg: '#ccfbf1', text: '#0f766e' },
+  'mental health': { bg: '#f3e8ff', text: '#6b21a8' },
+  childcare: { bg: '#fef9c3', text: '#854d0e' }
 };
 
 export default function App() {
@@ -387,15 +396,17 @@ useEffect(() => {
   const isRTL = language === 'ar' || language === 'he';
 
   const categories = [
-    { id: 'all' as const, label: t.allServices, icon: Filter },
-    { id: 'housing' as const, label: t.housing, icon: Home },
-    { id: 'healthcare' as const, label: t.healthcare, icon: Heart },
-    { id: 'legal' as const, label: t.legal, icon: Scale },
-    { id: 'employment' as const, label: t.employment, icon: Briefcase },
-    { id: 'education' as const, label: t.education, icon: GraduationCap },
-    { id: 'food' as const, label: t.food, icon: UtensilsCrossed },
-    { id: 'language' as const, label: t.language, icon: Languages }
-  ];
+  { id: 'all', name: 'All Services', icon: Globe },
+  { id: 'housing', name: 'Housing', icon: Home },
+  { id: 'healthcare', name: 'Healthcare', icon: Heart },
+  { id: 'education', name: 'Education', icon: GraduationCap },
+  { id: 'employment', name: 'Employment', icon: Briefcase },
+  { id: 'legal', name: 'Legal Aid', icon: Scale },
+  { id: 'food', name: 'Food Assistance', icon: UtensilsCrossed },
+  { id: 'mental health', name: 'Mental Health', icon: Heart },
+  { id: 'language', name: 'Language', icon: Languages },
+  { id: 'childcare', name: 'Childcare', icon: Users }
+];
 
   const filteredServices = useMemo(() => {
     return services.filter(service => {
