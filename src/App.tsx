@@ -377,12 +377,9 @@ useEffect(() => {
       
       setServices(loadedServices);
       console.log(`Loaded ${loadedServices.length} services from Firestore`);
-      console.log('Categories found:', [...new Set(loadedServices.map(s => s.category))]);
-      console.log('First 5 services:', loadedServices.slice(0, 5).map(s => ({ name: s.name, category: s.category })));
     } catch (error) {
-      console.error('Error loading services:', error);
-      // Fallback to initial services if Firestore fails
-      setServices(initialServices);
+  console.error('Error loading services:', error);
+  setServices([]);
     } finally {
       setServicesLoading(false);
     }
