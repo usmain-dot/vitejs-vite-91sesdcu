@@ -602,22 +602,29 @@ if (authLoading || servicesLoading) {
             <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide max-w-6xl mx-auto">
               {categories.map(cat => {
                 const Icon = cat.icon;
-                return (
+                 return (
                   <button
-                    key={cat.id}
+                   key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all"
-                    style={selectedCategory === cat.id 
-                      ? { background: '#2a9df4', color: 'white', boxShadow: '0 2px 4px rgba(42,157,244,0.3)' } 
-                      : { background: 'white', color: '#475569', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
+                    selectedCategory === cat.id
+                     ? "bg-blue-600 text-white shadow-md"
+                     : "bg-white text-gray-700 shadow-sm"
+                    }`}
                   >
-                    <Icon className="w-4 h-4" />
+                   <Icon className="w-4 h-4" />
                     {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                    </button>
+                   );
+                   })}
+                   </div>
+
+               {/* Counter showing filtered results */}
+              <div className="text-center mt-4 text-sm text-gray-600">
+              Showing {filteredServices.length} of {services.length} services
+               </div>
+               </div>
+
 
           {/* Services Grid */}
           {filteredServices.length === 0 ? (
