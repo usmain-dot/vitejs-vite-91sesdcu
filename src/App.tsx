@@ -408,13 +408,27 @@ useEffect(() => {
 ];
 
   const filteredServices = useMemo(() => {
-    return services.filter(service => {
-      const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
-      const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          service.description.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [selectedCategory, searchQuery, services]);
+  console.log('=== FILTER DEBUG ===');
+  console.log('Selected Category:', selectedCategory);
+  console.log('Total Services:', services.length);
+  
+  const filtered = services.filter(service => {
+    const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
+    const matchesSearch = service.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                        service.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (!matchesCategory && selectedCategory !== 'all') {
+      console.log(`❌ Filtered out: ${service.name} (category: "${service.category}" !== "${selectedCategory}")`);
+    }
+    
+    return matchesCategory && matchesSearch;
+  });
+  
+  console.log('✅ Filtered Services Count:', filtered.length);
+  console.log('==================');
+  
+  return filtered;
+}, [selectedCategory, searchQuery, services]);
 
   const ServiceCard: React.FC<{ service: Service }> = ({ service }) => {
     const Icon = categoryIcons[service.category] || Building2;
