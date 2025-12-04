@@ -264,19 +264,19 @@ const initialServices: Service[] = [
 const categoryIcons = {
   housing: Home, healthcare: Heart, legal: Scale, employment: Briefcase,
   education: GraduationCap, food: UtensilsCrossed, language: Languages,
-  mentalhealth: Heart, childcare: Users
+  'mental health': Heart, childcare: Users
 };
 
 const categoryColors: Record<Service['category'], { bg: string; text: string }> = {
-  housing: { bg: ' #dbeafe', text: ' #1e40af' },
-  healthcare: { bg: ' #dcfce7', text: ' #15803d' },
-  legal: { bg: ' #e0e7ff', text: ' #4338ca' },
-  employment: { bg: ' #fef3c7', text: ' #b45309' },
-  education: { bg: ' #e9d5ff', text: ' #7e22ce' },
-  food: { bg: ' #fed7aa', text: ' #c2410c' },
-  language: { bg: ' #ccfbf1', text: ' #0f766e' },
-  mental health: { bg: ' #f3e8ff', text: ' #6b21a8' },
-  childcare: { bg: ' #fef9c3', text: ' #854d0e' }
+  housing: { bg: '#dbeafe', text: '#1e40af' },
+  healthcare: { bg: '#dcfce7', text: '#15803d' },
+  legal: { bg: '#e0e7ff', text: '#4338ca' },
+  employment: { bg: '#fef3c7', text: '#b45309' },
+  education: { bg: '#e9d5ff', text: '#7e22ce' },
+  food: { bg: '#fed7aa', text: '#c2410c' },
+  language: { bg: '#ccfbf1', text: '#0f766e' },
+  'mental health': { bg: '#f3e8ff', text: '#6b21a8' },
+  childcare: { bg: '#fef9c3', text: '#854d0e' }
 };
 
 export default function App() {
