@@ -72,20 +72,23 @@ export default async function handler(req, res) {
     ).join('\n');
 
     // Step 3: Ask Gemini to analyze and rank services
-    const prompt = `You are a helpful assistant for Bridge, a social services directory for NYC refugees and immigrants.
+    const prompt = `You are analyzing a database of NYC social services for refugees and immigrants.
 
 USER QUERY: "${query}"
 
-AVAILABLE SERVICES:
+AVAILABLE SERVICES IN DATABASE:
 ${servicesSummary}
 
-TASK: Analyze the user's query and identify the 5 MOST RELEVANT services from the list above that best match their needs.
+INSTRUCTIONS:
+1. Identify the 3-5 MOST RELEVANT services from the list above
+2. Consider the user's specific needs
+3. Return ONLY a JSON array with exact service names
+4. No explanations, no markdown, no extra text
 
-Return ONLY a JSON array with the service names in order of relevance (most relevant first).
-Format: ["Service Name 1", "Service Name 2", "Service Name 3", "Service Name 4", "Service Name 5"]
+CRITICAL: Your response must be ONLY a valid JSON array like this:
+["NYC Well - Mental Health Support", "NAMI NYC", "The Door - Mental Health Services"]
 
-If fewer than 5 services are relevant, return only those that match well.
-Return ONLY the JSON array, no other text.`;
+Return the JSON array now:`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
@@ -99,10 +102,10 @@ Return ONLY the JSON array, no other text.`;
             parts: [{ text: prompt }]
           }],
           generationConfig: {
-            temperature: 0.3,
-            topK: 40,
-            topP: 0.95,
-            maxOutputTokens: 1024,
+            temperature: 0.1,
+            topK: 20,
+            topP: 0.8,
+            maxOutputTokens: 512,
           }
         })
       }
@@ -122,11 +125,17 @@ Return ONLY the JSON array, no other text.`;
         .join('');
     }
 
-    // Clean and parse JSON
-    const cleanText = fullText
+    // Clean and parse JSON - more aggressive cleaning
+    let cleanText = fullText
       .replace(/```json\n?/g, '')
       .replace(/```\n?/g, '')
       .trim();
+    
+    // Extract JSON array if embedded in text
+    const jsonMatch = cleanText.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      cleanText = jsonMatch[0];
+    }
     
     let rankedServiceNames = [];
     try {
@@ -137,8 +146,26 @@ Return ONLY the JSON array, no other text.`;
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       console.error('Received text:', cleanText);
-      // Fallback: return first 5 services
-      rankedServiceNames = allServices.slice(0, 5).map(s => s.name);
+      console.error('Full response:', fullText);
+      
+      // Fallback: Smart filter by category
+      const queryLower = query.toLowerCase();
+      let filtered = allServices;
+      
+      // Try to match keywords to categories
+      if (queryLower.includes('mental') || queryLower.includes('health') || queryLower.includes('therapy')) {
+        filtered = allServices.filter(s => s.category === 'mental health');
+      } else if (queryLower.includes('food') || queryLower.includes('hunger') || queryLower.includes('meal')) {
+        filtered = allServices.filter(s => s.category === 'food');
+      } else if (queryLower.includes('housing') || queryLower.includes('shelter') || queryLower.includes('homeless')) {
+        filtered = allServices.filter(s => s.category === 'housing');
+      } else if (queryLower.includes('legal') || queryLower.includes('lawyer') || queryLower.includes('immigration')) {
+        filtered = allServices.filter(s => s.category === 'legal');
+      } else if (queryLower.includes('job') || queryLower.includes('work') || queryLower.includes('employ')) {
+        filtered = allServices.filter(s => s.category === 'employment');
+      }
+      
+      rankedServiceNames = filtered.slice(0, 5).map(s => s.name);
     }
 
     // Step 4: Map service names back to full service objects
