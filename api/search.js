@@ -1,5 +1,21 @@
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+
+// Initialize Firebase Admin (only once)
+if (!getApps().length) {
+  initializeApp({
+    credential: cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+
+const db = getFirestore();
+
 export default async function handler(req, res) {
-  // CORS
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -15,92 +31,138 @@ export default async function handler(req, res) {
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
   if (!GEMINI_API_KEY) {
-    return res.status(200).json({
-      success: true,
-      provider: 'mock',
-      resources: getMockData(req.body?.query || '')
-    });
+    return res.status(500).json({ error: 'API key not configured' });
   }
 
   try {
-    const { query } = req.body;
+    const { query, category } = req.body;
+
+    // Step 1: Fetch ALL services from Firestore
+    const servicesRef = db.collection('services');
+    let firestoreQuery = servicesRef;
+    
+    // Filter by category if provided
+    if (category && category !== 'all') {
+      firestoreQuery = firestoreQuery.where('category', '==', category);
+    }
+
+    const snapshot = await firestoreQuery.get();
+    const allServices = [];
+    
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      allServices.push({
+        id: doc.id,
+        name: data.name,
+        category: data.category,
+        address: data.address,
+        phone: data.phone,
+        hours: data.hours,
+        website: data.website,
+        description: data.description,
+        languages: data.languages || [],
+      });
+    });
+
+    console.log(`Fetched ${allServices.length} services from Firestore`);
+
+    // Step 2: Create a summary of services for Gemini
+    const servicesSummary = allServices.map(s => 
+      `${s.name} (${s.category}): ${s.description}`
+    ).join('\n');
+
+    // Step 3: Ask Gemini to analyze and rank services
+    const prompt = `You are a helpful assistant for Bridge, a social services directory for NYC refugees and immigrants.
+
+USER QUERY: "${query}"
+
+AVAILABLE SERVICES:
+${servicesSummary}
+
+TASK: Analyze the user's query and identify the 5 MOST RELEVANT services from the list above that best match their needs.
+
+Return ONLY a JSON array with the service names in order of relevance (most relevant first).
+Format: ["Service Name 1", "Service Name 2", "Service Name 3", "Service Name 4", "Service Name 5"]
+
+If fewer than 5 services are relevant, return only those that match well.
+Return ONLY the JSON array, no other text.`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           contents: [{
-            parts: [{ text: `Find social services in NYC for: ${query}. Return as JSON array with name, address, phone, hours, website, category, description.` }]
-          }]
+            parts: [{ text: prompt }]
+          }],
+          generationConfig: {
+            temperature: 0.3,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 1024,
+          }
         })
       }
     );
 
-    const data = await response.json();
-    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    
-    let resources = [];
-    try {
-      resources = JSON.parse(text);
-    } catch {
-      resources = getMockData(query);
+    if (!response.ok) {
+      throw new Error(`Gemini API error: ${response.status}`);
     }
+
+    const data = await response.json();
+
+    // Extract Gemini's response
+    let fullText = '';
+    if (data.candidates && data.candidates[0]?.content?.parts) {
+      fullText = data.candidates[0].content.parts
+        .map((part) => part.text)
+        .join('');
+    }
+
+    // Clean and parse JSON
+    const cleanText = fullText
+      .replace(/```json\n?/g, '')
+      .replace(/```\n?/g, '')
+      .trim();
+    
+    let rankedServiceNames = [];
+    try {
+      rankedServiceNames = JSON.parse(cleanText);
+      if (!Array.isArray(rankedServiceNames)) {
+        rankedServiceNames = [];
+      }
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Received text:', cleanText);
+      // Fallback: return first 5 services
+      rankedServiceNames = allServices.slice(0, 5).map(s => s.name);
+    }
+
+    // Step 4: Map service names back to full service objects
+    const rankedServices = rankedServiceNames
+      .map(name => allServices.find(s => s.name === name))
+      .filter(s => s !== undefined);
+
+    console.log(`Returning ${rankedServices.length} ranked services`);
 
     return res.status(200).json({
       success: true,
-      provider: 'gemini',
-      resources: Array.isArray(resources) ? resources : [resources]
+      count: rankedServices.length,
+      resources: rankedServices,
+      provider: 'gemini-firestore',
+      query: query
     });
 
   } catch (error) {
-    return res.status(200).json({
-      success: true,
-      provider: 'mock',
-      resources: getMockData(req.body?.query || '')
+    console.error('Search error:', error);
+    
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Search failed',
+      provider: 'error'
     });
   }
-}
-
-function getMockData(query) {
-  const all = [
-    {
-      name: "NYC Well - Mental Health Support",
-      address: "New York, NY (Call/Text/Chat)",
-      phone: "1-888-692-9355",
-      hours: "24/7",
-      website: "https://nycwell.cityofnewyork.us",
-      category: "mental health",
-      description: "Free confidential mental health support. Available 24/7 in 200+ languages."
-    },
-    {
-      name: "Food Bank For New York City",
-      address: "39 Broadway, 10th Floor, NY 10006",
-      phone: "(212) 566-7855",
-      hours: "Mon-Fri 9AM-5PM",
-      website: "https://www.foodbanknyc.org",
-      category: "food",
-      description: "Emergency food assistance and meal programs citywide."
-    },
-    {
-      name: "The Legal Aid Society",
-      address: "199 Water Street, NY 10038",
-      phone: "(212) 577-3300",
-      hours: "Mon-Fri 9AM-5PM",
-      website: "https://www.legalaidnyc.org",
-      category: "legal",
-      description: "Free legal representation for immigration and housing."
-    }
-  ];
-  
-  const q = (query || '').toLowerCase();
-  const filtered = all.filter(s => 
-    s.name.toLowerCase().includes(q) ||
-    s.category.toLowerCase().includes(q) ||
-    s.description.toLowerCase().includes(q)
-  );
-  
-  return filtered.length > 0 ? filtered : all;
 }
