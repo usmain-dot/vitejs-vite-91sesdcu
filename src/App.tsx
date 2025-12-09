@@ -349,6 +349,18 @@ export default function App() {
       }
     }
   };
+  // Calculate distance between two coordinates in miles
+const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+  const R = 3959; // Earth's radius in miles
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return Math.round(R * c * 10) / 10; // Round to 1 decimal
+};
   // Load services from Firestore
 useEffect(() => {
  const loadServices = async () => {
@@ -357,20 +369,39 @@ useEffect(() => {
     const q = query(servicesRef, orderBy('name'));
     const querySnapshot = await getDocs(q);
     
+    // Get user's location
+    let userLat = 40.7128; // Default to NYC
+    let userLng = -74.0060;
+    
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        userLat = position.coords.latitude;
+        userLng = position.coords.longitude;
+      } catch (geoError) {
+        console.log('Using default NYC location');
+      }
+    }
+    
     const loadedServices: Service[] = [];
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+      const serviceLat = data.lat || 40.7128;
+      const serviceLng = data.lng || -74.0060;
+      
       loadedServices.push({
-        id: doc.id, // Use document ID as-is (string)
+        id: doc.id,
         name: data.name || '',
         category: data.category || 'housing',
         address: data.address || '',
         phone: data.phone || '',
         hours: data.hours || '',
         isOpen: true,
-        distance: 0,
-        lat: data.lat || 0,
-        lng: data.lng || 0,
+        distance: calculateDistance(userLat, userLng, serviceLat, serviceLng),
+        lat: serviceLat,
+        lng: serviceLng,
         description: data.description || ''
       });
     });
