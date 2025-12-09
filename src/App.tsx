@@ -12,9 +12,9 @@ import AISearch from './AISearch';
 
 // Types
 interface Service {
-  id: number;
+  id: string;
   name: string;
-  category: 'housing' | 'healthcare' | 'legal' | 'employment' | 'education' | 'food' | 'language';
+  category: 'housing' | 'healthcare' | 'legal' | 'employment' | 'education' | 'food' | 'language' | 'mental health' | 'childcare';
   address: string;
   phone: string;
   hours: string;
@@ -288,7 +288,7 @@ export default function App() {
   const [services, setServices] = useState<Service[]>([]);
   const [servicesLoading, setServicesLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [language, setLanguage] = useState<LanguageCode>('en');
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [user, setUser] = useState<User | null>(null);
@@ -351,39 +351,39 @@ export default function App() {
   };
   // Load services from Firestore
 useEffect(() => {
-  const loadServices = async () => {
-    try {
-      const servicesRef = collection(db, 'services');
-      const q = query(servicesRef, orderBy('name'));
-      const querySnapshot = await getDocs(q);
-      
-      const loadedServices: Service[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        loadedServices.push({
-          id: parseInt(doc.id) || Math.random(), // Use doc ID or generate random number
-          name: data.name || '',
-          category: data.category || 'housing',
-          address: data.address || '',
-          phone: data.phone || '',
-          hours: data.hours || '',
-          isOpen: true, // Default to open
-          distance: 0, // Will calculate later
-          lat: data.lat || 0,
-          lng: data.lng || 0,
-          description: data.description || ''
-        });
+ const loadServices = async () => {
+  try {
+    const servicesRef = collection(db, 'services');
+    const q = query(servicesRef, orderBy('name'));
+    const querySnapshot = await getDocs(q);
+    
+    const loadedServices: Service[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      loadedServices.push({
+        id: doc.id, // Use document ID as-is (string)
+        name: data.name || '',
+        category: data.category || 'housing',
+        address: data.address || '',
+        phone: data.phone || '',
+        hours: data.hours || '',
+        isOpen: true,
+        distance: 0,
+        lat: data.lat || 0,
+        lng: data.lng || 0,
+        description: data.description || ''
       });
-      
-      setServices(loadedServices);
-      console.log(`Loaded ${loadedServices.length} services from Firestore`);
-    } catch (error) {
-  console.error('Error loading services:', error);
-  setServices([]);
-    } finally {
-      setServicesLoading(false);
-    }
-  };
+    });
+    
+    setServices(loadedServices);
+    console.log(`Loaded ${loadedServices.length} services from Firestore`);
+  } catch (error) {
+    console.error('Error loading services:', error);
+    setServices([]);
+  } finally {
+    setServicesLoading(false);
+  }
+};
 
   loadServices();
 }, []);
@@ -392,16 +392,16 @@ useEffect(() => {
   const isRTL = language === 'ar' || language === 'he';
 
   const categories = [
-  { id: 'all' as const, label: t.allServices, icon: Filter }, 
-  { id: 'housing' as const, label: t.housing, icon: Home }, 
-  { id: 'healthcare' as const, label: t.healthcare, icon: Heart },
-  { id: 'legal' as const, label: t.legal, icon: Scale }, 
-  { id: 'employment' as const, label: t.employment, icon: Briefcase },
-  { id: 'education' as const, label: t.education, icon: GraduationCap }, 
-  { id: 'food' as const, label: t.food, icon: UtensilsCrossed },
-  { id: 'mental health' as const, label: t.mentalHealth, icon: Heart },
-  { id: 'language' as const, label: t.language, icon: Languages },
-  { id: 'childcare' as const, label: t.childcare, icon: Users }
+  { id: 'all', label: t.allServices, icon: Filter }, 
+  { id: 'housing', label: t.housing, icon: Home }, 
+  { id: 'healthcare', label: t.healthcare, icon: Heart },
+  { id: 'legal', label: t.legal, icon: Scale }, 
+  { id: 'employment', label: t.employment, icon: Briefcase },
+  { id: 'education', label: t.education, icon: GraduationCap }, 
+  { id: 'food', label: t.food, icon: UtensilsCrossed },
+  { id: 'mental health', label: t.mentalHealth, icon: Heart },
+  { id: 'language', label: t.language, icon: Languages },
+  { id: 'childcare', label: t.childcare, icon: Users }
 ];
 
  const filteredServices = useMemo(() => {
