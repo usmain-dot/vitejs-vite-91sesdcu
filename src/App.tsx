@@ -510,300 +510,300 @@ if (authLoading || servicesLoading) {
   );
 }
 
-  return (
-    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
-      {/* Header */}
-      <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-        <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <path d="M4 20 Q16 8, 28 20" stroke="#2a9df4" strokeWidth="3" fill="none" />
-                  <rect x="4" y="20" width="2" height="8" fill="#2a9df4" />
-                  <rect x="26" y="20" width="2" height="8" fill="#2a9df4" />
-                  <circle cx="10" cy="24" r="2" fill="#f59e0b" />
-                  <circle cx="16" cy="24" r="2" fill="#10b981" />
-                  <circle cx="22" cy="24" r="2" fill="#8b5cf6" />
-                </svg>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-                <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
-              </div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              {user ? (
-                <>
-                  <button
-                    onClick={() => setShowAdmin(true)}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
-                    title="Admin Dashboard"
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span className="text-sm">Admin</span>
-                  </button>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
-                      <p className="text-xs text-blue-100">{user.email}</p>
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span className="text-sm">Logout</span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <button
-                  onClick={() => setShowAuthModal(true)}
-                  className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="text-sm">{t.signIn}</span>
-                </button>
-              )}
-
-              {/* Language Selector */}
-              <div className="relative">
-                <button 
-                  onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
-                >
-                  <Globe className="w-5 h-5" />
-                  <span className="text-sm">{language.toUpperCase()}</span>
-                </button>
-                {showLanguageMenu && (
-                  <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
-                    <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
-                    <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
-                    <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
-                    <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
-                    <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+ return (
+  <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
+    
+    {/* MODALS - MOVED TO TOP FOR PROPER Z-INDEX */}
+    {/* Auth Modal */}
+    {showAuthModal && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowAuthModal(false)}>
+        <div className="bg-white rounded-2xl max-w-md w-full relative" onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={() => setShowAuthModal(false)}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <Auth onAuthSuccess={() => setShowAuthModal(false)} />
         </div>
-      </header>
+      </div>
+    )}
 
-      {/* Main Content */}
-      <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-        <div className="max-w-7xl mx-auto">
-          {/* Search Bar */}
-          <div className="mb-8 px-4">
-            <div className="relative max-w-2xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder={t.search}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
+    {/* Messages Modal */}
+    {showMessages && (
+      <div className="fixed inset-0 bg-white z-50">
+        <Messages
+          serviceId={selectedService?.id}
+          serviceName={selectedService?.name}
+          onClose={() => {
+            setShowMessages(false);
+            setSelectedService(null);
+          }}
+        />
+      </div>
+    )}
 
-          {/* Category Filter */}
-          <div className="mb-8 px-4">
-            <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide max-w-6xl mx-auto">
-              {categories.map(cat => {
-                const Icon = cat.icon;
-                 return (
-                  <button
-                   key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                    selectedCategory === cat.id
-                     ? "bg-blue-600 text-white shadow-md"
-                     : "bg-white text-gray-700 shadow-sm"
-                    }`}
-                  >
-                   <Icon className="w-4 h-4" />
-                    {cat.label}
-                    </button>
-                   );
-                   })}
-                   </div>
+    {/* Appointments Modal */}
+    {showAppointments && (
+      <div className="fixed inset-0 bg-white z-50">
+        <Appointments
+          serviceId={selectedService?.id}
+          serviceName={selectedService?.name}
+          onClose={() => {
+            setShowAppointments(false);
+            setSelectedService(null);
+          }}
+        />
+      </div>
+    )}
 
-               {/* Counter showing filtered results */}
-              <div className="text-center mt-4 text-sm text-gray-600">
-              Showing {filteredServices.length} of {services.length} services
-               </div>
-               </div>
+    {/* Admin Dashboard */}
+    {showAdmin && (
+      <div className="fixed inset-0 bg-white z-50">
+        <Admin onClose={() => setShowAdmin(false)} />
+      </div>
+    )}
 
-
-          {/* Services Grid */}
-          {filteredServices.length === 0 ? (
-            <div className="text-center py-16 px-4">
-              <p className="text-gray-500 text-lg">{t.noResults}</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
-              {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
-            </div>
-          )}
-        </div>
-      </main>
-
-      {/* Phase 2 & 3 Features */}
-      <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
-        <div className="container mx-auto max-w-7xl">
-          <div className="mb-16">
-            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
-            <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
-                <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.messaging}</h3>
-              <p className="text-gray-600 text-sm">Real-time chat with service providers for quick questions and support</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#d1fae5', color: '#059669' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#f59e0b' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fed7aa' }}>
-                <Calendar className="w-8 h-8" style={{ color: '#f59e0b' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.scheduling}</h3>
-              <p className="text-gray-600 text-sm">Book and manage appointments directly through the platform</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fed7aa', color: '#c2410c' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#8b5cf6' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#e9d5ff' }}>
-                <Users className="w-8 h-8" style={{ color: '#8b5cf6' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.forums}</h3>
-              <p className="text-gray-600 text-sm">Connect with community members and share experiences</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#e9d5ff', color: '#7e22ce' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-16">
-            <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
-            <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#2a9df4' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
-                <Sparkles className="w-8 h-8" style={{ color: '#2a9df4' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.aiMatching}</h3>
-              <p className="text-gray-600 text-sm">AI-powered recommendations based on your unique needs</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#dbeafe', color: '#1e40af' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#06b6d4' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#ccfbf1' }}>
-                <FileText className="w-8 h-8" style={{ color: '#06b6d4' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.documents}</h3>
-              <p className="text-gray-600 text-sm">Secure storage for important documents and records</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#ccfbf1', color: '#0f766e' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#ec4899' }}>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fce7f3' }}>
-                <Briefcase className="w-8 h-8" style={{ color: '#ec4899' }} />
-              </div>
-              <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.caseManagement}</h3>
-              <p className="text-gray-600 text-sm">Track your service journey and document progress</p>
-              <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fce7f3', color: '#be185d' }}>
-                {t.comingSoon}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
-  <div className="container mx-auto max-w-7xl text-center">
-    <p style={{ color: '#ffffff !important', fontSize: '16px', fontWeight: '500', marginBottom: '8px', textShadow: '0 0 1px #ffffff' }}>
-      © 2025 Bridge. {t.tagline}
-    </p>
-    <p style={{ color: '#ffffff !important', fontSize: '14px', marginTop: '8px', textShadow: '0 0 1px #ffffff' }}>
-      Serving communities across New York State
-    </p>
-  </div>
-</footer>
-      {/* Auth Modal */}
-      {showAuthModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowAuthModal(false)}>
-          <div className="bg-white rounded-2xl max-w-md w-full relative" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setShowAuthModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    {/* Header */}
+    <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
+      <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M4 20 Q16 8, 28 20" stroke="#2a9df4" strokeWidth="3" fill="none" />
+                <rect x="4" y="20" width="2" height="8" fill="#2a9df4" />
+                <rect x="26" y="20" width="2" height="8" fill="#2a9df4" />
+                <circle cx="10" cy="24" r="2" fill="#f59e0b" />
+                <circle cx="16" cy="24" r="2" fill="#10b981" />
+                <circle cx="22" cy="24" r="2" fill="#8b5cf6" />
               </svg>
-            </button>
-            <Auth onAuthSuccess={() => setShowAuthModal(false)} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
+              <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            {user ? (
+              <>
+                <button
+                  onClick={() => setShowAdmin(true)}
+                  className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+                  title="Admin Dashboard"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="text-sm">Admin</span>
+                </button>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
+                    <p className="text-xs text-blue-100">{user.email}</p>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="text-sm">Logout</span>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="text-sm">{t.signIn}</span>
+              </button>
+            )}
+
+            {/* Language Selector */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
+              >
+                <Globe className="w-5 h-5" />
+                <span className="text-sm">{language.toUpperCase()}</span>
+              </button>
+              {showLanguageMenu && (
+                <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
+                  <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
+                  <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
+                  <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
+                  <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
+                  <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      )}
+      </div>
+    </header>
 
-      {/* Messages Modal */}
-      {showMessages && (
-        <div className="fixed inset-0 bg-white z-50">
-          <Messages
-            serviceId={selectedService?.id}
-            serviceName={selectedService?.name}
-            onClose={() => {
-              setShowMessages(false);
-              setSelectedService(null);
-            }}
-          />
+    {/* Main Content */}
+    <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+      <div className="max-w-7xl mx-auto">
+        {/* Search Bar */}
+        <div className="mb-8 px-4">
+          <div className="relative max-w-2xl mx-auto">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder={t.search}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
-      )}
 
-      {/* Appointments Modal */}
-      {showAppointments && (
-        <div className="fixed inset-0 bg-white z-50">
-          <Appointments
-            serviceId={selectedService?.id}
-            serviceName={selectedService?.name}
-            onClose={() => {
-              setShowAppointments(false);
-              setSelectedService(null);
-            }}
-          />
+        {/* Category Filter */}
+        <div className="mb-8 px-4">
+          <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide max-w-6xl mx-auto">
+            {categories.map(cat => {
+              const Icon = cat.icon;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
+                    selectedCategory === cat.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-white text-gray-700 shadow-sm"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {cat.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Counter showing filtered results */}
+          <div className="text-center mt-4 text-sm text-gray-600">
+            Showing {filteredServices.length} of {services.length} services
+          </div>
         </div>
-      )}
 
-      {/* Admin Dashboard */}
-      {showAdmin && (
-        <div className="fixed inset-0 bg-white z-50">
-          <Admin onClose={() => setShowAdmin(false)} />
+        {/* Services Grid */}
+        {filteredServices.length === 0 ? (
+          <div className="text-center py-16 px-4">
+            <p className="text-gray-500 text-lg">{t.noResults}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
+            {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
+          </div>
+        )}
+      </div>
+    </main>
+
+    {/* Phase 2 & 3 Features */}
+    <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
+      <div className="container mx-auto max-w-7xl">
+        <div className="mb-16">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
+          <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
         </div>
-      )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#10b981' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#d1fae5' }}>
+              <MessageSquare className="w-8 h-8" style={{ color: '#10b981' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.messaging}</h3>
+            <p className="text-gray-600 text-sm">Real-time chat with service providers for quick questions and support</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#d1fae5', color: '#059669' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#f59e0b' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fed7aa' }}>
+              <Calendar className="w-8 h-8" style={{ color: '#f59e0b' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.scheduling}</h3>
+            <p className="text-gray-600 text-sm">Book and manage appointments directly through the platform</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fed7aa', color: '#c2410c' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#8b5cf6' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#e9d5ff' }}>
+              <Users className="w-8 h-8" style={{ color: '#8b5cf6' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.forums}</h3>
+            <p className="text-gray-600 text-sm">Connect with community members and share experiences</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#e9d5ff', color: '#7e22ce' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+        </div>
 
-      {/* AI Search Assistant */}
-      <AISearch
-        services={services}
-        onServiceSelect={handleAIServiceSelect}
-      
-      />
-    </div>
-  );
-}
+        <div className="mb-16">
+          <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase3}</h2>
+          <p className="text-center text-gray-600 text-lg">Advanced capabilities for personalized support</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#2a9df4' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
+              <Sparkles className="w-8 h-8" style={{ color: '#2a9df4' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.aiMatching}</h3>
+            <p className="text-gray-600 text-sm">AI-powered recommendations based on your unique needs</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#dbeafe', color: '#1e40af' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#06b6d4' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#ccfbf1' }}>
+              <FileText className="w-8 h-8" style={{ color: '#06b6d4' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.documents}</h3>
+            <p className="text-gray-600 text-sm">Secure storage for important documents and records</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#ccfbf1', color: '#0f766e' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl shadow-md p-8 text-center border-t-4 hover:shadow-lg transition-all" style={{ borderColor: '#ec4899' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#fce7f3' }}>
+              <Briefcase className="w-8 h-8" style={{ color: '#ec4899' }} />
+            </div>
+            <h3 className="text-xl font-bold mb-2" style={{ color: '#1e293b' }}>{t.caseManagement}</h3>
+            <p className="text-gray-600 text-sm">Track your service journey and document progress</p>
+            <div className="mt-4 inline-block px-3 py-1 rounded-full text-xs font-medium" style={{ background: '#fce7f3', color: '#be185d' }}>
+              {t.comingSoon}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
+      <div className="container mx-auto max-w-7xl text-center">
+        <p style={{ color: '#ffffff !important', fontSize: '16px', fontWeight: '500', marginBottom: '8px', textShadow: '0 0 1px #ffffff' }}>
+          © 2025 Bridge. {t.tagline}
+        </p>
+        <p style={{ color: '#ffffff !important', fontSize: '14px', marginTop: '8px', textShadow: '0 0 1px #ffffff' }}>
+          Serving communities across New York State
+        </p>
+      </div>
+    </footer>
+
+    {/* AI Search Assistant */}
+    <AISearch
+      services={services}
+      onServiceSelect={handleAIServiceSelect}
+    />
+  </div>
+);
