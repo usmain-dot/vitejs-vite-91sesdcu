@@ -801,10 +801,10 @@ if (authLoading || servicesLoading) {
     </footer>
 
     {/* AI Search Assistant */}
-    <AISearch
-      services={services}
-      onServiceSelect={handleAIServiceSelect}
-    />
+{/* <AISearch
+  services={services}
+  onServiceSelect={handleAIServiceSelect}
+/> */}
   </div>
 );
 }
