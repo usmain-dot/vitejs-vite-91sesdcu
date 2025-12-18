@@ -789,16 +789,17 @@ if (authLoading || servicesLoading) {
       </div>
     </section>
 
-    <footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
-      <div className="container mx-auto max-w-7xl text-center">
-        <p style={{ color: '#ffffff !important', fontSize: '16px', fontWeight: '500', marginBottom: '8px', textShadow: '0 0 1px #ffffff' }}>
-          © 2025 Bridge. {t.tagline}
-        </p>
-        <p style={{ color: '#ffffff !important', fontSize: '14px', marginTop: '8px', textShadow: '0 0 1px #ffffff' }}>
-          Serving communities across New York State
-        </p>
-      </div>
-    </footer>
+    <footer className="py-12 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-3">
+  <div className="container mx-auto max-w-7xl text-center">
+    <p className="text-white text-lg font-semibold mb-2">
+      © 2025 Bridge. {t.tagline}
+    </p>
+    <p className="text-white text-sm mt-2">
+      Serving communities across New York State
+    </p>
+  </div>
+</footer>
+
 
     {/* AI Search Assistant */}
 {/* <AISearch
