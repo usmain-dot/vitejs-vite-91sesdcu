@@ -298,7 +298,10 @@ export default function App() {
   const [showAppointments, setShowAppointments] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [selectedService, setSelectedService] = useState<{ id: number; name: string } | null>(null);
-
+// Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // Check authentication status
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
