@@ -298,9 +298,14 @@ export default function App() {
   const [showAppointments, setShowAppointments] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [selectedService, setSelectedService] = useState<{ id: number; name: string } | null>(null);
-// Scroll to top on page load
+// Force scroll to top on page load and prevent auto-scroll
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    
+    // Also prevent scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
   }, []);
   // Check authentication status
   useEffect(() => {
