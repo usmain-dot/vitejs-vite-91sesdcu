@@ -573,15 +573,13 @@ if (authLoading || servicesLoading) {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path d="M4 20 Q16 8, 28 20" stroke="#2a9df4" strokeWidth="3" fill="none" />
-                <rect x="4" y="20" width="2" height="8" fill="#2a9df4" />
-                <rect x="26" y="20" width="2" height="8" fill="#2a9df4" />
-                <circle cx="10" cy="24" r="2" fill="#f59e0b" />
-                <circle cx="16" cy="24" r="2" fill="#10b981" />
-                <circle cx="22" cy="24" r="2" fill="#8b5cf6" />
-              </svg>
+            <img
+              src="/bridge-logo.png"
+               alt="Bridge Logo"
+              className="h-10 w-auto"
+             />
             </div>
+
             <div>
               <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
               <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
