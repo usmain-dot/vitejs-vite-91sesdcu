@@ -576,7 +576,7 @@ if (authLoading || servicesLoading) {
             <img
               src="/bridge-logo.png"
                alt="Bridge Logo"
-              className="h-6 w-auto"
+              className="h-2 w-auto"
              />
             </div>
 
