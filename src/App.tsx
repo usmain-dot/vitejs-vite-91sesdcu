@@ -572,31 +572,30 @@ if (authLoading || servicesLoading) {
         <div className="flex items-center justify-between">
          {/* Logo */}
 <div className="flex items-center gap-3">
-  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
-    <svg width="100%" height="100%" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Bridge arch - thicker and more visible */}
+  <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg">
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Modern bridge arch */}
       <path 
-        d="M6 35 Q24 15, 42 35" 
+        d="M4 26 C4 26, 8 16, 18 16 C28 16, 32 26, 32 26" 
         stroke="#2a9df4" 
-        strokeWidth="5" 
-        fill="none" 
+        strokeWidth="3" 
         strokeLinecap="round"
+        fill="none"
       />
-      {/* Bridge pillars */}
-      <rect x="6" y="35" width="4" height="10" fill="#2a9df4" rx="2" />
-      <rect x="38" y="35" width="4" height="10" fill="#2a9df4" rx="2" />
+      {/* Bridge supports */}
+      <line x1="8" y1="26" x2="8" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="18" y1="16" x2="18" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="28" y1="26" x2="28" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
       
-      {/* 5 Language dots - BIGGER and more visible */}
-      <circle cx="12" cy="26" r="3.5" fill="#10b981" />   {/* Green */}
-      <circle cx="20" cy="20" r="3.5" fill="#f59e0b" />   {/* Orange */}
-      <circle cx="24" cy="16" r="3.5" fill="#8b5cf6" />   {/* Purple */}
-      <circle cx="28" cy="20" r="3.5" fill="#ec4899" />   {/* Pink */}
-      <circle cx="36" cy="26" r="3.5" fill="#06b6d4" />   {/* Cyan */}
+      {/* Connection dots representing people/communities */}
+      <circle cx="11" cy="10" r="2" fill="#10b981" />
+      <circle cx="18" cy="7" r="2" fill="#f59e0b" />
+      <circle cx="25" cy="10" r="2" fill="#8b5cf6" />
     </svg>
   </div>
   <div>
-    <h1 className="text-2xl font-bold text-white">Bridge</h1>
-    <p className="text-xs text-white opacity-90">Connecting Communities to essential services</p>
+    <h1 className="text-3xl font-bold text-white tracking-tight">Bridge</h1>
+    <p className="text-sm text-white/90">Connecting Communities</p>
   </div>
 </div>
           {/* Desktop Navigation */}
