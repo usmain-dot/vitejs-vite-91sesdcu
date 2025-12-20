@@ -572,26 +572,31 @@ if (authLoading || servicesLoading) {
         <div className="flex items-center justify-between">
          {/* Logo */}
 <div className="flex items-center gap-3">
-  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Simple elegant bridge */}
+  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      {/* Bridge arch - thicker and more visible */}
       <path 
-        d="M3 20 Q14 10, 25 20" 
+        d="M6 32 Q24 14, 42 32" 
         stroke="#2a9df4" 
-        strokeWidth="2.5" 
+        strokeWidth="4" 
+        fill="none" 
         strokeLinecap="round"
-        fill="none"
       />
-      <line x1="7" y1="20" x2="7" y2="24" stroke="#2a9df4" strokeWidth="2" strokeLinecap="round" />
-      <line x1="21" y1="20" x2="21" y2="24" stroke="#2a9df4" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="14" cy="6" r="2.5" fill="#10b981" />
-      <circle cx="8" cy="10" r="2" fill="#f59e0b" />
-      <circle cx="20" cy="10" r="2" fill="#8b5cf6" />
+      {/* Bridge pillars */}
+      <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
+      <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
+      
+      {/* 5 Language dots - BIGGER and more visible */}
+      <circle cx="12" cy="24" r="3" fill="#10b981" />   {/* Green */}
+      <circle cx="20" cy="18" r="3" fill="#f59e0b" />   {/* Orange */}
+      <circle cx="24" cy="14" r="3" fill="#8b5cf6" />   {/* Purple */}
+      <circle cx="28" cy="18" r="3" fill="#ec4899" />   {/* Pink */}
+      <circle cx="36" cy="24" r="3" fill="#06b6d4" />   {/* Cyan */}
     </svg>
   </div>
   <div>
-    <h1 className="text-3xl font-bold text-white">Bridge</h1>
-    <p className="text-sm text-white/80">NYC</p>
+    <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
+    <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
   </div>
 </div>
           {/* Desktop Navigation */}
