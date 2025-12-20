@@ -571,23 +571,34 @@ if (authLoading || servicesLoading) {
       <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M4 20 Q16 8, 28 20" stroke="#2a9df4" strokeWidth="3" fill="none" />
-           <rect x="4" y="20" width="2" height="8" fill="#2a9df4" />
-           <rect x="26" y="20" width="2" height="8" fill="#2a9df4" />
-           <circle cx="10" cy="24" r="2" fill="#f59e0b" />
-           <circle cx="16" cy="24" r="2" fill="#10b981" />
-           <circle cx="22" cy="24" r="2" fill="#8b5cf6" />
-           </svg>
-          </div>
-            <div>
-              <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-              <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
-            </div>
-          </div>
-
+<div className="flex items-center gap-3">
+  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      {/* Bridge arch */}
+      <path 
+        d="M4 22 Q16 10, 28 22" 
+        stroke="#2a9df4" 
+        strokeWidth="2.5" 
+        fill="none" 
+        strokeLinecap="round"
+      />
+      {/* Bridge pillars */}
+      <rect x="4" y="22" width="2" height="6" fill="#2a9df4" rx="1" />
+      <rect x="26" y="22" width="2" height="6" fill="#2a9df4" rx="1" />
+      
+      {/* 5 Language dots - representing EN, ES, AR, HE, SW */}
+      <circle cx="8" cy="16" r="1.5" fill="#10b981" />   {/* Green - English */}
+      <circle cx="13" cy="12" r="1.5" fill="#f59e0b" />  {/* Orange - Spanish */}
+      <circle cx="16" cy="10" r="1.5" fill="#8b5cf6" />  {/* Purple - Arabic */}
+      <circle cx="19" cy="12" r="1.5" fill="#ec4899" />  {/* Pink - Hebrew */}
+      <circle cx="24" cy="16" r="1.5" fill="#06b6d4" />  {/* Cyan - Swahili */}
+    </svg>
+  </div>
+  <div>
+    <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
+    <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
+  </div>
+</div>
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             {user ? (
