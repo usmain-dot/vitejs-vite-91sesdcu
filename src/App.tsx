@@ -572,30 +572,26 @@ if (authLoading || servicesLoading) {
         <div className="flex items-center justify-between">
          {/* Logo */}
 <div className="flex items-center gap-3">
-  <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg">
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Modern bridge arch */}
+  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Simple elegant bridge */}
       <path 
-        d="M4 26 C4 26, 8 16, 18 16 C28 16, 32 26, 32 26" 
+        d="M3 20 Q14 10, 25 20" 
         stroke="#2a9df4" 
-        strokeWidth="3" 
+        strokeWidth="2.5" 
         strokeLinecap="round"
         fill="none"
       />
-      {/* Bridge supports */}
-      <line x1="8" y1="26" x2="8" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="18" y1="16" x2="18" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
-      <line x1="28" y1="26" x2="28" y2="32" stroke="#2a9df4" strokeWidth="2.5" strokeLinecap="round" />
-      
-      {/* Connection dots representing people/communities */}
-      <circle cx="11" cy="10" r="2" fill="#10b981" />
-      <circle cx="18" cy="7" r="2" fill="#f59e0b" />
-      <circle cx="25" cy="10" r="2" fill="#8b5cf6" />
+      <line x1="7" y1="20" x2="7" y2="24" stroke="#2a9df4" strokeWidth="2" strokeLinecap="round" />
+      <line x1="21" y1="20" x2="21" y2="24" stroke="#2a9df4" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="14" cy="6" r="2.5" fill="#10b981" />
+      <circle cx="8" cy="10" r="2" fill="#f59e0b" />
+      <circle cx="20" cy="10" r="2" fill="#8b5cf6" />
     </svg>
   </div>
   <div>
-    <h1 className="text-3xl font-bold text-white tracking-tight">Bridge</h1>
-    <p className="text-sm text-white/90">Connecting Communities</p>
+    <h1 className="text-3xl font-bold text-white">Bridge</h1>
+    <p className="text-sm text-white/80">NYC</p>
   </div>
 </div>
           {/* Desktop Navigation */}
