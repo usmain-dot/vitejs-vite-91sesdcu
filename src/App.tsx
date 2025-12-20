@@ -570,28 +570,28 @@ if (authLoading || servicesLoading) {
     <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
       <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
         <div className="flex items-center justify-between">
-          {/* Logo */}
+         {/* Logo */}
 <div className="flex items-center gap-3">
-  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      {/* Bridge arch */}
+  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      {/* Bridge arch - thicker and more visible */}
       <path 
-        d="M4 22 Q16 10, 28 22" 
+        d="M6 32 Q24 14, 42 32" 
         stroke="#2a9df4" 
-        strokeWidth="2.5" 
+        strokeWidth="4" 
         fill="none" 
         strokeLinecap="round"
       />
       {/* Bridge pillars */}
-      <rect x="4" y="22" width="2" height="6" fill="#2a9df4" rx="1" />
-      <rect x="26" y="22" width="2" height="6" fill="#2a9df4" rx="1" />
+      <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
+      <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
       
-      {/* 5 Language dots - representing EN, ES, AR, HE, SW */}
-      <circle cx="8" cy="16" r="1.5" fill="#10b981" />   {/* Green - English */}
-      <circle cx="13" cy="12" r="1.5" fill="#f59e0b" />  {/* Orange - Spanish */}
-      <circle cx="16" cy="10" r="1.5" fill="#8b5cf6" />  {/* Purple - Arabic */}
-      <circle cx="19" cy="12" r="1.5" fill="#ec4899" />  {/* Pink - Hebrew */}
-      <circle cx="24" cy="16" r="1.5" fill="#06b6d4" />  {/* Cyan - Swahili */}
+      {/* 5 Language dots - BIGGER and more visible */}
+      <circle cx="12" cy="24" r="3" fill="#10b981" />   {/* Green */}
+      <circle cx="20" cy="18" r="3" fill="#f59e0b" />   {/* Orange */}
+      <circle cx="24" cy="14" r="3" fill="#8b5cf6" />   {/* Purple */}
+      <circle cx="28" cy="18" r="3" fill="#ec4899" />   {/* Pink */}
+      <circle cx="36" cy="24" r="3" fill="#06b6d4" />   {/* Cyan */}
     </svg>
   </div>
   <div>
