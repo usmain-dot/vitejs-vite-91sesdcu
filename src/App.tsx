@@ -705,15 +705,20 @@ if (authLoading || servicesLoading) {
         </div>
 
         {/* Services Grid */}
-        {filteredServices.length === 0 ? (
-          <div className="text-center py-16 px-4">
-            <p className="text-gray-500 text-lg">{t.noResults}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
-            {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
-          </div>
-        )}
+{servicesLoading ? (
+  <div className="text-center py-16 px-4">
+    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+    <p className="text-gray-600 text-lg">Loading services...</p>
+  </div>
+) : filteredServices.length === 0 ? (
+  <div className="text-center py-16 px-4">
+    <p className="text-gray-500 text-lg">{t.noResults}</p>
+  </div>
+) : (
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
+    {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
+  </div>
+)}
       </div>
     </main>
 
