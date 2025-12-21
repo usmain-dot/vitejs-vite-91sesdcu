@@ -572,26 +572,26 @@ if (authLoading || servicesLoading) {
         <div className="flex items-center justify-between">
          {/* Logo */}
 <div className="flex items-center gap-3">
-  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg p-2">
-    <svg width="100%" height="100%" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Bridge arch with supports */}
+  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-lg p-1">
+    <svg width="56" height="56" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Bridge structure */}
       <path 
-        d="M10 140 L10 100 C10 100, 30 60, 120 60 C210 60, 230 100, 230 100 L230 140 C230 140, 210 110, 120 110 C30 110, 10 140, 10 140 Z" 
+        d="M20 140 L20 100 Q100 40, 180 100 L180 140 Q100 100, 20 140 Z" 
         fill="#2a9df4"
       />
-      {/* Center arch cutout */}
-      <ellipse cx="120" cy="130" rx="55" ry="45" fill="white" />
+      {/* Bridge arch cutout */}
+      <ellipse cx="100" cy="130" rx="50" ry="40" fill="white" />
       
-      {/* Five dots - diverse communities */}
-      <circle cx="35" cy="45" r="22" fill="#3b82f6" />
-      <circle cx="75" cy="20" r="22" fill="#fb923c" />
-      <circle cx="120" cy="10" r="24" fill="#fbbf24" />
-      <circle cx="165" cy="20" r="22" fill="#84cc16" />
-      <circle cx="205" cy="45" r="22" fill="#f97316" />
+      {/* Five colorful dots representing diverse communities */}
+      <circle cx="50" cy="50" r="18" fill="#3b82f6" />      {/* Blue - left */}
+      <circle cx="90" cy="25" r="18" fill="#f59e0b" />      {/* Orange - left-mid */}
+      <circle cx="130" cy="15" r="20" fill="#fbbf24" />     {/* Yellow - center */}
+      <circle cx="170" cy="25" r="18" fill="#84cc16" />     {/* Green - right-mid */}
+      <circle cx="210" cy="50" r="18" fill="#f97316" />     {/* Orange-red - right */}
     </svg>
   </div>
   <div>
-    <h1 className="text-3xl font-bold text-white">Bridge</h1>
+    <h1 className="text-3xl font-bold text-white tracking-tight">Bridge</h1>
     <p className="text-sm text-white/90">Connecting Communities</p>
   </div>
 </div>
