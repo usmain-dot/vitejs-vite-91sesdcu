@@ -284,6 +284,70 @@ const categoryColors: Record<Service['category'], { bg: string; text: string }> 
   childcare: { bg: '#fef9c3', text: '#854d0e' }
 };
 
+// Check if service is currently open based on hours
+const isServiceOpen = (hours: string): boolean => {
+  if (!hours) return false;
+  
+  const now = new Date();
+  const currentDay = now.toLocaleDateString('en-US', { weekday: 'short' });
+  const currentTime = now.getHours() * 60 + now.getMinutes(); // minutes since midnight
+  
+  // Check if hours mention specific days
+  const hoursLower = hours.toLowerCase();
+  
+  // Check for "24/7" or "24 hours"
+  if (hoursLower.includes('24/7') || hoursLower.includes('24 hours')) {
+    return true;
+  }
+  
+  // Check for "closed"
+  if (hoursLower.includes('closed') || hoursLower.includes('by appointment')) {
+    return false;
+  }
+  
+  // Parse "Mon-Fri" format
+  const monFriPattern = /mon-fri|monday-friday|weekdays/i;
+  if (monFriPattern.test(hours)) {
+    const isWeekday = !['Sat', 'Sun'].includes(currentDay);
+    if (!isWeekday) return false;
+  }
+  
+  // Parse "Mon-Sat" format
+  const monSatPattern = /mon-sat|monday-saturday/i;
+  if (monSatPattern.test(hours)) {
+    const isMonSat = currentDay !== 'Sun';
+    if (!isMonSat) return false;
+  }
+  
+  // Parse time ranges like "9AM-5PM" or "9:00-17:00"
+  const timePattern = /(\d{1,2}):?(\d{2})?\s*(am|pm)?.*?(\d{1,2}):?(\d{2})?\s*(am|pm)?/i;
+  const match = hours.match(timePattern);
+  
+  if (match) {
+    let openHour = parseInt(match[1]);
+    const openMin = parseInt(match[2] || '0');
+    const openPeriod = match[3]?.toLowerCase();
+    
+    let closeHour = parseInt(match[4]);
+    const closeMin = parseInt(match[5] || '0');
+    const closePeriod = match[6]?.toLowerCase();
+    
+    // Convert to 24-hour format
+    if (openPeriod === 'pm' && openHour !== 12) openHour += 12;
+    if (openPeriod === 'am' && openHour === 12) openHour = 0;
+    if (closePeriod === 'pm' && closeHour !== 12) closeHour += 12;
+    if (closePeriod === 'am' && closeHour === 12) closeHour = 0;
+    
+    const openTime = openHour * 60 + openMin;
+    const closeTime = closeHour * 60 + closeMin;
+    
+    return currentTime >= openTime && currentTime < closeTime;
+  }
+  
+  // If we can't parse, default to open
+  return true;
+};
+
 export default function App() {
   const [services, setServices] = useState<Service[]>([]);
   const [servicesLoading, setServicesLoading] = useState(true);
@@ -398,7 +462,7 @@ useEffect(() => {
         address: data.address || '',
         phone: data.phone || '',
         hours: data.hours || '',
-        isOpen: true,
+        isOpen: isServiceOpen(data.hours || ''),
         distance: calculateDistance(userLat, userLng, serviceLat, serviceLng),
         lat: serviceLat,
         lng: serviceLng,
