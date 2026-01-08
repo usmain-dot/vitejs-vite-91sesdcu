@@ -179,6 +179,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
               <CalendarIcon className="w-6 h-6" style={{ color: '#2a9df4' }} />
               <h1 className="text-xl font-bold text-gray-800">Appointments</h1>
             </div>
+             </div>
           </div>
           {!showBookingForm && (
             <button
