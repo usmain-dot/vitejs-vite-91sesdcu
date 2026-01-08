@@ -298,7 +298,6 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
   }
 
   return (
-    return (
   <div className="flex h-screen max-h-screen bg-gray-50">
     <div className="w-full max-w-6xl mx-auto px-4">
       {/* Conversations List */}
