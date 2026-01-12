@@ -312,6 +312,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
           </button>
         </div>
         </div>
+       </div>
       
         <div className="flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
