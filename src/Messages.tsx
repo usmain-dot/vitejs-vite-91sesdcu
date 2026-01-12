@@ -311,7 +311,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             <ArrowLeft className="w-5 h-5" />
           </button>
         </div>
-
+        </div>
+      
         <div className="flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
             <div className="p-8 text-center">
@@ -495,8 +496,6 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             </div>
           </div>
         )}
-     </div>
-    </div>
     </div>
   </div>
 );
