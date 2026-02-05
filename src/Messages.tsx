@@ -299,7 +299,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
 
   return (
   <div className="flex h-screen max-h-screen bg-gray-50">
-      <div className="w-full max-w-6xl mx-auto px-4">
+      <div className="w-full max-w-6xl mx-auto px-4 flex h-full">
       {/* Conversations List */}
       <div className={`${selectedConversation ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col`}>
         <div className="p-4 border-b border-gray-200 flex items-center justify-between" style={{ background: '#2a9df4' }}>
@@ -498,5 +498,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
         )}
     </div>
   </div>
+   </div>
+ </div>
 );
 }
