@@ -498,7 +498,6 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
         )}
     </div>
   </div>
-   </div>
  </div>
 );
 }
