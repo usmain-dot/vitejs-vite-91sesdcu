@@ -23,6 +23,15 @@ interface Service {
   lat: number;
   lng: number;
   description: string;
+
+   // Add these translation fields
+  description_es?: string;
+  description_ar?: string;
+  description_he?: string;
+  description_sw?: string;
+  
+  website?: string;
+  email?: string;
 }
 
 interface Translation {
@@ -466,7 +475,16 @@ useEffect(() => {
         distance: calculateDistance(userLat, userLng, serviceLat, serviceLng),
         lat: serviceLat,
         lng: serviceLng,
-        description: data.description || ''
+        description: data.description || '',
+
+        // Add these lines
+        description_es: data.description_es,
+        description_ar: data.description_ar,
+        description_he: data.description_he,
+        description_sw: data.description_sw,
+  
+        website: data.website,
+        email: data.email
       });
     });
     
@@ -510,6 +528,13 @@ useEffect(() => {
 
   const ServiceCard: React.FC<{ service: Service }> = ({ service }) => {
     const Icon = categoryIcons[service.category] || Building2;
+
+    // Get translated description
+  const getDescription = () => {
+    if (language === 'en') return service.description;
+    const translatedKey = `description_${language}` as keyof Service;
+    return (service[translatedKey] as string) || service.description;
+  };
     return (
       <div id={`service-${service.id}`} className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
         <div className="flex items-start justify-between mb-3">
@@ -525,7 +550,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <p className="text-gray-600 text-sm mb-4">{service.description}</p>
+        <p className="text-gray-600 text-sm mb-4">{getDescription()}</p>
         <div className="space-y-2 text-sm text-gray-700 mb-4">
           <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /><span>{service.address}</span></div>
           <div className="flex items-center gap-2"><Phone className="w-4 h-4" /><span>{service.phone}</span></div>
