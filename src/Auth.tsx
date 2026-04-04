@@ -164,5 +164,6 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
         </div>
       </div>
     </div>
+    </div>
   );
 }
