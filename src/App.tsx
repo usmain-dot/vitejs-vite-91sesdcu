@@ -366,7 +366,8 @@ export default function App() {
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalAnchor, setAuthModalAnchor] = useState<{ top: number; left: number } | null>(null);
+  const showAuthModal = authModalAnchor !== null;
   const [showMessages, setShowMessages] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
@@ -391,9 +392,15 @@ export default function App() {
   };
 
   // Handle protected actions (messaging, appointments)
-  const handleProtectedAction = (actionType: 'message' | 'appointment', service?: Service) => {
+  const handleProtectedAction = (actionType: 'message' | 'appointment', service?: Service, event?: React.MouseEvent) => {
     if (!user) {
-      setShowAuthModal(true);
+      if (event) {
+        const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+        setAuthModalAnchor({
+          top: rect.bottom + window.scrollY + 8,
+          left: rect.left + window.scrollX,
+        });
+      }
     } else {
       if (service) {
         setSelectedService({ id: service.id, name: service.name });
@@ -571,13 +578,13 @@ useEffect(() => {
             <MapPin className="w-4 h-4" />{t.getDirections}
           </button>
           <button 
-            onClick={() => handleProtectedAction('message', service)}
+            onClick={(e) => handleProtectedAction('message', service, e)}
             className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
             style={{ background: '#10b981' }}>
             <MessageSquare className="w-4 h-4" />{t.sendMessage}
           </button>
           <button 
-            onClick={() => handleProtectedAction('appointment', service)}
+            onClick={(e) => handleProtectedAction('appointment', service, e)}
             className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
             style={{ background: '#f59e0b' }}>
             <Calendar className="w-4 h-4" />{t.bookAppointment}
@@ -604,20 +611,33 @@ if (authLoading || servicesLoading) {
     
     {/* MODALS - MOVED TO TOP FOR PROPER Z-INDEX */}
     {/* Auth Modal */}
-    {showAuthModal && (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowAuthModal(false)}>
-        <div className="bg-white rounded-2xl max-w-md w-full relative" onClick={(e) => e.stopPropagation()}>
+    {showAuthModal && authModalAnchor && (
+      <>
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setAuthModalAnchor(null)}
+        />
+        <div
+          className="absolute z-50 bg-white rounded-2xl shadow-2xl"
+          style={{
+            top: authModalAnchor.top,
+            left: Math.min(authModalAnchor.left, window.innerWidth - 376),
+            width: '360px',
+            maxWidth: 'calc(100vw - 32px)',
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button
-            onClick={() => setShowAuthModal(false)}
+            onClick={() => setAuthModalAnchor(null)}
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <Auth onAuthSuccess={() => setShowAuthModal(false)} />
+          <Auth onAuthSuccess={() => setAuthModalAnchor(null)} />
         </div>
-      </div>
+      </>
     )}
 
     {/* Messages Modal */}
@@ -716,7 +736,7 @@ if (authLoading || servicesLoading) {
               </>
             ) : (
               <button
-                onClick={() => setShowAuthModal(true)}
+                onClick={() => setAuthModalAnchor({ top: 70, left: window.innerWidth - 390 })}
                 className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
               >
                 <LogOut className="w-4 h-4" />
