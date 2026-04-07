@@ -130,7 +130,7 @@ export default function Auth({ onAuthSuccess, language = 'en' }: AuthProps) {
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="p-8">
+      <div style={{ padding: '2rem', marginLeft: '1rem' }}>
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: '#2a9df4' }}>
