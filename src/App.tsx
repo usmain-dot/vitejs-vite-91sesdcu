@@ -398,10 +398,10 @@ export default function App() {
         const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
         const modalWidth = 360;
         const padding = 16;
-        const centeredLeft = rect.left + window.scrollX + rect.width / 2 - modalWidth / 2;
+        const centeredLeft = rect.left + rect.width / 2 - modalWidth / 2;
         const clampedLeft = Math.max(padding, Math.min(centeredLeft, window.innerWidth - modalWidth - padding));
         setAuthModalAnchor({
-          top: rect.bottom + window.scrollY + 8,
+          top: rect.bottom + 8,
           left: clampedLeft,
         });
       }
@@ -622,7 +622,7 @@ if (authLoading || servicesLoading) {
           onClick={() => setAuthModalAnchor(null)}
         />
         <div
-          className="absolute z-50 bg-white rounded-2xl shadow-2xl"
+          className="fixed z-50 bg-white rounded-2xl shadow-2xl"
           style={{
             top: authModalAnchor.top,
             left: authModalAnchor.left,
@@ -740,7 +740,10 @@ if (authLoading || servicesLoading) {
               </>
             ) : (
               <button
-                onClick={() => setAuthModalAnchor({ top: 70, left: window.innerWidth - 390 })}
+                onClick={(e) => {
+                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                  setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
+                }}
                 className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
               >
                 <LogOut className="w-4 h-4" />
