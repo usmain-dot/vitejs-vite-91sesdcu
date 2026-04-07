@@ -396,9 +396,13 @@ export default function App() {
     if (!user) {
       if (event) {
         const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+        const modalWidth = 360;
+        const padding = 16;
+        const centeredLeft = rect.left + window.scrollX + rect.width / 2 - modalWidth / 2;
+        const clampedLeft = Math.max(padding, Math.min(centeredLeft, window.innerWidth - modalWidth - padding));
         setAuthModalAnchor({
           top: rect.bottom + window.scrollY + 8,
-          left: rect.left + window.scrollX,
+          left: clampedLeft,
         });
       }
     } else {
@@ -621,7 +625,7 @@ if (authLoading || servicesLoading) {
           className="absolute z-50 bg-white rounded-2xl shadow-2xl"
           style={{
             top: authModalAnchor.top,
-            left: Math.min(authModalAnchor.left, window.innerWidth - 376),
+            left: authModalAnchor.left,
             width: '360px',
             maxWidth: 'calc(100vw - 32px)',
           }}
