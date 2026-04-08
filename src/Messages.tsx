@@ -352,7 +352,6 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             ))
           )}
         </div>
-        </div>
       </div>
       {/* Chat Area */}
       <div className={`${selectedConversation ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-white`}>
