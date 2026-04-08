@@ -311,9 +311,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             <ArrowLeft className="w-5 h-5" />
           </button>
         </div>
-        </div>
-      
         <div className="flex-1 overflow-y-auto">
+        </div>
           {conversations.length === 0 ? (
             <div className="p-8 text-center">
               <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -354,8 +353,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             ))
           )}
         </div>
+        </div>
       </div>
-
       {/* Chat Area */}
       <div className={`${selectedConversation ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-white`}>
         {selectedConversation ? (
