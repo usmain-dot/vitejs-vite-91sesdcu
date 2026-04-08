@@ -312,7 +312,6 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
           </button>
         </div>
         <div className="flex-1 overflow-y-auto">
-        </div>
           {conversations.length === 0 ? (
             <div className="p-8 text-center">
               <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
