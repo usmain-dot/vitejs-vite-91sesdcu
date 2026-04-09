@@ -99,12 +99,20 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
     }
   }, [currentUser]);
 
-  // If serviceId is provided, create or find conversation
-  useEffect(() => {
+  // If serviceId is provided, set selectedConversation immediately
+useEffect(() => {
+  if (serviceId && currentUser) {
+    const convoId = `${currentUser.uid}_service_${serviceId}`;
+    setSelectedConversation(convoId);
+  }
+}, [serviceId, currentUser]);
+
+// Create conversation in Firestore if it doesn't exist
+useEffect(() => {
   if (serviceId && serviceName && currentUser && !loading) {
     createConversation(serviceId, serviceName);
   }
-}, [serviceId, serviceName, currentUser, loading, conversations]);
+}, [serviceId, serviceName, currentUser, loading]);
 
   // Create conversation with service
   const createConversation = async (sId: number, sName: string) => {
