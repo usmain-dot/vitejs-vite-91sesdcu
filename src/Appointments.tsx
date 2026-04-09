@@ -382,5 +382,6 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
         </div>
       </div>
     </div>
+  </div>
   );
 }
