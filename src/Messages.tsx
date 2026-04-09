@@ -299,9 +299,9 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
 
   return (
   <div className="flex h-screen max-h-screen bg-gray-50">
-  <div className="w-full max-w-6xl mx-auto px-6 md:px-10 flex h-full">
+    <div className="w-full max-w-6xl mx-auto flex h-full">
       {/* Conversations List */}
-      <div className={`${selectedConversation ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col`}>
+      <div className={`${selectedConversation ? 'hidden md:block' : 'block'} w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col`} style={{ minWidth: '260px' }}>
         <div className="p-4 border-b border-gray-200 flex items-center justify-between" style={{ background: '#2a9df4' }}>
           <div className="flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-white" />
@@ -377,7 +377,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ background: '#f9fafb' }}>
+            <div className="flex-1 overflow-y-auto p-6 space-y-4" style={{ background: '#f9fafb' }}>
               {messages.length === 0 ? (
                 <div className="text-center py-12">
                   <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-2" />
