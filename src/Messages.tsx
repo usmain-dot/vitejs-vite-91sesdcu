@@ -37,6 +37,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedServiceName, setSelectedServiceName] = useState<string | null>(serviceName || null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const typingTimeoutRef = useRef<number | null>(null);
   const currentUser = auth.currentUser;
@@ -99,20 +100,14 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
     }
   }, [currentUser]);
 
-  // If serviceId is provided, set selectedConversation immediately
-useEffect(() => {
-  if (serviceId && currentUser) {
+  useEffect(() => {
+  if (serviceId && serviceName && currentUser) {
     const convoId = `${currentUser.uid}_service_${serviceId}`;
     setSelectedConversation(convoId);
-  }
-}, [serviceId, currentUser]);
-
-// Create conversation in Firestore if it doesn't exist
-useEffect(() => {
-  if (serviceId && serviceName && currentUser && !loading) {
+    setSelectedServiceName(serviceName);
     createConversation(serviceId, serviceName);
   }
-}, [serviceId, serviceName, currentUser, loading]);
+}, [serviceId, serviceName, currentUser]);
 
   // Create conversation with service
   const createConversation = async (sId: number, sName: string) => {
@@ -277,7 +272,8 @@ useEffect(() => {
     }
   };
 
-  const selectedConvo = conversations.find(c => c.id === selectedConversation);
+ const selectedConvo = conversations.find(c => c.id === selectedConversation)
+  || (selectedConversation ? { serviceName: selectedServiceName || '', id: selectedConversation, serviceId: serviceId || 0, lastMessage: '', lastMessageTime: null, participants: [], typing: {} } : undefined);
   const otherUserTyping = selectedConvo?.typing && Object.entries(selectedConvo.typing).some(
     ([userId, typing]) => userId !== currentUser?.uid && typing
   );
