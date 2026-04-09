@@ -101,10 +101,10 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
 
   // If serviceId is provided, create or find conversation
   useEffect(() => {
-    if (serviceId && serviceName && currentUser && !loading) {
-      createConversation(serviceId, serviceName);
-    }
-  }, [serviceId, serviceName, currentUser, loading]);
+  if (serviceId && serviceName && currentUser && !loading) {
+    createConversation(serviceId, serviceName);
+  }
+}, [serviceId, serviceName, currentUser, loading, conversations]);
 
   // Create conversation with service
   const createConversation = async (sId: number, sName: string) => {
