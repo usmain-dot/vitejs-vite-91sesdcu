@@ -167,7 +167,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
 
   return (
   <div className="min-h-screen bg-gray-50">
-  <div className="w-full max-w-6xl mx-auto px-6 md:px-10">
+    <div className="w-full max-w-6xl mx-auto px-4">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="px-4 py-4 flex items-center justify-between" style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -192,7 +192,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 40px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px 16px' }}>
         {/* Booking Form */}
         {showBookingForm && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
