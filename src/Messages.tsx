@@ -101,13 +101,24 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
   }, [currentUser]);
 
   useEffect(() => {
-  if (serviceId && serviceName && currentUser) {
+  if (serviceId && serviceName && currentUser && !loading) {
     const convoId = `${currentUser.uid}_service_${serviceId}`;
     setSelectedConversation(convoId);
     setSelectedServiceName(serviceName);
     createConversation(serviceId, serviceName);
+  } else if (serviceId && serviceName && !currentUser) {
+    // Wait for auth then retry
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const convoId = `${user.uid}_service_${serviceId}`;
+        setSelectedConversation(convoId);
+        setSelectedServiceName(serviceName || '');
+        createConversation(serviceId, serviceName);
+      }
+    });
+    return () => unsubscribe();
   }
-}, [serviceId, serviceName, currentUser]);
+}, [serviceId, serviceName, currentUser, loading]);
 
   // Create conversation with service
   const createConversation = async (sId: number, sName: string) => {
