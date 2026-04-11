@@ -302,10 +302,10 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
   }
 
   return (
-  <div className="fixed inset-0 bg-gray-50 flex flex-col" style={{ zIndex: 50 }}>
-    <div className="flex flex-1 overflow-hidden">
+  <div className="min-h-screen bg-gray-50">
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-10">
       {/* Conversations List */}
-      <div className={`${selectedConversation || serviceId ? 'hidden' : 'block'} w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col`} style={{ minWidth: '260px' }}>
+      <div className={`${serviceId ? 'hidden' : 'block'} w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col`} style={{ minWidth: '260px' }}>
         <div className="p-4 border-b border-gray-200 flex items-center justify-between" style={{ background: '#2a9df4' }}>
           <div className="flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-white" />
@@ -358,7 +358,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
         </div>
       </div>
       {/* Chat Area */}
-      <div className={`${selectedConversation ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-white`}>
+      <div className={`${serviceId || selectedConversation ? 'block' : 'hidden md:block'} flex-1 flex flex-col bg-white`}>
         {selectedConversation ? (
           <>
             {/* Chat Header */}
