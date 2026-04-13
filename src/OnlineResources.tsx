@@ -236,7 +236,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
 
   return (
     <section className="py-16" style={{ background: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         {/* Header */}
         <div className="text-center mb-10">
