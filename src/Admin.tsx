@@ -17,6 +17,8 @@ interface Service {
   description: string;
   isOpen: boolean;
   distance: number;
+  lat: number;
+  lng: number;
 }
 
 interface Stats {
@@ -50,7 +52,9 @@ export default function Admin({ onClose }: AdminProps) {
     hours: '',
     description: '',
     isOpen: true,
-    distance: 0
+    distance: 0,
+    lat: 0,
+    lng: 0
   });
 
   const categories = [
@@ -170,7 +174,9 @@ export default function Admin({ onClose }: AdminProps) {
       hours: service.hours,
       description: service.description,
       isOpen: service.isOpen,
-      distance: service.distance
+      distance: service.distance,
+      lat: service.lat || 0,
+      lng: service.lng || 0
     });
     setShowAddService(true);
   };
@@ -471,16 +477,39 @@ export default function Admin({ onClose }: AdminProps) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Distance (miles)</label>
-                      <input
-                        type="number"
-                        step="0.1"
-                        value={formData.distance}
-                        onChange={(e) => setFormData({ ...formData, distance: parseFloat(e.target.value) })}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
+                      <div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Distance (miles)</label>
+  <input
+    type="number"
+    step="0.1"
+    value={formData.distance}
+    onChange={(e) => setFormData({ ...formData, distance: parseFloat(e.target.value) })}
+    required
+    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
+  <input
+    type="number"
+    step="0.0001"
+    value={formData.lat}
+    onChange={(e) => setFormData({ ...formData, lat: parseFloat(e.target.value) })}
+    placeholder="e.g. 40.7128"
+    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
+  <input
+    type="number"
+    step="0.0001"
+    value={formData.lng}
+    onChange={(e) => setFormData({ ...formData, lng: parseFloat(e.target.value) })}
+    placeholder="e.g. -74.0060"
+    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
                     <div className="flex items-center">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -515,7 +544,9 @@ export default function Admin({ onClose }: AdminProps) {
                           hours: '',
                           description: '',
                           isOpen: true,
-                          distance: 0
+                          distance: 0,
+                          lat: 0,
+                          lng: 0
                         });
                       }}
                       className="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium"

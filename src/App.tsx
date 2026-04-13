@@ -8,6 +8,7 @@ import Auth from './Auth';
 import Messages from './Messages';
 import Appointments from './Appointments';
 import Admin from './Admin';
+import OnlineResources from './OnlineResources';
 import AISearch from './AISearch';
 
 // Types
@@ -838,6 +839,7 @@ if (authLoading || servicesLoading) {
       </div>
     </main>
 
+<OnlineResources language={language} />
     {/* Phase 2 & 3 Features */}
     <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
       <div className="container mx-auto max-w-7xl">
