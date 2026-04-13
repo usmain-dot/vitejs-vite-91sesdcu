@@ -474,44 +474,42 @@ export default function Admin({ onClose }: AdminProps) {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Distance (miles)</label>
-  <input
-    type="number"
-    step="0.1"
-    value={formData.distance}
-    onChange={(e) => setFormData({ ...formData, distance: parseFloat(e.target.value) })}
-    required
-    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
-  <input
-    type="number"
-    step="0.0001"
-    value={formData.lat}
-    onChange={(e) => setFormData({ ...formData, lat: parseFloat(e.target.value) })}
-    placeholder="e.g. 40.7128"
-    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
-  <input
-    type="number"
-    step="0.0001"
-    value={formData.lng}
-    onChange={(e) => setFormData({ ...formData, lng: parseFloat(e.target.value) })}
-    placeholder="e.g. -74.0060"
-    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-  />
-</div>
-                    <div className="flex items-center">
-                      <label className="flex items-center gap-2 cursor-pointer">
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Distance (miles)</label>
+                     <input
+                     type="number"
+                     step="0.1"
+                     value={formData.distance}
+                     onChange={(e) => setFormData({ ...formData, distance: parseFloat(e.target.value) })}
+                     required
+                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   />
+                  </div>
+                  <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
+                     <input
+                       type="number"
+                       step="0.0001"
+                       value={formData.lat}
+                       onChange={(e) => setFormData({ ...formData, lat: parseFloat(e.target.value) })}
+                       placeholder="e.g. 40.7128"
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   />
+                   </div>
+                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
+                     <input
+                       type="number"
+                       step="0.0001"
+                       value={formData.lng}
+                       onChange={(e) => setFormData({ ...formData, lng: parseFloat(e.target.value) })}
+                       placeholder="e.g. -74.0060"
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   />
+                   </div>
+                   <div className="flex items-center">
+                     <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={formData.isOpen}
@@ -519,10 +517,9 @@ export default function Admin({ onClose }: AdminProps) {
                           className="w-4 h-4"
                         />
                         <span className="text-sm font-medium text-gray-700">Currently Open</span>
-                      </label>
+                       </label>
                     </div>
                   </div>
-
                   <div className="flex gap-3">
                     <button
                       type="submit"
