@@ -710,7 +710,7 @@ if (authLoading || servicesLoading) {
   </div>
   <div>
     <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-    <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>Connecting Communities to essential services</p>
+    <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>{t.tagline}</p>
   </div>
 </div>
           {/* Desktop Navigation */}
