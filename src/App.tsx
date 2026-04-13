@@ -839,7 +839,9 @@ if (authLoading || servicesLoading) {
       </div>
     </main>
 
-<OnlineResources language={language} />
+<div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+  <OnlineResources language={language} />
+</div>
     {/* Phase 2 & 3 Features */}
     <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
       <div className="container mx-auto max-w-7xl">
