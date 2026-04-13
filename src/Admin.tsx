@@ -268,7 +268,7 @@ export default function Admin({ onClose }: AdminProps) {
         </div>
       </div>
 
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-6 max-w-7xl mx-auto px-6 md:px-10">
         {/* Dashboard Tab */}
         {activeTab === 'dashboard' && (
           <div>
