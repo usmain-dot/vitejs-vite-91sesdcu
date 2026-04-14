@@ -682,10 +682,10 @@ if (authLoading || servicesLoading) {
 
     {/* Header */}
     <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-      <div className="container mx-auto py-4" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+        <div className="flex items-center justify-between gap-4">
          {/* Logo */}
-<div className="flex items-center gap-3">
+<div className="flex items-center gap-3 flex-shrink-0">
   <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       {/* Bridge arch - thicker and more visible */}
@@ -714,7 +714,7 @@ if (authLoading || servicesLoading) {
   </div>
 </div>
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-3 flex-wrap">
             {user ? (
               <>
                 <button
