@@ -684,7 +684,7 @@ if (authLoading || servicesLoading) {
     {/* Header */}
     <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
       <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 flex-nowrap">
          {/* Logo */}
 <div className="flex items-center gap-3 flex-shrink-0">
   <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
@@ -715,7 +715,7 @@ if (authLoading || servicesLoading) {
   </div>
 </div>
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-4 flex-shrink-0 flex-nowrap">
             {user ? (
               <>
                 <button
@@ -726,19 +726,19 @@ if (authLoading || servicesLoading) {
                   <Settings className="w-4 h-4" />
                   <span className="text-sm">Admin</span>
                 </button>
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
+                <div className="flex items-center gap-3 flex-shrink-0">
+                   <div className="text-right hidden lg:block">
                     <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
                     <p className="text-xs text-blue-100">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span className="text-sm">Logout</span>
+                   </div>
+                   <button
+                     onClick={handleLogout}
+                     className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2 flex-shrink-0"
+                >
+                   <LogOut className="w-4 h-4" />
+                   <span className="text-sm">Logout</span>
                   </button>
-                </div>
+                 </div>
               </>
             ) : (
               <button
