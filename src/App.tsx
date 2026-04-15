@@ -569,33 +569,34 @@ useEffect(() => {
           <div className="flex items-center gap-2"><Clock className="w-4 h-4" /><span>{service.hours}</span></div>
           <div className="flex items-center gap-2 text-blue-600 font-medium"><MapPin className="w-4 h-4" /><span>{service.distance} {t.distance}</span></div>
         </div>
-        <div className="grid grid-cols-2 gap-2">
-          <button 
-            onClick={() => window.location.href = `tel:${service.phone}`}
-            className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            style={{ background: '#2a9df4' }}>
-            <Phone className="w-4 h-4" />{t.callNow}
-          </button>
-          <button 
-            onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address)}`, '_blank')}
-            className="py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            style={{ background: 'white', color: '#2a9df4', border: '1px solid #2a9df4' }}>
-            <MapPin className="w-4 h-4" />{t.getDirections}
-          </button>
-          <button 
-            onClick={(e) => handleProtectedAction('message', service, e)}
-            className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            style={{ background: '#10b981' }}>
-            <MessageSquare className="w-4 h-4" />{t.sendMessage}
-          </button>
-          <button 
-            onClick={(e) => handleProtectedAction('appointment', service, e)}
-            className="text-white py-2 px-3 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 text-sm" 
-            style={{ background: '#f59e0b' }}>
-            <Calendar className="w-4 h-4" />{t.bookAppointment}
-          </button>
-        </div>
-      </div>
+        // REPLACE WITH:
+<div className="grid grid-cols-2 gap-3 pt-2">
+  <button 
+    onClick={() => window.location.href = `tel:${service.phone}`}
+    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
+    style={{ background: '#e8f4fe', color: '#1d6fa4', border: '1px solid #bfdffa' }}>
+    <Phone className="w-4 h-4" />{t.callNow}
+  </button>
+  <button 
+    onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address)}`, '_blank')}
+    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
+    style={{ background: '#eef0ff', color: '#3d52d5', border: '1px solid #c7cdf7' }}>
+    <MapPin className="w-4 h-4" />{t.getDirections}
+  </button>
+  <button 
+    onClick={(e) => handleProtectedAction('message', service, e)}
+    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
+    style={{ background: '#e8faf3', color: '#0f7a52', border: '1px solid #b0ecd5' }}>
+    <MessageSquare className="w-4 h-4" />{t.sendMessage}
+  </button>
+  <button 
+    onClick={(e) => handleProtectedAction('appointment', service, e)}
+    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
+    style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2' }}>
+    <Calendar className="w-4 h-4" />{t.bookAppointment}
+  </button>
+  </div>
+  </div>
     );
   };
 
