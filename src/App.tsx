@@ -686,7 +686,7 @@ if (authLoading || servicesLoading) {
       <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'nowrap' }}>
          {/* Logo */}
-<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
   <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
       {/* Bridge arch - thicker and more visible */}
