@@ -688,7 +688,7 @@ if (authLoading || servicesLoading) {
 
       {/* Logo */}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-        <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
+        <div style={{ width: '64px', height: '64px', background: '#ffffff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', padding: '8px', flexShrink: 0 }}>
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
             <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
             <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
@@ -701,13 +701,14 @@ if (authLoading || servicesLoading) {
           </svg>
         </div>
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-          <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9, marginTop: '-2px' }}>{t.tagline}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#ffffff', lineHeight: '1.1', margin: 0 }}>Bridge</h1>
+          <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '13px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
         </div>
       </div>
 
       {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-6px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-18px' }}></div>
         {user ? (
           <>
             <button
