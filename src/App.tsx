@@ -738,10 +738,10 @@ if (authLoading || servicesLoading) {
               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
               setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
             }}
-            className="px-3 py-1 rounded-lg transition-all flex items-center gap-2 text-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', fontWeight: 400 }}
+            style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', fontWeight: 400, padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', width: 'auto', flexShrink: 0 }}
           >
             <LogOut className="w-4 h-4" />
-            <span className="text-sm">{t.signIn}</span>
+            <span>{t.signIn}</span>
           </button>
         )}
 
