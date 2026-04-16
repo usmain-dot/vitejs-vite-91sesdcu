@@ -683,11 +683,10 @@ if (authLoading || servicesLoading) {
 {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
   <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-    <div className="flex items-center justify-between gap-2 flex-wrap">
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'nowrap', gap: '12px' }}>
 
       {/* Logo */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0 }}></div>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
         <div style={{ width: '64px', height: '64px', background: '#ffffff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', padding: '8px', flexShrink: 0 }}>
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
             <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
@@ -700,37 +699,34 @@ if (authLoading || servicesLoading) {
             <circle cx="36" cy="24" r="3" fill="#06b6d4" />
           </svg>
         </div>
-        <div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
           <h1 className="text-2xl font-bold" style={{ color: '#ffffff', lineHeight: '1.1', margin: 0 }}>Bridge</h1>
           <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '13px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
         </div>
       </div>
 
-      {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-6px' }}></div>
+      {/* Navigation */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap' }}>
         {user ? (
           <>
             <button
               onClick={() => setShowAdmin(true)}
-              className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', flexShrink: 0 }}
             >
               <Settings className="w-4 h-4" />
-              <span className="text-sm">Admin</span>
+              <span>Admin</span>
             </button>
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="text-right hidden lg:block">
-                <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
-                <p className="text-xs text-blue-100">{user.email}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2 flex-shrink-0"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm">Logout</span>
-              </button>
+            <div className="hidden lg:block" style={{ textAlign: 'right' }}>
+              <p style={{ fontSize: '14px', fontWeight: 500, color: '#ffffff', margin: 0 }}>{user.displayName || 'User'}</p>
+              <p style={{ fontSize: '12px', color: '#bfdbfe', margin: 0 }}>{user.email}</p>
             </div>
+            <button
+              onClick={handleLogout}
+              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', flexShrink: 0 }}
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
           </>
         ) : (
           <button
@@ -738,7 +734,7 @@ if (authLoading || servicesLoading) {
               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
               setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
             }}
-            style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', fontWeight: 400, padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', width: 'auto', flexShrink: 0 }}
+            style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', width: 'auto', flexShrink: 0 }}
           >
             <LogOut className="w-4 h-4" />
             <span>{t.signIn}</span>
@@ -746,16 +742,16 @@ if (authLoading || servicesLoading) {
         )}
 
         {/* Language Selector */}
-        <div className="relative">
+        <div style={{ position: 'relative', flexShrink: 0 }}>
           <button
             onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-            className="flex items-center gap-2 px-3 py-1 rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)' }}
+            style={{ background: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 12px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px' }}
           >
             <Globe className="w-5 h-5" />
-            <span className="text-sm">{language.toUpperCase()}</span>
+            <span>{language.toUpperCase()}</span>
           </button>
           {showLanguageMenu && (
-            <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
+            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '8px', background: '#ffffff', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)', padding: '8px 0', width: '192px', zIndex: 50 }}>
               <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
               <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
               <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
