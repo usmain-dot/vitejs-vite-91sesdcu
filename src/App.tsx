@@ -682,7 +682,7 @@ if (authLoading || servicesLoading) {
     )}
 {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-  <div style={{ padding: '14px 16px' }}>
+  <div style={{ padding: '20px 16px' }}>
     
     {/* Row 1: Logo + Nav buttons */}
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
