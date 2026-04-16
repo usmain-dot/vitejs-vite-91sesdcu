@@ -680,17 +680,17 @@ if (authLoading || servicesLoading) {
         <Admin onClose={() => setShowAdmin(false)} />
       </div>
     )}
-
-    {/* Header */}
+{/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
   <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-    <div className="flex items-center justify-between gap-2 flex-wrap">
+
+    {/* Row 1: Logo + Buttons */}
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
 
       {/* Logo */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0 }}></div>
-        <div style={{ width: '64px', height: '64px', background: '#ffffff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', padding: '8px', flexShrink: 0 }}>
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+        <div style={{ width: '52px', height: '52px', background: '#ffffff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', padding: '6px', flexShrink: 0 }}>
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
             <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
             <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
             <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
@@ -701,37 +701,30 @@ if (authLoading || servicesLoading) {
             <circle cx="36" cy="24" r="3" fill="#06b6d4" />
           </svg>
         </div>
-        <div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-          <h1 className="text-2xl font-bold" style={{ color: '#ffffff', lineHeight: '1.1', margin: 0 }}>Bridge</h1>
-          <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '13px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+          <h1 style={{ color: '#ffffff', lineHeight: '1.1', margin: 0, fontSize: '22px', fontWeight: 700 }}>Bridge</h1>
+          <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '12px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
         </div>
       </div>
 
-      {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-18px' }}></div>
+      {/* Buttons: Sign In + Language — always horizontal, always right */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
         {user ? (
           <>
             <button
               onClick={() => setShowAdmin(true)}
-              className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
             >
               <Settings className="w-4 h-4" />
-              <span className="text-sm">Admin</span>
+              <span>Admin</span>
             </button>
-            <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="text-right hidden lg:block">
-                <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
-                <p className="text-xs text-blue-100">{user.email}</p>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2 flex-shrink-0"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm">Logout</span>
-              </button>
-            </div>
+            <button
+              onClick={handleLogout}
+              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
           </>
         ) : (
           <button
@@ -739,10 +732,10 @@ if (authLoading || servicesLoading) {
               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
               setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
             }}
-            className="px-3 py-1 rounded-lg transition-all flex items-center gap-2 text-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', fontWeight: 400 }}
+            style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
           >
             <LogOut className="w-4 h-4" />
-            <span className="text-sm">{t.signIn}</span>
+            <span>{t.signIn}</span>
           </button>
         )}
 
@@ -750,10 +743,10 @@ if (authLoading || servicesLoading) {
         <div className="relative">
           <button
             onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-            className="flex items-center gap-2 px-3 py-1 rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)' }}
+            style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}
           >
-            <Globe className="w-5 h-5" />
-            <span className="text-sm">{language.toUpperCase()}</span>
+            <Globe className="w-4 h-4" />
+            <span>{language.toUpperCase()}</span>
           </button>
           {showLanguageMenu && (
             <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
@@ -770,6 +763,7 @@ if (authLoading || servicesLoading) {
     </div>
   </div>
 </header>
+    
 
     {/* Main Content */}
     <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
