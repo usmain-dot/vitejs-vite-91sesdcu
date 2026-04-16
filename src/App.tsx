@@ -702,12 +702,12 @@ if (authLoading || servicesLoading) {
         </div>
         <div>
           <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-          <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>{t.tagline}</p>
+          <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9, marginTop: '-2px' }}>{t.tagline}</p>
         </div>
       </div>
 
       {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '0' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-6px' }}>
         {user ? (
           <>
             <button
@@ -737,7 +737,7 @@ if (authLoading || servicesLoading) {
               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
               setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
             }}
-            className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
+            className="px-3 py-1 rounded-lg transition-all flex items-center gap-2 text-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', fontWeight: 400 }}
           >
             <LogOut className="w-4 h-4" />
             <span className="text-sm">{t.signIn}</span>
@@ -748,7 +748,7 @@ if (authLoading || servicesLoading) {
         <div className="relative">
           <button
             onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
+            className="flex items-center gap-2 px-3 py-1 rounded-lg transition-all" style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)' }}
           >
             <Globe className="w-5 h-5" />
             <span className="text-sm">{language.toUpperCase()}</span>
