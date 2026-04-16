@@ -684,7 +684,7 @@ if (authLoading || servicesLoading) {
     {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
   <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'nowrap' }}>
+    <div className="flex items-center justify-between gap-2 flex-wrap">
 
       {/* Logo */}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
@@ -707,7 +707,7 @@ if (authLoading || servicesLoading) {
       </div>
 
       {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0, flexWrap: 'nowrap' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '0' }}>
         {user ? (
           <>
             <button
@@ -717,7 +717,7 @@ if (authLoading || servicesLoading) {
               <Settings className="w-4 h-4" />
               <span className="text-sm">Admin</span>
             </button>
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+            <div className="flex items-center gap-3 flex-shrink-0">
               <div className="text-right hidden lg:block">
                 <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
                 <p className="text-xs text-blue-100">{user.email}</p>
