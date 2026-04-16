@@ -708,7 +708,7 @@ if (authLoading || servicesLoading) {
       </div>
 
       {/* Desktop Navigation */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-18px' }}></div>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px', flexShrink: 0, flexWrap: 'nowrap', marginTop: '-6px' }}></div>
         {user ? (
           <>
             <button
