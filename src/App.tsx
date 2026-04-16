@@ -569,7 +569,7 @@ useEffect(() => {
           <div className="flex items-center gap-2"><Clock className="w-4 h-4" /><span>{service.hours}</span></div>
           <div className="flex items-center gap-2 text-blue-600 font-medium"><MapPin className="w-4 h-4" /><span>{service.distance} {t.distance}</span></div>
         </div>
-        // REPLACE WITH:
+
 <div className="grid grid-cols-2 gap-3 pt-2">
   <button 
     onClick={() => window.location.href = `tel:${service.phone}`}
@@ -682,100 +682,92 @@ if (authLoading || servicesLoading) {
     )}
 
     {/* Header */}
-    <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-      <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'nowrap' }}>
-         {/* Logo */}
-  <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-  <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
-    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      {/* Bridge arch - thicker and more visible */}
-      <path 
-        d="M6 32 Q24 14, 42 32" 
-        stroke="#2a9df4" 
-        strokeWidth="4" 
-        fill="none" 
-        strokeLinecap="round"
-      />
-      {/* Bridge pillars */}
-      <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
-      <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
-      
-      {/* 5 Language dots - BIGGER and more visible */}
-      <circle cx="12" cy="24" r="3" fill="#10b981" />   {/* Green */}
-      <circle cx="20" cy="18" r="3" fill="#f59e0b" />   {/* Orange */}
-      <circle cx="24" cy="14" r="3" fill="#8b5cf6" />   {/* Purple */}
-      <circle cx="28" cy="18" r="3" fill="#ec4899" />   {/* Pink */}
-      <circle cx="36" cy="24" r="3" fill="#06b6d4" />   {/* Cyan */}
-    </svg>
-  </div>
-  <div>
-    <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
-    <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>{t.tagline}</p>
-  </div>
-</div>
-          {/* Desktop Navigation */}
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0, flexWrap: 'nowrap' }}></div>
-            {user ? (
-              <>
-                <button
-                  onClick={() => setShowAdmin(true)}
-                  className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
-                  title="Admin Dashboard"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="text-sm">Admin</span>
-                </button>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                   <div className="text-right hidden lg:block">
-                    <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
-                    <p className="text-xs text-blue-100">{user.email}</p>
-                   </div>
-                   <button
-                     onClick={handleLogout}
-                     className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2 flex-shrink-0"
-                >
-                   <LogOut className="w-4 h-4" />
-                   <span className="text-sm">Logout</span>
-                  </button>
-                 </div>
-              </>
-            ) : (
-              <button
-                onClick={(e) => {
-                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                  setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
-                }}
-                className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm">{t.signIn}</span>
-              </button>
-            )}
+<header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
+  <div className="container mx-auto py-4" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'nowrap' }}>
 
-            {/* Language Selector */}
-            <div className="relative">
-              <button 
-                onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
-              >
-                <Globe className="w-5 h-5" />
-                <span className="text-sm">{language.toUpperCase()}</span>
-              </button>
-              {showLanguageMenu && (
-                <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
-                  <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
-                  <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
-                  <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
-                  <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
-                  <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
-                </div>
-              )}
-            </div>
-          </div>
+      {/* Logo */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+        <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-xl p-2">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
+            <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
+            <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
+            <circle cx="12" cy="24" r="3" fill="#10b981" />
+            <circle cx="20" cy="18" r="3" fill="#f59e0b" />
+            <circle cx="24" cy="14" r="3" fill="#8b5cf6" />
+            <circle cx="28" cy="18" r="3" fill="#ec4899" />
+            <circle cx="36" cy="24" r="3" fill="#06b6d4" />
+          </svg>
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold" style={{ color: '#ffffff' }}>Bridge</h1>
+          <p className="text-xs" style={{ color: '#ffffff', opacity: 0.9 }}>{t.tagline}</p>
         </div>
       </div>
-    </header>
+
+      {/* Desktop Navigation */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0, flexWrap: 'nowrap' }}>
+        {user ? (
+          <>
+            <button
+              onClick={() => setShowAdmin(true)}
+              className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2"
+            >
+              <Settings className="w-4 h-4" />
+              <span className="text-sm">Admin</span>
+            </button>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+              <div className="text-right hidden lg:block">
+                <p className="text-sm font-medium text-white">{user.displayName || 'User'}</p>
+                <p className="text-xs text-blue-100">{user.email}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all flex items-center gap-2 flex-shrink-0"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="text-sm">Logout</span>
+              </button>
+            </div>
+          </>
+        ) : (
+          <button
+            onClick={(e) => {
+              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+              setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 });
+            }}
+            className="px-4 py-2 bg-white text-blue-600 hover:bg-blue-50 rounded-lg transition-all flex items-center gap-2 font-medium"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="text-sm">{t.signIn}</span>
+          </button>
+        )}
+
+        {/* Language Selector */}
+        <div className="relative">
+          <button
+            onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all"
+          >
+            <Globe className="w-5 h-5" />
+            <span className="text-sm">{language.toUpperCase()}</span>
+          </button>
+          {showLanguageMenu && (
+            <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
+              <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
+              <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
+              <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
+              <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
+              <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
+            </div>
+          )}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
 
     {/* Main Content */}
     <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
