@@ -689,7 +689,7 @@ if (authLoading || servicesLoading) {
       
       {/* Logo */}
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-        <div style={{ width: '40px', height: '40px', background: '#ffffff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', padding: '6px', flexShrink: 0 }}>
+        <div style={{ width: '56px', height: '56px', background: '#ffffff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', padding: '6px', flexShrink: 0 }}>
           <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
             <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
             <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
