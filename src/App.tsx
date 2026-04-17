@@ -706,41 +706,10 @@ if (authLoading || servicesLoading) {
           <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '12px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
         </div>
 
-        {/* Buttons — hidden on mobile, shown on desktop */}
-        <div className="hidden sm:flex" style={{ flexDirection: 'row', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-          {user ? (
-            <>
-              <button onClick={() => setShowAdmin(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
-                <Settings className="w-4 h-4" /><span>Admin</span>
-              </button>
-              <button onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
-                <LogOut className="w-4 h-4" /><span>Logout</span>
-              </button>
-            </>
-          ) : (
-            <button onClick={(e) => { const rect = (e.currentTarget as HTMLElement).getBoundingClientRect(); setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 }); }} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
-              <LogOut className="w-4 h-4" /><span>{t.signIn}</span>
-            </button>
-          )}
-          <div className="relative">
-            <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
-              <Globe className="w-4 h-4" /><span>{language.toUpperCase()}</span>
-            </button>
-            {showLanguageMenu && (
-              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
-                <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
-                <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
-                <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
-                <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
-                <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Bottom row: buttons shown ONLY on mobile, under the tagline */}
-      <div className="flex sm:hidden" style={{ flexDirection: 'row', alignItems: 'center', gap: '6px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '6px' }}>
         {user ? (
           <>
             <button onClick={() => setShowAdmin(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
