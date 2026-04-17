@@ -192,6 +192,15 @@ export default function Admin({ onClose }: AdminProps) {
     );
   }
 
+  const { user } = useAuth(); // or however you access user in Admin.tsx
+  
+  if (!user || user.email !== 'usmaingumaa08@gmail.com') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-600 text-xl font-bold">Access Denied</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

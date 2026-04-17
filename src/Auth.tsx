@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { sendEmailVerification } from 'firebase/auth';
 import { auth } from './firebase';
 import { User, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 
@@ -115,6 +116,8 @@ export default function Auth({ onAuthSuccess, language = 'en' }: AuthProps) {
       } else {
         // Sign up
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(auth.currentUser);
+        alert('Please check your email and verify your account before continuing.');
         // Update profile with name
         await updateProfile(userCredential.user, {
           displayName: name
