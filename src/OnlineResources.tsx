@@ -222,7 +222,7 @@ const resourceGroups = [
 ];
 
 export default function OnlineResources({ language = 'en' }: OnlineResourcesProps) {
-  const [activeTab, setActiveTab] = useState<'housing' | 'utilities' | 'community'>('housing');
+  const [activeTab, setActiveTab] = useState<'housing' | 'utilities' | 'community' | ''>('');
   const t = sectionTranslations[language] || sectionTranslations['en'];
 
   const tabConfig = [
@@ -231,8 +231,8 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
     { id: 'community' as const, label: t.community, desc: t.communityDesc, icon: Users, color: '#10b981', bg: '#d1fae5' },
   ];
 
-  const activeGroup = resourceGroups.find(g => g.id === activeTab)!;
-  const activeTabConfig = tabConfig.find(t => t.id === activeTab)!;
+  const activeGroup = resourceGroups.find(g => g.id === activeTab) || resourceGroups[0];
+  const activeTabConfig = tabConfig.find(tab => tab.id === activeTab) || tabConfig[0];
 
   return (
     <section className="py-16" style={{ background: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
@@ -278,6 +278,13 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
         </div>
 
         {/* Resource Cards */}
+        {activeTab === '' ? (
+          <div className="text-center py-16">
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌐</div>
+            <p className="text-gray-500 text-lg font-medium">Select a category above to explore resources</p>
+            <p className="text-gray-400 text-sm mt-2">Housing, Utilities, and Community resources available</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeGroup.resources.map((resource, index) => (
             <a
@@ -321,9 +328,10 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </a>
+          // REPLACE WITH (only the last closing div of the grid):
           ))}
         </div>
-      </div>
+        )}
     </section>
   );
 }
