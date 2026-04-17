@@ -712,9 +712,13 @@ if (authLoading || servicesLoading) {
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '6px' }}>
         {user ? (
           <>
-            <button onClick={() => setShowAdmin(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
-              <Settings className="w-4 h-4" /><span>Admin</span>
-            </button>
+            {user.email === 'usmaingumaa08@gmail.com' && (
+              <button
+                onClick={() => setShowAdmin(true)}
+                style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+                <Settings className="w-4 h-4" /><span>Admin</span>
+              </button>
+            )}
             <button onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
               <LogOut className="w-4 h-4" /><span>Logout</span>
             </button>
