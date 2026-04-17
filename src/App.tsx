@@ -682,15 +682,15 @@ if (authLoading || servicesLoading) {
     )}
 {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-  <div style={{ padding: '20px 16px' }}>
-    
-    {/* Row 1: Logo + Nav buttons */}
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-      
-      {/* Logo */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
-        <div style={{ width: '56px', height: '56px', background: '#ffffff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', padding: '6px', flexShrink: 0 }}>
-          <svg width="36" height="36" viewBox="0 0 48 48" fill="none">
+  <div className="container mx-auto" style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}>
+
+    {/* Row 1: Logo icon + Bridge text + tagline + buttons all in one row on desktop, wraps on mobile */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+
+      {/* Top row: icon + text */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+        <div style={{ width: '52px', height: '52px', background: '#ffffff', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', padding: '6px', flexShrink: 0 }}>
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
             <path d="M6 32 Q24 14, 42 32" stroke="#2a9df4" strokeWidth="4" fill="none" strokeLinecap="round"/>
             <rect x="6" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
             <rect x="39" y="32" width="3" height="10" fill="#2a9df4" rx="1.5" />
@@ -701,66 +701,77 @@ if (authLoading || servicesLoading) {
             <circle cx="36" cy="24" r="3" fill="#06b6d4" />
           </svg>
         </div>
-        <div>
-          <h1 style={{ color: '#ffffff', fontWeight: 700, fontSize: '22px', lineHeight: '1.1', margin: 0 }}>Bridge</h1>
-          <p style={{ color: '#ffffff', opacity: 0.85, fontSize: '11px', margin: 0, lineHeight: '1.3' }}>{t.tagline}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', flex: 1 }}>
+          <h1 style={{ color: '#ffffff', lineHeight: '1.1', margin: 0, fontSize: '22px', fontWeight: 700 }}>Bridge</h1>
+          <p style={{ color: '#ffffff', opacity: 0.9, fontSize: '12px', margin: 0, lineHeight: '1.2' }}>{t.tagline}</p>
+        </div>
+
+        {/* Buttons — hidden on mobile, shown on desktop */}
+        <div className="hidden sm:flex" style={{ flexDirection: 'row', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+          {user ? (
+            <>
+              <button onClick={() => setShowAdmin(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+                <Settings className="w-4 h-4" /><span>Admin</span>
+              </button>
+              <button onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+                <LogOut className="w-4 h-4" /><span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <button onClick={(e) => { const rect = (e.currentTarget as HTMLElement).getBoundingClientRect(); setAuthModalAnchor({ top: rect.bottom + 8, left: window.innerWidth - 376 }); }} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+              <LogOut className="w-4 h-4" /><span>{t.signIn}</span>
+            </button>
+          )}
+          <div className="relative">
+            <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
+              <Globe className="w-4 h-4" /><span>{language.toUpperCase()}</span>
+            </button>
+            {showLanguageMenu && (
+              <div className="absolute right-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
+                <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
+                <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
+                <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
+                <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
+                <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Nav buttons — always horizontal */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+      {/* Bottom row: buttons shown ONLY on mobile, under the tagline */}
+      <div className="flex sm:hidden" style={{ flexDirection: 'row', alignItems: 'center', gap: '6px' }}>
         {user ? (
           <>
-            <button
-              onClick={() => setShowAdmin(true)}
-              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '13px', flexShrink: 0, cursor: 'pointer' }}
-            >
-              <Settings className="w-4 h-4" />
-              <span>Admin</span>
+            <button onClick={() => setShowAdmin(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+              <Settings className="w-4 h-4" /><span>Admin</span>
             </button>
-            <button
-              onClick={handleLogout}
-              style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '13px', flexShrink: 0, cursor: 'pointer' }}
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Logout</span>
+            <button onClick={handleLogout} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+              <LogOut className="w-4 h-4" /><span>Logout</span>
             </button>
           </>
         ) : (
-          <button
-            onClick={(e) => {
-              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-              setAuthModalAnchor({ top: rect.bottom + 8, left: Math.min(rect.left, window.innerWidth - 376) });
-            }}
-            style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', padding: '4px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '13px', flexShrink: 0, cursor: 'pointer' }}
-          >
-            <LogOut className="w-4 h-4" />
-            <span>{t.signIn}</span>
+          <button onClick={(e) => { const rect = (e.currentTarget as HTMLElement).getBoundingClientRect(); setAuthModalAnchor({ top: rect.bottom + 8, left: 16 }); }} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+            <LogOut className="w-4 h-4" /><span>{t.signIn}</span>
           </button>
         )}
-
-        {/* Language Selector */}
-        <div style={{ position: 'relative', flexShrink: 0 }}>
-          <button
-            onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-            style={{ background: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '13px', cursor: 'pointer' }}
-          >
-            <Globe className="w-4 h-4" />
-            <span>{language.toUpperCase()}</span>
+        <div className="relative">
+          <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
+            <Globe className="w-4 h-4" /><span>{language.toUpperCase()}</span>
           </button>
           {showLanguageMenu && (
-            <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: '8px', background: '#ffffff', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)', padding: '8px 0', width: '160px', zIndex: 50 }}>
-              <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-sm">English</button>
-              <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-sm">Español</button>
-              <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-sm">العربية</button>
-              <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-sm">עברית</button>
-              <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 text-sm">Kiswahili</button>
+            <div className="absolute left-0 mt-2 bg-white rounded-lg shadow-xl py-2 w-48 z-50">
+              <button onClick={() => { setLanguage('en'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">English</button>
+              <button onClick={() => { setLanguage('es'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Español</button>
+              <button onClick={() => { setLanguage('ar'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">العربية</button>
+              <button onClick={() => { setLanguage('he'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">עברית</button>
+              <button onClick={() => { setLanguage('sw'); setShowLanguageMenu(false); }} className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100">Kiswahili</button>
             </div>
           )}
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </header>
     
