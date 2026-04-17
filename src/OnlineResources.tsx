@@ -332,6 +332,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
           ))}
         </div>
         )}
+     </div>
     </section>
   );
 }
