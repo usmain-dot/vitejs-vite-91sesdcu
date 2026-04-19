@@ -43,6 +43,16 @@ export default function Admin({ onClose }: AdminProps) {
   const [showAddService, setShowAddService] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Form state for adding/editing services
   const [formData, setFormData] = useState({
@@ -182,7 +192,7 @@ export default function Admin({ onClose }: AdminProps) {
     setShowAddService(true);
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
@@ -193,32 +203,15 @@ export default function Admin({ onClose }: AdminProps) {
     );
   }
 
-const [user, setUser] = useState<any>(null);
-const [authLoading, setAuthLoading] = useState(true);
+  if (!user || user.email !== 'usmaingumaa08@gmail.com') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-600 text-xl font-bold">Access Denied</p>
+      </div>
+    );
+  }
 
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-    setAuthLoading(false);
-  });
-  return () => unsubscribe();
-}, []);
 
-if (authLoading) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-gray-600">Loading...</p>
-    </div>
-  );
-}
-
-if (!user || user.email !== 'usmaingumaa08@gmail.com') {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <p className="text-red-600 text-xl font-bold">Access Denied</p>
-    </div>
-  );
-}
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
