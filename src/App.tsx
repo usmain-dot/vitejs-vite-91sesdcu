@@ -688,7 +688,7 @@ if (authLoading || servicesLoading) {
     )}
 {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
-  <div className="container mx-auto" style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}>
+  <div style={{ width: '100%', paddingLeft: '24px', paddingRight: '24px', paddingTop: '12px', paddingBottom: '12px' }}>
 
     {/* Row 1: Logo icon + Bridge text + tagline + buttons all in one row on desktop, wraps on mobile */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -756,8 +756,8 @@ if (authLoading || servicesLoading) {
     
 
     {/* Main Content */}
-    <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
-      <div className="max-w-7xl mx-auto">
+    <main className="flex-1 py-8" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+      <div style={{ width: '100%' }}>
         {/* Search Bar */}
         <div className="mb-8 px-4">
           <div className="relative max-w-2xl mx-auto">
@@ -817,19 +817,19 @@ if (authLoading || servicesLoading) {
     <p className="text-gray-500 text-lg">{t.noResults}</p>
   </div>
 ) : (
-  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-4">
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 px-4">
     {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
   </div>
 )}
       </div>
     </main>
 
-<div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+<div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
   <OnlineResources language={language} />
 </div>
     {/* Phase 2 & 3 Features */}
-    <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
-      <div className="container mx-auto max-w-7xl">
+    <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '24px', paddingRight: '24px' }}>
+      <div style={{ width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
           <p className="text-center text-gray-600 text-lg">Enhanced features launching soon</p>
@@ -910,8 +910,8 @@ if (authLoading || servicesLoading) {
       </div>
     </section>
 
-    <footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
-  <div className="container mx-auto max-w-7xl text-center">
+<footer className="py-12" style={{ background: '#1e293b', paddingLeft: '24px', paddingRight: '24px' }}>
+  <div style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', textAlign: 'center' }}>
     <p style={{ color: '#ffffff', fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
       © 2025 Bridge. {t.tagline}
     </p>
