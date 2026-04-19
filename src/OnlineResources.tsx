@@ -285,14 +285,14 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
             <p className="text-gray-400 text-sm mt-2">Housing, Utilities, and Community resources available</p>
           </div>
         ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {activeGroup.resources.map((resource, index) => (
             <a
               key={index}
               href={resource.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white rounded-xl p-5 flex flex-col gap-3 hover:shadow-lg transition-all"
+              className="group bg-white rounded-xl p-6 flex flex-col gap-4 hover:shadow-lg transition-all"
               style={{ border: '1px solid #e5e7eb', textDecoration: 'none' }}
             >
               {/* Tag */}
