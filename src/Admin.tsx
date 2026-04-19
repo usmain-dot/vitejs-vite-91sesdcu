@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import { ArrowLeft, BarChart3, MessageSquare, Calendar, Users, Settings, Plus, Edit, Trash2, Home, Heart, Scale, Briefcase, GraduationCap, UtensilsCrossed, Languages } from 'lucide-react';
 
 interface AdminProps {
@@ -192,15 +193,32 @@ export default function Admin({ onClose }: AdminProps) {
     );
   }
 
-  const { user } = useAuth(); // or however you access user in Admin.tsx
-  
-  if (!user || user.email !== 'usmaingumaa08@gmail.com') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-600 text-xl font-bold">Access Denied</p>
-      </div>
-    );
-  }
+const [user, setUser] = useState<any>(null);
+const [authLoading, setAuthLoading] = useState(true);
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+    setAuthLoading(false);
+  });
+  return () => unsubscribe();
+}, []);
+
+if (authLoading) {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-gray-600">Loading...</p>
+    </div>
+  );
+}
+
+if (!user || user.email !== 'usmaingumaa08@gmail.com') {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <p className="text-red-600 text-xl font-bold">Access Denied</p>
+    </div>
+  );
+}
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
