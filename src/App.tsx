@@ -619,7 +619,7 @@ if (authLoading || servicesLoading) {
 }
 
  return (
-  <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb' }}>
+  <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'} style={{ background: '#f9fafb', width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
     
     {/* MODALS - MOVED TO TOP FOR PROPER Z-INDEX */}
     {/* Auth Modal */}
