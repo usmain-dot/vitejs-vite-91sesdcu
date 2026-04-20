@@ -245,7 +245,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-8 justify-center">
+        <div className="flex flex-col sm:flex-row mb-8 justify-center" style={{ gap: '16px' }}>
           {tabConfig.map(tab => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
