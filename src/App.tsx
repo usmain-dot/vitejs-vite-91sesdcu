@@ -9,6 +9,7 @@ import Messages from './Messages';
 import Appointments from './Appointments';
 import Admin from './Admin';
 import OnlineResources from './OnlineResources';
+import Schools from './Schools';
 import AISearch from './AISearch';
 
 // Types
@@ -829,6 +830,7 @@ if (authLoading || servicesLoading) {
     </main>
 
 <div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+  <Schools language={language} />
   <OnlineResources language={language} />
 </div>
     {/* Phase 2 & 3 Features */}
