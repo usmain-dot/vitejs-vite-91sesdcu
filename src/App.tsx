@@ -576,32 +576,28 @@ useEffect(() => {
           <div className="flex items-center gap-2 text-blue-600 font-medium"><MapPin className="w-4 h-4" /><span>{service.distance} {t.distance}</span></div>
         </div>
 
-<div className="grid grid-cols-2 gap-3 pt-2" style={{ gap: '12px' }}>
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', paddingTop: '8px' }}>
   <button 
     onClick={() => window.location.href = `tel:${service.phone}`}
-    className="py-2 px-4 rounded-lg transition-all flex items-center justify-center text-sm font-medium hover:opacity-80" 
-    style={{ background: '#e8f4fe', color: '#1d6fa4', border: '1px solid #bfdffa', gap: '8px' }}>
-    <Phone className="w-4 h-4" style={{ flexShrink: 0 }} /><span>{t.callNow}</span>
+    style={{ background: '#e8f4fe', color: '#1d6fa4', border: '1px solid #bfdffa', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
+    <Phone className="w-4 h-4" /><span>{t.callNow}</span>
   </button>
   <button 
     onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address)}`, '_blank')}
-    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
-    style={{ background: '#eef0ff', color: '#3d52d5', border: '1px solid #c7cdf7', gap: '8px' }}>
-    <MapPin className="w-4 h-4" style={{ flexShrink: 0 }} /><span>{t.getDirections}</span>
+    style={{ background: '#eef0ff', color: '#3d52d5', border: '1px solid #c7cdf7', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
+    <MapPin className="w-4 h-4" /><span>{t.getDirections}</span>
   </button>
   <button 
     onClick={(e) => handleProtectedAction('message', service, e)}
-    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
-    style={{ background: '#e8faf3', color: '#0f7a52', border: '1px solid #b0ecd5', gap: '8px' }}>
-    <MessageSquare className="w-4 h-4" style={{ flexShrink: 0 }} /><span>{t.sendMessage}</span>
+    style={{ background: '#e8faf3', color: '#0f7a52', border: '1px solid #b0ecd5', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
+    <MessageSquare className="w-4 h-4" /><span>{t.sendMessage}</span>
   </button>
   <button 
     onClick={(e) => handleProtectedAction('appointment', service, e)}
-    className="py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-2 text-sm font-medium hover:opacity-80" 
-    style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2', gap: '8px' }}>
-    <Calendar className="w-4 h-4" style={{ flexShrink: 0 }} /><span>{t.bookAppointment}</span>
+    style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
+    <Calendar className="w-4 h-4" /><span>{t.bookAppointment}</span>
   </button>
-  </div>
+</div>
   </div>
     );
   };
@@ -781,14 +777,23 @@ if (authLoading || servicesLoading) {
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                    selectedCategory === cat.id
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-white text-gray-700 shadow-sm"
-                  }`}
-                style={{ gap: '8px' }}>
-                  <Icon className="w-4 h-4" style={{ flexShrink: 0 }} />
-                  <span>{cat.label}</span>
+                  style={{
+                   display: 'inline-flex',
+                   alignItems: 'center',
+                   gap: '8px',
+                   padding: '8px 16px',
+                   borderRadius: '8px',
+                   whiteSpace: 'nowrap',
+                   background: selectedCategory === cat.id ? '#2563eb' : '#ffffff',
+                   color: selectedCategory === cat.id ? '#ffffff' : '#374151',
+                   boxShadow: selectedCategory === cat.id ? '0 2px 8px rgba(0,0,0,0.15)' : '0 1px 3px rgba(0,0,0,0.1)',
+                   border: 'none',
+                   cursor: 'pointer',
+                   fontSize: '14px',
+                   fontWeight: 500,
+                 }}>
+                 <Icon style={{ width: '16px', height: '16px', flexShrink: 0 }} />
+                 <span>{cat.label}</span>
                 </button>
               );
             })}

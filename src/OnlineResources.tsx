@@ -285,7 +285,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
             <p className="text-gray-400 text-sm mt-2">Housing, Utilities, and Community resources available</p>
           </div>
         ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {activeGroup.resources.map((resource, index) => (
             <a
               key={index}
@@ -328,7 +328,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
             </a>
-          // REPLACE WITH (only the last closing div of the grid):
+
           ))}
         </div>
         )}
