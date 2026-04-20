@@ -576,26 +576,26 @@ useEffect(() => {
           <div className="flex items-center gap-2 text-blue-600 font-medium"><MapPin className="w-4 h-4" /><span>{service.distance} {t.distance}</span></div>
         </div>
 
-<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', paddingTop: '8px' }}>
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', paddingTop: '8px' }}>
   <button 
     onClick={() => window.location.href = `tel:${service.phone}`}
-    style={{ background: '#e8f4fe', color: '#1d6fa4', border: '1px solid #bfdffa', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
-    <Phone className="w-4 h-4" /><span>{t.callNow}</span>
+    style={{ background: '#e8f4fe', color: '#1d6fa4', border: '1px solid #bfdffa', padding: '6px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+    <Phone style={{ width: '13px', height: '13px', flexShrink: 0 }} /><span>{t.callNow}</span>
   </button>
   <button 
     onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address)}`, '_blank')}
-    style={{ background: '#eef0ff', color: '#3d52d5', border: '1px solid #c7cdf7', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
-    <MapPin className="w-4 h-4" /><span>{t.getDirections}</span>
+    style={{ background: '#eef0ff', color: '#3d52d5', border: '1px solid #c7cdf7', padding: '6px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+    <MapPin style={{ width: '13px', height: '13px', flexShrink: 0 }} /><span>{t.getDirections}</span>
   </button>
   <button 
     onClick={(e) => handleProtectedAction('message', service, e)}
-    style={{ background: '#e8faf3', color: '#0f7a52', border: '1px solid #b0ecd5', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
-    <MessageSquare className="w-4 h-4" /><span>{t.sendMessage}</span>
+    style={{ background: '#e8faf3', color: '#0f7a52', border: '1px solid #b0ecd5', padding: '6px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+    <MessageSquare style={{ width: '13px', height: '13px', flexShrink: 0 }} /><span>{t.sendMessage}</span>
   </button>
   <button 
     onClick={(e) => handleProtectedAction('appointment', service, e)}
-    style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2', padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
-    <Calendar className="w-4 h-4" /><span>{t.bookAppointment}</span>
+    style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2', padding: '6px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+    <Calendar style={{ width: '13px', height: '13px', flexShrink: 0 }} /><span>{t.bookAppointment}</span>
   </button>
 </div>
   </div>
