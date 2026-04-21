@@ -253,21 +253,19 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                       href={school.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all hover:opacity-80"
-                      style={{ background: colors.bg, color: colors.text, textDecoration: 'none' }}
+                      style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: colors.bg, color: colors.text, textDecoration: 'none' }}
                     >
                       <Globe className="w-4 h-4" />
-                      Visit Website
+                      <span>Visit Website</span>
                     </a>
                     
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(school.address)}`}
+                      href={'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(school.address)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all hover:opacity-80"
-                      style={{ background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}
                     >
                       <MapPin className="w-4 h-4" />
-                      Directions
+                      <span>Directions</span>
                     </a>
                   </div>
                 </div>
