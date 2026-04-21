@@ -66,6 +66,12 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
   const [selectedBorough, setSelectedBorough] = useState<Borough>('all');
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('all');
 
+  const handleTypeChange = (type: SchoolType) => {
+    setSelectedType(type);
+    setSelectedBorough('all');
+    setSelectedLanguage('all');
+  };
+
   const types: { id: SchoolType; label: string }[] = [
     { id: 'all', label: 'All Schools' },
     { id: 'university', label: 'Universities' },
@@ -116,7 +122,7 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
             <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">School Type</p>
             <div className="flex flex-wrap gap-2">
               {types.map(type => (
-                <button key={type.id} onClick={() => setSelectedType(type.id)} style={btnStyle(selectedType === type.id, '#2a9df4')}>
+                <button key={type.id} onClick={() => handleTypeChange(type.id)} style={btnStyle(selectedType === type.id, '#2a9df4')}>
                   {type.label}
                 </button>
               ))}
