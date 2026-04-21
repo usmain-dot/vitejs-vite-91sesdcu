@@ -257,17 +257,17 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                       style={{ background: colors.bg, color: colors.text, textDecoration: 'none' }}
                     >
                       <Globe className="w-4 h-4" />
-                      <span>Visit Website</span>
+                      Visit Website
                     </a>
                     
-                      href={'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(school.address)}
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(school.address)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-sm font-medium transition-all hover:opacity-80"
                       style={{ background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}
                     >
                       <MapPin className="w-4 h-4" />
-                      <span>Directions</span>
+                      Directions
                     </a>
                   </div>
                 </div>
