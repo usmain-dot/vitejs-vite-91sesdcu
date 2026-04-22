@@ -832,8 +832,8 @@ if (authLoading || servicesLoading) {
 
 <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
   <CoworkingSpaces /> 
-  <Schools language={language} />
   <OnlineResources language={language} />
+  <Schools language={language} />
 </div>
     {/* Phase 2 & 3 Features */}
     <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '24px', paddingRight: '24px' }}>
