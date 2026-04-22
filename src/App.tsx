@@ -801,7 +801,7 @@ if (authLoading || servicesLoading) {
           </div>
 
           {/* Counter showing filtered results */}
-          <div className="text-center mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-gray-600">
             Showing {filteredServices.length} of {services.length} services
           </div>
         </div>
