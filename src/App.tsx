@@ -808,18 +808,18 @@ if (authLoading || servicesLoading) {
 
         {/* Services Grid */}
 {servicesLoading ? (
-  <div className="text-center py-16 px-4">
+  <div className="text-center py-16 px-6">
     <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
     <p className="text-gray-600 text-lg">Loading services...</p>
   </div>
 ) : filteredServices.length === 0 && selectedCategory === '' && searchQuery.trim() === '' ? (
-  <div className="text-center py-16 px-4">
+  <div className="text-center py-16 px-6">
     <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
     <p className="text-gray-500 text-lg font-medium">Select a category or search to find services</p>
     <p className="text-gray-400 text-sm mt-2">Browse housing, healthcare, legal aid, and more</p>
   </div>
 ) : filteredServices.length === 0 ? (
-  <div className="text-center py-16 px-4">
+  <div className="text-center py-16 px-6">
     <p className="text-gray-500 text-lg">{t.noResults}</p>
   </div>
 ) : (
