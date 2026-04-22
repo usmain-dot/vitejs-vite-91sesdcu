@@ -259,7 +259,7 @@ export default function CoworkingSpaces() {
   });
 
   return (
-    <section className="py-16" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb', paddingLeft: '16px', paddingRight: '16px' }}>
+    <section className="py-16" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb' }}>
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}

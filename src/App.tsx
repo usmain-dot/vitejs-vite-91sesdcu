@@ -830,7 +830,7 @@ if (authLoading || servicesLoading) {
       </div>
     </main>
 
-<div>
+<div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
   <CoworkingSpaces /> 
   <OnlineResources language={language} />
   <Schools language={language} />

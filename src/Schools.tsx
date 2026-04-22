@@ -186,8 +186,8 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
   });
 
   return (
-    <section className="py-16" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb', paddingLeft: '16px', paddingRight: '16px' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-16 px-4" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb' }}>
+      <div className="max-w-7xl mx-auto">
 
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#dbeafe' }}>
