@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Building2, MapPin, Globe, Star, Users, Wifi, Coffee, Monitor } from 'lucide-react';
+import { Building2, MapPin, Globe, Star } from 'lucide-react';
 
 type Borough = 'all' | 'Manhattan' | 'Brooklyn' | 'Queens' | 'Bronx' | 'Staten Island';
 type Tier = 'all' | 'enterprise' | 'premium' | 'community' | 'popular';
@@ -12,18 +12,16 @@ interface CoworkingSpace {
   borough: Borough;
   address: string;
   website: string;
-  priceRange: string;         // e.g. "$$" | "$$$" | "$$$$"
+  priceRange: string;
   amenities: string[];
   description: string;
-  multiLocation: boolean;     // true = has many NYC locations
-  logo?: string;              // emoji stand-in for branding color
+  multiLocation: boolean;
   accentColor: string;
   bgColor: string;
   textColor: string;
 }
 
 const spaces: CoworkingSpace[] = [
-  // ── ENTERPRISE / LARGEST ──────────────────────────────────────────────────
   {
     id: 1,
     name: 'WeWork',
@@ -34,7 +32,7 @@ const spaces: CoworkingSpace[] = [
     website: 'https://www.wework.com/l/new-york-city--NY',
     priceRange: '$$$',
     amenities: ['High-Speed Wi-Fi', 'Private Offices', 'Meeting Rooms', 'Coffee & Tea', 'Events', 'Global Access'],
-    description: 'The world\'s largest flexible workspace provider with dozens of NYC locations spanning millions of sq ft. Offers hot desks, dedicated desks, private offices, and full floors for teams of any size.',
+    description: "The world's largest flexible workspace provider with dozens of NYC locations spanning millions of sq ft. Offers hot desks, dedicated desks, private offices, and full floors for teams of any size.",
     multiLocation: true,
     accentColor: '#000000',
     bgColor: '#f5f5f5',
@@ -66,7 +64,7 @@ const spaces: CoworkingSpace[] = [
     website: 'https://www.spacesworks.com/new-york/',
     priceRange: '$$$',
     amenities: ['Creative Design', 'Hot Desks', 'Private Offices', 'Meeting Rooms', 'Community Events', 'Café Bar'],
-    description: 'IWG\'s design-led coworking brand offering beautifully crafted spaces with a creative, hospitality-inspired atmosphere. Perfect for entrepreneurs, freelancers, and innovative teams.',
+    description: "IWG's design-led coworking brand offering beautifully crafted spaces with a creative, hospitality-inspired atmosphere. Perfect for entrepreneurs, freelancers, and innovative teams.",
     multiLocation: true,
     accentColor: '#e63329',
     bgColor: '#fdecea',
@@ -88,8 +86,6 @@ const spaces: CoworkingSpace[] = [
     bgColor: '#eeeef5',
     textColor: '#1a1a2e',
   },
-
-  // ── PREMIUM ───────────────────────────────────────────────────────────────
   {
     id: 5,
     name: 'Industrious',
@@ -106,8 +102,6 @@ const spaces: CoworkingSpace[] = [
     bgColor: '#d8f3dc',
     textColor: '#1b4332',
   },
-
-  // ── COMMUNITY ─────────────────────────────────────────────────────────────
   {
     id: 6,
     name: 'The Yard',
@@ -140,8 +134,6 @@ const spaces: CoworkingSpace[] = [
     bgColor: '#ede9fe',
     textColor: '#4c1d95',
   },
-
-  // ── POPULAR & WELL-RATED ──────────────────────────────────────────────────
   {
     id: 8,
     name: 'The Farm SoHo NYC',
@@ -178,7 +170,7 @@ const spaces: CoworkingSpace[] = [
     id: 10,
     name: 'The Commons',
     tier: 'popular',
-    tagline: 'Community-first coworking in Williamsburg',
+    tagline: 'Community-first coworking in Brooklyn',
     borough: 'Brooklyn',
     address: '388 Atlantic Ave, Brooklyn, NY 11217',
     website: 'https://thecommons.nyc',
@@ -216,7 +208,7 @@ const spaces: CoworkingSpace[] = [
     website: 'https://www.nycofficesuites.com',
     priceRange: '$$$',
     amenities: ['Executive Suites', 'Virtual Office', 'Conference Rooms', 'Receptionist', 'Mail Handling', 'IT Support'],
-    description: 'One of NYC\'s most established executive suite providers with prime Midtown addresses. A trusted choice for businesses wanting a professional NYC presence with full-service support.',
+    description: "One of NYC's most established executive suite providers with prime Midtown addresses. A trusted choice for businesses wanting a professional NYC presence with full-service support.",
     multiLocation: true,
     accentColor: '#344e41',
     bgColor: '#e9f5ee',
@@ -239,13 +231,6 @@ const priceLabel: Record<string, string> = {
   '$$$$': 'Enterprise',
 };
 
-const amenityIcons: Record<string, React.ReactNode> = {
-  'High-Speed Wi-Fi': <Wifi className="w-3 h-3" />,
-  'Coffee & Tea':     <Coffee className="w-3 h-3" />,
-  'Meeting Rooms':    <Users className="w-3 h-3" />,
-  'Private Offices':  <Monitor className="w-3 h-3" />,
-};
-
 export default function CoworkingSpaces() {
   const [selectedTier, setSelectedTier] = useState<Tier>('all');
   const [selectedBorough, setSelectedBorough] = useState<Borough>('all');
@@ -261,7 +246,7 @@ export default function CoworkingSpaces() {
     });
   }, [selectedTier, selectedBorough]);
 
-  const btnStyle = (active: boolean, color: string, bg: string) => ({
+  const btnStyle = (active: boolean, color: string) => ({
     padding: '6px 14px',
     borderRadius: '20px',
     fontSize: '13px',
@@ -271,7 +256,6 @@ export default function CoworkingSpaces() {
     border: active ? 'none' : '1px solid #e5e7eb',
     cursor: 'pointer',
     whiteSpace: 'nowrap' as const,
-    transition: 'all 0.15s ease',
   });
 
   return (
@@ -297,27 +281,18 @@ export default function CoworkingSpaces() {
               {tiers.map(tier => {
                 const cfg = tierConfig[tier];
                 return (
-                  <button
-                    key={tier}
-                    onClick={() => setSelectedTier(tier)}
-                    style={btnStyle(selectedTier === tier, cfg.color, cfg.bg)}
-                  >
+                  <button key={tier} onClick={() => setSelectedTier(tier)} style={btnStyle(selectedTier === tier, cfg.color)}>
                     {cfg.label}
                   </button>
                 );
               })}
             </div>
           </div>
-
           <div>
             <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Borough</p>
             <div className="flex flex-wrap gap-2">
               {boroughs.map(borough => (
-                <button
-                  key={borough}
-                  onClick={() => setSelectedBorough(borough)}
-                  style={btnStyle(selectedBorough === borough, '#1e293b', '#f3f4f6')}
-                >
+                <button key={borough} onClick={() => setSelectedBorough(borough)} style={btnStyle(selectedBorough === borough, '#1e293b')}>
                   {borough === 'all' ? 'All Boroughs' : borough}
                 </button>
               ))}
@@ -341,57 +316,68 @@ export default function CoworkingSpaces() {
                 <div
                   key={space.id}
                   className="bg-white rounded-xl hover:shadow-lg transition-all"
-                  style={{ border: '1px solid #e5e7eb', borderTop: `4px solid ${space.accentColor}`, overflow: 'hidden' }}
+                  style={{ border: '1px solid #e5e7eb', borderTop: `4px solid ${space.accentColor}` }}
                 >
-                  {/* Card header band */}
-                  <div className="px-6 pt-5 pb-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className="text-xs font-semibold px-3 py-1 rounded-full"
-                        style={{ background: tierCfg.bg, color: tierCfg.color }}
-                      >
+                  <div className="p-6">
+
+                    {/* Tier badge + price — no icons, clean layout */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: tierCfg.bg, color: tierCfg.color }}>
                         {tierCfg.label}
                       </span>
-                      <span
-                        className="text-xs font-bold px-2 py-1 rounded"
-                        style={{ background: space.bgColor, color: space.textColor }}
-                        title={priceLabel[space.priceRange]}
-                      >
+                      <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: space.bgColor, color: space.textColor }} title={priceLabel[space.priceRange]}>
                         {space.priceRange}
                       </span>
                     </div>
 
-                    <h3 className="font-bold text-gray-900 text-lg mb-1">{space.name}</h3>
-                    <p className="text-xs font-medium mb-3" style={{ color: space.accentColor }}>
+                    {/* Name */}
+                    <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>
+                      {space.name}
+                    </h3>
+
+                    {/* Tagline */}
+                    <p style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor, marginBottom: '10px' }}>
                       {space.tagline}
                     </p>
-                    <p className="text-gray-500 text-sm mb-4 leading-relaxed">{space.description}</p>
 
-                    {/* Location */}
-                    <div className="flex items-start gap-2 text-sm text-gray-600 mb-4">
-                      <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
-                      <span>{space.address}</span>
+                    {/* Description */}
+                    <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
+                      {space.description}
+                    </p>
+
+                    {/* Address row */}
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', marginBottom: '8px' }}>
+                      <MapPin style={{ width: '14px', height: '14px', color: '#9ca3af', flexShrink: 0, marginTop: '2px' }} />
+                      <span style={{ fontSize: '13px', color: '#4b5563' }}>{space.address}</span>
                     </div>
 
-                    {/* Multi-location badge */}
+                    {/* Multi-location row */}
                     {space.multiLocation && (
-                      <div className="flex items-center gap-1.5 mb-4">
-                        <Star className="w-3.5 h-3.5" style={{ color: space.accentColor }} />
-                        <span className="text-xs font-medium" style={{ color: space.accentColor }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '14px' }}>
+                        <Star style={{ width: '13px', height: '13px', color: space.accentColor, flexShrink: 0 }} />
+                        <span style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor }}>
                           Multiple NYC locations available
                         </span>
                       </div>
                     )}
 
-                    {/* Amenities */}
-                    <div className="flex flex-wrap gap-1.5 mb-5">
+                    {/* Amenity chips — TEXT ONLY, zero icons inside chips */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
                       {space.amenities.map(amenity => (
                         <span
                           key={amenity}
-                          className="text-xs px-2 py-1 rounded-full flex items-center gap-1"
-                          style={{ background: space.bgColor, color: space.textColor, border: `1px solid ${space.accentColor}22` }}
+                          style={{
+                            fontSize: '11px',
+                            fontWeight: 500,
+                            padding: '4px 10px',
+                            borderRadius: '20px',
+                            background: space.bgColor,
+                            color: space.textColor,
+                            border: `1px solid ${space.accentColor}30`,
+                            whiteSpace: 'nowrap',
+                            lineHeight: '1.4',
+                          }}
                         >
-                          {amenityIcons[amenity] ?? null}
                           {amenity}
                         </span>
                       ))}
@@ -418,7 +404,7 @@ export default function CoworkingSpaces() {
                           textDecoration: 'none',
                         }}
                       >
-                        <Globe className="w-4 h-4" />
+                        <Globe style={{ width: '14px', height: '14px', flexShrink: 0 }} />
                         <span>View Locations</span>
                       </a>
                       {!space.multiLocation && (
@@ -441,11 +427,12 @@ export default function CoworkingSpaces() {
                             textDecoration: 'none',
                           }}
                         >
-                          <MapPin className="w-4 h-4" />
+                          <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
                           <span>Directions</span>
                         </a>
                       )}
                     </div>
+
                   </div>
                 </div>
               );
