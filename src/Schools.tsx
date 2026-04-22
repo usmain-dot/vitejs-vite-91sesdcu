@@ -165,13 +165,14 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
   const languages: Language[] = ['all', 'English', 'Spanish', 'Arabic', 'Chinese', 'French'];
 
   const filtered = useMemo(() => {
+    if (!hasInteracted) return [];
     return schools.filter(school => {
       const matchType = selectedType === 'all' || school.type === selectedType;
       const matchBorough = selectedBorough === 'all' || school.borough === selectedBorough;
       const matchLang = selectedLanguage === 'all' || school.languages.includes(selectedLanguage);
       return matchType && matchBorough && matchLang;
     });
-  }, [selectedType, selectedBorough, selectedLanguage]);
+  }, [selectedType, selectedBorough, selectedLanguage, hasInteracted]);
 
   const btnStyle = (active: boolean, color: string) => ({
     padding: '6px 14px',
@@ -186,8 +187,8 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
   });
 
   return (
-    <section className="py-16 px-4" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb' }}>
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb' }}>
+      <div className="max-w-7xl mx-auto px-6">
 
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#dbeafe' }}>
@@ -234,7 +235,13 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
 
         <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {schools.length} schools</p>
 
-        {filtered.length === 0 ? (
+        {!hasInteracted ? (
+          <div className="text-center py-16">
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎓</div>
+            <p className="text-gray-500 text-lg font-medium">Select a school type to explore</p>
+            <p className="text-gray-400 text-sm mt-2">Universities, colleges, high schools, and more</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <GraduationCap className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500 text-lg">No schools found. Try adjusting your filters.</p>

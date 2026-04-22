@@ -269,7 +269,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
                   <Icon className="w-5 h-5" style={{ color: isActive ? '#fff' : tab.color }} />
                 </div>
                 <div>
-                  <p className="font-semibold text-sm">{tab.label}</p>
+                  <p style={{ fontWeight: 800, fontSize: '14px' }}>{tab.label}</p>
                   <p className="text-xs opacity-75 hidden sm:block max-w-[180px]">{tab.desc}</p>
                 </div>
               </button>
