@@ -273,7 +273,7 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                       <span>{school.phone}</span>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-1 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {school.languages.map(lang => (
                       <span key={lang} className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
                         {lang}

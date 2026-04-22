@@ -216,12 +216,12 @@ const spaces: CoworkingSpace[] = [
   },
 ];
 
-const tierConfig: Record<Tier, { label: string; color: string; bg: string }> = {
-  all:        { label: 'All',          color: '#374151', bg: '#f3f4f6' },
-  enterprise: { label: 'Enterprise',   color: '#1e40af', bg: '#dbeafe' },
-  premium:    { label: 'Premium',      color: '#065f46', bg: '#d1fae5' },
-  community:  { label: 'Community',    color: '#92400e', bg: '#fef3c7' },
-  popular:    { label: 'Popular Pick', color: '#6d28d9', bg: '#ede9fe' },
+const tierConfig: Record<Tier, { label: string; activeColor: string; activeBg: string }> = {
+  all:        { label: 'All',          activeColor: '#ffffff', activeBg: '#374151' },
+  enterprise: { label: 'Enterprise',   activeColor: '#ffffff', activeBg: '#1e40af' },
+  premium:    { label: 'Premium',      activeColor: '#ffffff', activeBg: '#065f46' },
+  community:  { label: 'Community',    activeColor: '#ffffff', activeBg: '#92400e' },
+  popular:    { label: 'Popular Pick', activeColor: '#ffffff', activeBg: '#6d28d9' },
 };
 
 const priceLabel: Record<string, string> = {
@@ -232,30 +232,39 @@ const priceLabel: Record<string, string> = {
 };
 
 export default function CoworkingSpaces() {
-  const [selectedTier, setSelectedTier] = useState<Tier>('all');
-  const [selectedBorough, setSelectedBorough] = useState<Borough>('all');
+  // Start with NO tier selected — idle state until user picks one
+  const [selectedTier,    setSelectedTier]    = useState<Tier | ''>('');
+  const [selectedBorough, setSelectedBorough] = useState<Borough | ''>('');
 
-  const boroughs: Borough[] = ['all', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'];
-  const tiers: Tier[] = ['all', 'enterprise', 'premium', 'community', 'popular'];
+  const hasAnyFilter = selectedTier !== '' || selectedBorough !== '';
+
+  const toggleTier    = (t: Tier)    => setSelectedTier(prev    => prev === t ? '' : t);
+  const toggleBorough = (b: Borough) => setSelectedBorough(prev => prev === b ? '' : b);
+
+  const tiers:    Tier[]    = ['all', 'enterprise', 'premium', 'community', 'popular'];
+  const boroughs: Borough[] = ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'];
 
   const filtered = useMemo(() => {
+    if (!hasAnyFilter) return [];
     return spaces.filter(s => {
-      const matchTier    = selectedTier    === 'all' || s.tier    === selectedTier;
-      const matchBorough = selectedBorough === 'all' || s.borough === selectedBorough;
+      const matchTier    = selectedTier    === '' || selectedTier    === 'all' || s.tier    === selectedTier;
+      const matchBorough = selectedBorough === '' || selectedBorough === 'all' || s.borough === selectedBorough;
       return matchTier && matchBorough;
     });
-  }, [selectedTier, selectedBorough]);
+  }, [selectedTier, selectedBorough, hasAnyFilter]);
 
-  const btnStyle = (active: boolean, color: string) => ({
+  // Pill button style — matches the header Admin/Logout/EN look
+  const pillBtn = (active: boolean, activeBg: string) => ({
     padding: '6px 14px',
     borderRadius: '20px',
     fontSize: '13px',
     fontWeight: active ? 600 : 400,
-    background: active ? color : '#f9fafb',
+    background: active ? activeBg : 'rgba(255,255,255,0.0)',
     color: active ? '#ffffff' : '#374151',
     border: active ? 'none' : '1px solid #e5e7eb',
     cursor: 'pointer',
     whiteSpace: 'nowrap' as const,
+    transition: 'all 0.15s ease',
   });
 
   return (
@@ -280,8 +289,9 @@ export default function CoworkingSpaces() {
             <div className="flex flex-wrap gap-2">
               {tiers.map(tier => {
                 const cfg = tierConfig[tier];
+                const isActive = selectedTier === tier;
                 return (
-                  <button key={tier} onClick={() => setSelectedTier(tier)} style={btnStyle(selectedTier === tier, cfg.color)}>
+                  <button key={tier} onClick={() => toggleTier(tier)} style={pillBtn(isActive, cfg.activeBg)}>
                     {cfg.label}
                   </button>
                 );
@@ -292,152 +302,161 @@ export default function CoworkingSpaces() {
             <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Borough</p>
             <div className="flex flex-wrap gap-2">
               {boroughs.map(borough => (
-                <button key={borough} onClick={() => setSelectedBorough(borough)} style={btnStyle(selectedBorough === borough, '#1e293b')}>
-                  {borough === 'all' ? 'All Boroughs' : borough}
+                <button key={borough} onClick={() => toggleBorough(borough)} style={pillBtn(selectedBorough === borough, '#1e293b')}>
+                  {borough}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {spaces.length} spaces</p>
-
-        {/* Grid */}
-        {filtered.length === 0 ? (
+        {/* Results */}
+        {!hasAnyFilter ? (
           <div className="text-center py-16">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No spaces found. Try adjusting your filters.</p>
+            <p className="text-gray-500 text-lg font-medium">Select a space type or borough to explore</p>
+            <p className="text-gray-400 text-sm mt-2">Enterprise, premium, community, and popular picks</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-            {filtered.map(space => {
-              const tierCfg = tierConfig[space.tier];
-              return (
-                <div
-                  key={space.id}
-                  className="bg-white rounded-xl hover:shadow-lg transition-all"
-                  style={{ border: '1px solid #e5e7eb', borderTop: `4px solid ${space.accentColor}` }}
-                >
-                  <div className="p-6">
+          <>
+            <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {spaces.length} spaces</p>
+            {filtered.length === 0 ? (
+              <div className="text-center py-16">
+                <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 text-lg">No spaces found. Try adjusting your filters.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+                {filtered.map(space => {
+                  const tierCfg = tierConfig[space.tier as Tier];
+                  return (
+                    <div
+                      key={space.id}
+                      className="bg-white rounded-xl hover:shadow-lg transition-all"
+                      style={{ border: '1px solid #e5e7eb', borderTop: `4px solid ${space.accentColor}` }}
+                    >
+                      <div className="p-6">
 
-                    {/* Tier badge + price — no icons, clean layout */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: tierCfg.bg, color: tierCfg.color }}>
-                        {tierCfg.label}
-                      </span>
-                      <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: space.bgColor, color: space.textColor }} title={priceLabel[space.priceRange]}>
-                        {space.priceRange}
-                      </span>
-                    </div>
+                        {/* Tier badge + price */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: tierCfg.activeBg, color: '#ffffff' }}>
+                            {tierCfg.label}
+                          </span>
+                          <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: space.bgColor, color: space.textColor }} title={priceLabel[space.priceRange]}>
+                            {space.priceRange}
+                          </span>
+                        </div>
 
-                    {/* Name */}
-                    <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>
-                      {space.name}
-                    </h3>
+                        {/* Name */}
+                        <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#111827', marginBottom: '4px' }}>
+                          {space.name}
+                        </h3>
 
-                    {/* Tagline */}
-                    <p style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor, marginBottom: '10px' }}>
-                      {space.tagline}
-                    </p>
+                        {/* Tagline */}
+                        <p style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor, marginBottom: '10px' }}>
+                          {space.tagline}
+                        </p>
 
-                    {/* Description */}
-                    <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
-                      {space.description}
-                    </p>
+                        {/* Description */}
+                        <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
+                          {space.description}
+                        </p>
 
-                    {/* Address row */}
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', marginBottom: '8px' }}>
-                      <MapPin style={{ width: '14px', height: '14px', color: '#9ca3af', flexShrink: 0, marginTop: '2px' }} />
-                      <span style={{ fontSize: '13px', color: '#4b5563' }}>{space.address}</span>
-                    </div>
+                        {/* Address */}
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', marginBottom: '8px' }}>
+                          <MapPin style={{ width: '14px', height: '14px', color: '#9ca3af', flexShrink: 0, marginTop: '2px' }} />
+                          <span style={{ fontSize: '13px', color: '#4b5563' }}>{space.address}</span>
+                        </div>
 
-                    {/* Multi-location row */}
-                    {space.multiLocation && (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '14px' }}>
-                        <Star style={{ width: '13px', height: '13px', color: space.accentColor, flexShrink: 0 }} />
-                        <span style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor }}>
-                          Multiple NYC locations available
-                        </span>
+                        {/* Multi-location */}
+                        {space.multiLocation && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '14px' }}>
+                            <Star style={{ width: '13px', height: '13px', color: space.accentColor, flexShrink: 0 }} />
+                            <span style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor }}>
+                              Multiple NYC locations available
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Amenity chips — text only */}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
+                          {space.amenities.map(amenity => (
+                            <span
+                              key={amenity}
+                              style={{
+                                fontSize: '11px',
+                                fontWeight: 500,
+                                padding: '4px 10px',
+                                borderRadius: '20px',
+                                background: space.bgColor,
+                                color: space.textColor,
+                                border: `1px solid ${space.accentColor}30`,
+                                whiteSpace: 'nowrap',
+                                lineHeight: '1.4',
+                              }}
+                            >
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* CTA */}
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <a
+                            href={space.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              flex: 1,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              padding: '9px 14px',
+                              borderRadius: '8px',
+                              fontSize: '13px',
+                              fontWeight: 600,
+                              background: space.accentColor,
+                              color: '#ffffff',
+                              textDecoration: 'none',
+                            }}
+                          >
+                            <Globe style={{ width: '14px', height: '14px', flexShrink: 0 }} />
+                            <span>View Locations</span>
+                          </a>
+                          {!space.multiLocation && (
+                            <a
+                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(space.address)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '6px',
+                                padding: '9px 14px',
+                                borderRadius: '8px',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                background: '#f9fafb',
+                                color: '#374151',
+                                border: '1px solid #e5e7eb',
+                                textDecoration: 'none',
+                              }}
+                            >
+                              <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
+                              <span>Directions</span>
+                            </a>
+                          )}
+                        </div>
+
                       </div>
-                    )}
-
-                    {/* Amenity chips — TEXT ONLY, zero icons inside chips */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '20px' }}>
-                      {space.amenities.map(amenity => (
-                        <span
-                          key={amenity}
-                          style={{
-                            fontSize: '11px',
-                            fontWeight: 500,
-                            padding: '4px 10px',
-                            borderRadius: '20px',
-                            background: space.bgColor,
-                            color: space.textColor,
-                            border: `1px solid ${space.accentColor}30`,
-                            whiteSpace: 'nowrap',
-                            lineHeight: '1.4',
-                          }}
-                        >
-                          {amenity}
-                        </span>
-                      ))}
                     </div>
-
-                    {/* CTA */}
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <a
-                        href={space.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          flex: 1,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '6px',
-                          padding: '9px 14px',
-                          borderRadius: '8px',
-                          fontSize: '13px',
-                          fontWeight: 600,
-                          background: space.accentColor,
-                          color: '#ffffff',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        <Globe style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                        <span>View Locations</span>
-                      </a>
-                      {!space.multiLocation && (
-                        <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(space.address)}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '6px',
-                            padding: '9px 14px',
-                            borderRadius: '8px',
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            background: '#f9fafb',
-                            color: '#374151',
-                            border: '1px solid #e5e7eb',
-                            textDecoration: 'none',
-                          }}
-                        >
-                          <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                          <span>Directions</span>
-                        </a>
-                      )}
-                    </div>
-
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

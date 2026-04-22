@@ -780,19 +780,20 @@ if (authLoading || servicesLoading) {
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
                   style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  whiteSpace: 'nowrap',
-                  background: selectedCategory === cat.id ? '#2563eb' : 'transparent',
-                  color: selectedCategory === cat.id ? '#ffffff' : '#374151',
-                  border: selectedCategory === cat.id ? 'none' : '1px solid #e5e7eb',
-                  cursor: 'pointer',
-                 fontSize: '13px',
-                 fontWeight: selectedCategory === cat.id ? 600 : 400,
-                 }}>
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 14px',
+                    borderRadius: '20px',
+                    whiteSpace: 'nowrap',
+                    background: selectedCategory === cat.id ? '#2563eb' : 'rgba(255,255,255,0.85)',
+                    color: selectedCategory === cat.id ? '#ffffff' : '#374151',
+                    border: selectedCategory === cat.id ? 'none' : '1px solid #d1d5db',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: selectedCategory === cat.id ? 600 : 500,
+                    boxShadow: selectedCategory === cat.id ? '0 1px 4px rgba(37,99,235,0.3)' : '0 1px 2px rgba(0,0,0,0.06)',
+                  }}>
                  <Icon style={{ width: '14px', height: '14px', flexShrink: 0 }} />
                  <span>{cat.label}</span>      
                </button>
