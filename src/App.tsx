@@ -9,6 +9,7 @@ import Messages from './Messages';
 import Appointments from './Appointments';
 import Admin from './Admin';
 import OnlineResources from './OnlineResources';
+import CoworkingSpaces from './CoworkingSpaces';
 import Schools from './Schools';
 import AISearch from './AISearch';
 
@@ -830,6 +831,7 @@ if (authLoading || servicesLoading) {
     </main>
 
 <div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+  <CoworkingSpaces /> 
   <Schools language={language} />
   <OnlineResources language={language} />
 </div>
