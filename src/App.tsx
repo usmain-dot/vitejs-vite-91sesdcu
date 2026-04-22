@@ -772,7 +772,7 @@ if (authLoading || servicesLoading) {
 
         {/* Category Filter */}
         <div className="mb-8 px-4">
-          <div className="flex flex-wrap gap-2 pb-2 max-w-6xl mx-auto" style={{ paddingLeft: '4px', paddingRight: '4px' }}>
+           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', paddingBottom: '8px', paddingLeft: '4px', paddingRight: '4px' }}>
             {categories.map(cat => {
               const Icon = cat.icon;
               return (
