@@ -754,7 +754,7 @@ if (authLoading || servicesLoading) {
     
 
     {/* Main Content */}
-    <main className="flex-1 py-8" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+    <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
       <div style={{ width: '100%' }}>
         {/* Search Bar */}
         <div className="mb-8 px-4">
@@ -830,13 +830,13 @@ if (authLoading || servicesLoading) {
       </div>
     </main>
 
-<div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+<div style={{ paddingLeft: '12px', paddingRight: '12px' }}>
   <CoworkingSpaces /> 
   <OnlineResources language={language} />
   <Schools language={language} />
 </div>
     {/* Phase 2 & 3 Features */}
-    <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '24px', paddingRight: '24px' }}>
+    <section className="py-16" style={{ background: '#f9fafb', paddingLeft: '12px', paddingRight: '12px' }}>
       <div className="container mx-auto max-w-7xl">
         <div className="mb-16">
           <h2 className="text-4xl font-bold text-center mb-4" style={{ color: '#1e293b' }}>{t.phase2}</h2>
@@ -918,7 +918,7 @@ if (authLoading || servicesLoading) {
       </div>
     </section>
 
-<footer className="py-12" style={{ background: '#1e293b', paddingLeft: '24px', paddingRight: '24px' }}>
+<footer className="py-12" style={{ background: '#1e293b', paddingLeft: '12px', paddingRight: '12px' }}>
   <div className="container mx-auto max-w-7xl text-center">
     <p style={{ color: '#ffffff', fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
       © 2025 Bridge. {t.tagline}
