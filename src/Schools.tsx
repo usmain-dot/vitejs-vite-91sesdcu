@@ -232,66 +232,63 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
           </div>
         </div>
 
-        {!hasInteracted ? (
-  <div className="text-center py-16">
-    <GraduationCap className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-    <p className="text-gray-500 text-lg">Select a school type above to browse schools</p>
-  </div>
-) : filtered.length === 0 ? (
-  <div className="text-center py-16">
-    <GraduationCap className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-    <p className="text-gray-500 text-lg">No schools found. Try adjusting your filters.</p>
-  </div>
-) : (
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-    {filtered.map(school => {
-      const colors = typeColors[school.type] || typeColors['university'];
-      return (
-        <div key={school.id} className="bg-white rounded-xl p-6 hover:shadow-lg transition-all" style={{ border: '1px solid #e5e7eb', borderTop: '4px solid ' + colors.border }}>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold px-3 py-1 rounded-full capitalize" style={{ background: colors.bg, color: colors.text }}>
-              {school.type}
-            </span>
-            <span className="text-xs text-gray-400 font-medium">{school.borough}</span>
+        <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {schools.length} schools</p>
+
+        {filtered.length === 0 ? (
+          <div className="text-center py-16">
+            <GraduationCap className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg">No schools found. Try adjusting your filters.</p>
           </div>
-          <h3 className="font-bold text-gray-800 text-base mb-2">{school.name}</h3>
-          {school.grades && (
-            <p className="text-xs font-medium mb-2" style={{ color: colors.text }}>Grades: {school.grades}</p>
-          )}
-          <p className="text-gray-500 text-sm mb-4 leading-relaxed">{school.description}</p>
-          <div className="space-y-1 text-sm text-gray-600 mb-4">
-            <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
-              <span>{school.address}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4 flex-shrink-0 text-gray-400" />
-              <span>{school.phone}</span>
-            </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+            {filtered.map(school => {
+              const colors = typeColors[school.type] || typeColors['university'];
+              return (
+                <div key={school.id} className="bg-white rounded-xl p-6 hover:shadow-lg transition-all" style={{ border: '1px solid #e5e7eb', borderTop: '4px solid ' + colors.border }}>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-semibold px-3 py-1 rounded-full capitalize" style={{ background: colors.bg, color: colors.text }}>
+                      {school.type}
+                    </span>
+                    <span className="text-xs text-gray-400 font-medium">{school.borough}</span>
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-base mb-2">{school.name}</h3>
+                  {school.grades && (
+                    <p className="text-xs font-medium mb-2" style={{ color: colors.text }}>Grades: {school.grades}</p>
+                  )}
+                  <p className="text-gray-500 text-sm mb-4 leading-relaxed">{school.description}</p>
+                  <div className="space-y-1 text-sm text-gray-600 mb-4">
+                    <div className="flex items-start gap-2">
+                      <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
+                      <span>{school.address}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 flex-shrink-0 text-gray-400" />
+                      <span>{school.phone}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {school.languages.map(lang => (
+                      <span key={lang} className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
+                        {lang}
+                      </span>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <a href={school.website} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: colors.bg, color: colors.text, textDecoration: 'none' }}>
+                      <Globe className="w-4 h-4" />
+                      <span>Visit Website</span>
+                    </a>
+                    <a href={'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(school.address)} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}>
+                      <MapPin className="w-4 h-4" />
+                      <span>Directions</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <div className="flex flex-wrap gap-1 mb-4">
-            {school.languages.map(lang => (
-              <span key={lang} className="text-xs px-2 py-0.5 rounded-full" style={{ background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
-                {lang}
-              </span>
-            ))}
-          </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <a href={school.website} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: colors.bg, color: colors.text, textDecoration: 'none' }}>
-              <Globe className="w-4 h-4" />
-              <span>Visit Website</span>
-            </a>
-            <a href={'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(school.address)} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}>
-              <MapPin className="w-4 h-4" />
-              <span>Directions</span>
-            </a>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-)}
- </div>
-</section>
+        )}
+      </div>
+    </section>
   );
 }

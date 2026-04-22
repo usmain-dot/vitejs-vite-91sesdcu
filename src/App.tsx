@@ -753,8 +753,8 @@ if (authLoading || servicesLoading) {
     
 
     {/* Main Content */}
-    <main className="flex-1 py-8" style={{ paddingLeft: '0', paddingRight: '0' }}>
-      <div style={{ width: '100%', maxWidth: '1400px', margin: '0 auto', paddingLeft: '24px', paddingRight: '24px' }}>
+    <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
+      <div style={{ width: '100%' }}>
         {/* Search Bar */}
         <div className="mb-8 px-4">
           <div className="relative max-w-2xl mx-auto">
