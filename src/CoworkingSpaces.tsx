@@ -309,7 +309,7 @@ export default function CoworkingSpaces() {
             <p className="text-gray-500 text-lg">No spaces found. Try adjusting your filters.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px', padding: '0 8px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
             {filtered.map(space => {
               const tierCfg = tierConfig[space.tier];
               return (
