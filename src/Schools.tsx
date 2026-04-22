@@ -240,7 +240,7 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
             <p className="text-gray-500 text-lg">No schools found. Try adjusting your filters.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px', padding: '0 8px' }}>
             {filtered.map(school => {
               const colors = typeColors[school.type] || typeColors['university'];
               return (

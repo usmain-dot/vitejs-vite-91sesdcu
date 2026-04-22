@@ -823,7 +823,7 @@ if (authLoading || servicesLoading) {
     <p className="text-gray-500 text-lg">{t.noResults}</p>
   </div>
 ) : (
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px', padding: '0 16px' }}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px', padding: '0 24px' }}>
     {filteredServices.map(service => <ServiceCard key={service.id} service={service} />)}
   </div>
 )}
