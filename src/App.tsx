@@ -831,7 +831,7 @@ if (authLoading || servicesLoading) {
 )}
       </div>
     </main>
-    <AboutSection />
+    <AboutSection language={language} />
 
 <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
   <CoworkingSpaces /> 
