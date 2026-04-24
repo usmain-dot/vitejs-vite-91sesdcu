@@ -375,6 +375,7 @@ export default function App() {
   const [showMessages, setShowMessages] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [selectedService, setSelectedService] = useState<{ id: number; name: string } | null>(null);
 
   // Check authentication status
@@ -685,6 +686,19 @@ if (authLoading || servicesLoading) {
         <Admin onClose={() => setShowAdmin(false)} />
       </div>
     )}
+
+    {/* About Modal */}
+    {showAbout && (
+      <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
+        <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#2a9df4', padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ color: '#ffffff', fontWeight: 700, fontSize: '18px', margin: 0 }}>About Bridge NYC</h2>
+          <button onClick={() => setShowAbout(false)} style={{ background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', borderRadius: '8px', padding: '6px 14px', cursor: 'pointer', fontSize: '14px', fontWeight: 500 }}>
+            Close
+          </button>
+        </div>
+        <AboutSection language={language} />
+      </div>
+    )}
 {/* Header */}
 <header className="sticky top-0 z-50 text-white shadow-lg" style={{ background: '#2a9df4' }}>
   <div style={{ paddingLeft: '16px', paddingRight: '16px', paddingTop: '12px', paddingBottom: '12px' }}>
@@ -733,6 +747,10 @@ if (authLoading || servicesLoading) {
             <LogOut className="w-4 h-4" /><span>{t.signIn}</span>
           </button>
         )}
+        <button onClick={() => setShowAbout(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap', cursor: 'pointer' }}>
+          <span>About</span>
+        </button>
+
         <div className="relative">
           <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
             <Globe className="w-4 h-4" /><span>{language.toUpperCase()}</span>
@@ -831,7 +849,6 @@ if (authLoading || servicesLoading) {
 )}
       </div>
     </main>
-    <AboutSection language={language} />
 
 <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
   <CoworkingSpaces /> 
