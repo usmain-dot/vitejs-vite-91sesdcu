@@ -84,7 +84,7 @@ export default function CoworkingSpaces() {
 
   return (
     <section className="py-16" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb' }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 48px' }}>
+      <div className="max-w-7xl mx-auto px-6">
 
         {/* Header */}
         <div className="text-center mb-10">
