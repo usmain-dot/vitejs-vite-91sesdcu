@@ -150,9 +150,9 @@ export default function CoworkingSpaces() {
                   style={{
                     border: '1px solid #e5e7eb',
                     overflow: 'hidden'
-                   }}
+                  }}
                  >
-
+                  <div style={{ height: '4px', background: space.accentColor }} />
                   <div className="p-6">
 
                     {/* Tier badge + price */}
