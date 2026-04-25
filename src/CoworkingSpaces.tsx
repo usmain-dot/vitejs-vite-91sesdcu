@@ -51,17 +51,19 @@ const priceLabel: Record<string, string> = {
 export default function CoworkingSpaces() {
   const [selectedTier,    setSelectedTier]    = useState<Tier>('all');
   const [selectedBorough, setSelectedBorough] = useState<Borough>('all');
+  const [hasInteracted,   setHasInteracted]   = useState(false);
 
   const tiers:    Tier[]    = ['all', 'enterprise', 'premium', 'community', 'popular'];
   const boroughs: Borough[] = ['all', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'];
 
   const filtered = useMemo(() => {
+    if (!hasInteracted) return [];
     return spaces.filter(s => {
       const matchTier    = selectedTier    === 'all' || s.tier    === selectedTier;
       const matchBorough = selectedBorough === 'all' || s.borough === selectedBorough;
       return matchTier && matchBorough;
     });
-  }, [selectedTier, selectedBorough]);
+  }, [selectedTier, selectedBorough, hasInteracted]);
 
   // ── Same pill style as the fixed category buttons in App.tsx ──
   const btnStyle = (active: boolean, activeColor: string) => ({
@@ -103,7 +105,7 @@ export default function CoworkingSpaces() {
               {tiers.map(tier => {
                 const cfg = tierConfig[tier];
                 return (
-                  <button key={tier} onClick={() => setSelectedTier(tier)} style={btnStyle(selectedTier === tier, cfg.color)}>
+                  <button key={tier} onClick={() => { setHasInteracted(true); setSelectedTier(tier); }} style={btnStyle(selectedTier === tier, cfg.color)}>
                     {cfg.label}
                   </button>
                 );
@@ -114,7 +116,7 @@ export default function CoworkingSpaces() {
             <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">Borough</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {boroughs.map(borough => (
-                <button key={borough} onClick={() => setSelectedBorough(borough)} style={btnStyle(selectedBorough === borough, '#1e293b')}>
+                <button key={borough} onClick={() => { setHasInteracted(true); setSelectedBorough(borough); }} style={btnStyle(selectedBorough === borough, '#1e293b')}>
                   {borough === 'all' ? 'All Boroughs' : borough}
                 </button>
               ))}
@@ -125,13 +127,19 @@ export default function CoworkingSpaces() {
         <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {spaces.length} spaces</p>
 
         {/* Grid */}
-        {filtered.length === 0 ? (
+        {!hasInteracted ? (
+          <div className="text-center py-16">
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏢</div>
+            <p className="text-gray-500 text-lg font-medium">Select a space type to explore</p>
+            <p className="text-gray-400 text-sm mt-2">Enterprise, premium, community and more</p>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-500 text-lg">No spaces found. Try adjusting your filters.</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
             {filtered.map(space => {
               const tierCfg = tierConfig[space.tier];
               return (
