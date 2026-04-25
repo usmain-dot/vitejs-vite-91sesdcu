@@ -84,7 +84,7 @@ export default function CoworkingSpaces() {
 
   return (
     <section className="py-16" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb' }}>
-      <div className="max-w-7xl mx-auto px-6">
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Header */}
         <div className="text-center mb-10">
@@ -139,7 +139,7 @@ export default function CoworkingSpaces() {
             <p className="text-gray-500 text-lg">No spaces found. Try adjusting your filters.</p>
           </div>
         ) : (
-          <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px', maxWidth: '1100px', margin: '0 auto', padding: '0 24px' }}>
             {filtered.map(space => {
               const tierCfg = tierConfig[space.tier];
               return (
