@@ -146,13 +146,14 @@ export default function CoworkingSpaces() {
               return (
                 <div
                   key={space.id}
-                  className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all"
+                  className="bg-white rounded-2xl hover:shadow-lg transition-all"
                   style={{
                     border: '1px solid #e5e7eb',
-                    overflow: 'hidden'
+                    padding: '12px',          // ⭐ THIS IS THE FIX
+                    paddingTop: '0',          // keep accent bar tight
+                    borderTop: `4px solid ${space.accentColor}`
                   }}
-                 >
-                  <div style={{ height: '4px', background: space.accentColor }} />
+                >
                   <div className="p-6">
 
                     {/* Tier badge + price */}
