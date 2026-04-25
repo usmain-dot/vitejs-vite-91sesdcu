@@ -144,7 +144,15 @@ export default function CoworkingSpaces() {
             {filtered.map(space => {
               const tierCfg = tierConfig[space.tier];
               return (
-                <div key={space.id} className="bg-white rounded-xl hover:shadow-lg transition-all" style={{ border: '1px solid #e5e7eb', borderTop: `4px solid ${space.accentColor}` }}>
+                <div
+                  key={space.id}
+                  className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all"
+                  style={{
+                    border: '1px solid #e5e7eb',
+                    overflow: 'hidden'
+                   }}
+                 >
+
                   <div className="p-6">
 
                     {/* Tier badge + price */}
