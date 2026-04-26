@@ -754,10 +754,6 @@ if (authLoading || servicesLoading) {
             <LogOut className="w-4 h-4" /><span>{t.signIn}</span>
           </button>
         )}
-        <button onClick={() => setShowAbout(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap', cursor: 'pointer' }}>
-          <span>About</span>
-        </button>
-
         <div className="relative">
           <button onClick={() => setShowLanguageMenu(!showLanguageMenu)} style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', color: '#ffffff' }}>
             <Globe className="w-4 h-4" /><span>{language.toUpperCase()}</span>
@@ -772,6 +768,10 @@ if (authLoading || servicesLoading) {
             </div>
           )}
         </div>
+
+        <button onClick={() => setShowAbout(true)} style={{ background: 'rgba(255,255,255,0.2)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.3)', padding: '4px 10px', fontSize: '13px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap', cursor: 'pointer' }}>
+          <span>About</span>
+        </button>
       </div>
 
     </div>
