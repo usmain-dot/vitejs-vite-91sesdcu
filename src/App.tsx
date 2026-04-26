@@ -858,7 +858,7 @@ if (authLoading || servicesLoading) {
     </main>
 
 <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
-  <CoworkingSpaces /> 
+  <CoworkingSpaces language={language} /> 
   <OnlineResources language={language} />
   <Schools language={language} />
 </div>

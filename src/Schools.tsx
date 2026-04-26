@@ -114,7 +114,32 @@ interface SchoolsProps {
   language?: LanguageCode;
 }
 
+const schoolTranslations: Record<LanguageCode, {
+  title: string;
+  subtitle: string;
+  schoolType: string;
+  borough: string;
+  allBoroughs: string;
+  languageLabel: string;
+  allLanguages: string;
+  showing: string;
+  of: string;
+  schools: string;
+  selectPrompt: string;
+  selectSub: string;
+  noResults: string;
+  grades: string;
+  visitWebsite: string;
+  directions: string;
+}> = {
+  en: { title: 'Schools in New York', subtitle: 'Find universities, colleges, and schools across all five boroughs', schoolType: 'School Type', borough: 'Borough', allBoroughs: 'All Boroughs', languageLabel: 'Language of Instruction', allLanguages: 'All Languages', showing: 'Showing', of: 'of', schools: 'schools', selectPrompt: 'Select a school type to explore', selectSub: 'Universities, colleges, high schools, and more', noResults: 'No schools found. Try adjusting your filters.', grades: 'Grades', visitWebsite: 'Visit Website', directions: 'Directions' },
+  es: { title: 'Escuelas en Nueva York', subtitle: 'Encuentra universidades, colegios y escuelas en los cinco condados', schoolType: 'Tipo de Escuela', borough: 'Condado', allBoroughs: 'Todos los Condados', languageLabel: 'Idioma de Instrucción', allLanguages: 'Todos los Idiomas', showing: 'Mostrando', of: 'de', schools: 'escuelas', selectPrompt: 'Selecciona un tipo de escuela para explorar', selectSub: 'Universidades, colegios, institutos y más', noResults: 'No se encontraron escuelas. Intenta ajustar los filtros.', grades: 'Grados', visitWebsite: 'Visitar Sitio Web', directions: 'Cómo Llegar' },
+  ar: { title: 'المدارس في نيويورك', subtitle: 'ابحث عن الجامعات والكليات والمدارس في جميع الأحياء الخمسة', schoolType: 'نوع المدرسة', borough: 'الحي', allBoroughs: 'جميع الأحياء', languageLabel: 'لغة التدريس', allLanguages: 'جميع اللغات', showing: 'عرض', of: 'من', schools: 'مدارس', selectPrompt: 'اختر نوع مدرسة للاستكشاف', selectSub: 'جامعات، كليات، مدارس ثانوية والمزيد', noResults: 'لم يتم العثور على مدارس. حاول تعديل الفلاتر.', grades: 'الصفوف', visitWebsite: 'زيارة الموقع', directions: 'الاتجاهات' },
+  he: { title: 'בתי ספר בניו יורק', subtitle: 'מצא אוניברסיטאות, מכללות ובתי ספר בכל חמשת הרובעים', schoolType: 'סוג בית הספר', borough: 'רובע', allBoroughs: 'כל הרובעים', languageLabel: 'שפת הוראה', allLanguages: 'כל השפות', showing: 'מציג', of: 'מתוך', schools: 'בתי ספר', selectPrompt: 'בחר סוג בית ספר לחקור', selectSub: 'אוניברסיטאות, מכללות, תיכונים ועוד', noResults: 'לא נמצאו בתי ספר. נסה לשנות את המסננים.', grades: 'כיתות', visitWebsite: 'בקר באתר', directions: 'הוראות הגעה' },
+  sw: { title: 'Shule New York', subtitle: 'Pata vyuo vikuu, vyuo, na shule katika wilaya zote tano', schoolType: 'Aina ya Shule', borough: 'Wilaya', allBoroughs: 'Wilaya Zote', languageLabel: 'Lugha ya Mafunzo', allLanguages: 'Lugha Zote', showing: 'Inaonyesha', of: 'kati ya', schools: 'shule', selectPrompt: 'Chagua aina ya shule kuchunguza', selectSub: 'Vyuo vikuu, vyuo, shule za upili na zaidi', noResults: 'Hakuna shule zilizopatikana. Jaribu kubadilisha vichujio.', grades: 'Madarasa', visitWebsite: 'Tembelea Tovuti', directions: 'Maelekezo' },
+};
 export default function Schools({ language = 'en' }: SchoolsProps) {
+  const st = schoolTranslations[language];
   const [selectedType,     setSelectedType]     = useState<SchoolType>('all');
   const [selectedBorough,  setSelectedBorough]  = useState<Borough>('all');
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('all');
@@ -169,13 +194,13 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#dbeafe' }}>
             <GraduationCap className="w-8 h-8" style={{ color: '#2a9df4' }} />
           </div>
-          <h2 className="text-4xl font-bold mb-3" style={{ color: '#1e293b' }}>Schools in New York</h2>
-          <p className="text-gray-500 text-lg max-w-2xl mx-auto">Find universities, colleges, and schools across all five boroughs</p>
+          <h2 className="text-4xl font-bold mb-3" style={{ color: '#1e293b' }}>{st.title}</h2>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">{st.subtitle}</p>
         </div>
 
         <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
           <div className="mb-4">
-            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">School Type</p>
+            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{st.schoolType}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {types.map(type => (
                 <button key={type.id} onClick={() => handleTypeChange(type.id)} style={btnStyle(selectedType === type.id, '#2a9df4')}>
@@ -185,21 +210,21 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
             </div>
           </div>
           <div className="mb-4">
-            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Borough</p>
+            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{st.borough}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {boroughs.map(borough => (
                 <button key={borough} onClick={() => setSelectedBorough(borough)} style={btnStyle(selectedBorough === borough, '#1e293b')}>
-                  {borough === 'all' ? 'All Boroughs' : borough}
+                  {borough === 'all' ? st.allBoroughs : borough}
                 </button>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">Language of Instruction</p>
+            <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{st.languageLabel}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {languages.map(lang => (
                 <button key={lang} onClick={() => setSelectedLanguage(lang)} style={btnStyle(selectedLanguage === lang, '#10b981')}>
-                  {lang === 'all' ? 'All Languages' : lang}
+                  {lang === 'all' ? st.allLanguages : lang}
                 </button>
               ))}
             </div>
@@ -209,17 +234,17 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
         {!hasInteracted ? (
           <div className="text-center py-16">
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎓</div>
-            <p className="text-gray-500 text-lg font-medium">Select a school type to explore</p>
-            <p className="text-gray-400 text-sm mt-2">Universities, colleges, high schools, and more</p>
+            <p className="text-gray-500 text-lg font-medium">{st.selectPrompt}</p>
+            <p className="text-gray-400 text-sm mt-2">{st.selectSub}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <GraduationCap className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No schools found. Try adjusting your filters.</p>
+            <p className="text-gray-500 text-lg">{st.noResults}</p>
           </div>
         ) : (
           <>
-            <p className="text-sm text-gray-500 mb-4">Showing {filtered.length} of {schools.length} schools</p>
+            <p className="text-sm text-gray-500 mb-4">{st.showing} {filtered.length} {st.of} {schools.length} {st.schools}</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
               {filtered.map(school => {
                 const colors = typeColors[school.type] || typeColors['university'];
@@ -244,7 +269,7 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                     </div>
                     <h3 style={{ fontWeight: 700, color: '#1f2937', fontSize: '15px', marginBottom: '6px' }}>{school.name}</h3>
                     {school.grades && (
-                      <p style={{ fontSize: '12px', fontWeight: 600, color: colors.text, marginBottom: '8px' }}>Grades: {school.grades}</p>
+                      <p style={{ fontSize: '12px', fontWeight: 600, color: colors.text, marginBottom: '8px' }}>{st.grades}: {school.grades}</p>
                     )}
                     <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>{school.description}</p>
                     <div style={{ marginBottom: '14px' }}>
@@ -283,11 +308,11 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <a href={school.website} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: colors.bg, color: colors.text, textDecoration: 'none' }}>
                         <Globe style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                        <span>Visit Website</span>
+                        <span>{st.visitWebsite}</span>
                       </a>
                       <a href={'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(school.address)} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}>
                         <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                        <span>Directions</span>
+                        <span>{st.directions}</span>
                       </a>
                       </div>
                       
