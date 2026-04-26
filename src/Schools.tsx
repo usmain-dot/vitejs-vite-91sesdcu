@@ -289,6 +289,8 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
                         <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
                         <span>Directions</span>
                       </a>
+                      </div>
+                      
                     </div>
                   </div>
                 );
