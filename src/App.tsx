@@ -558,7 +558,13 @@ useEffect(() => {
     return (service[translatedKey] as string) || service.description;
   };
     return (
-      <div id={`service-${service.id}`} className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-all" style={{ border: '1px solid #e5e7eb' }}>
+      <div id={`service-${service.id}`} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all" style={{
+         border: '1px solid #e5e7eb',
+         padding: '12px'
+      }}
+    >
+      <div className="p-6">
+
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg" style={{ backgroundColor: categoryColors[service.category]?.bg || '#e5e7eb' }}>
@@ -601,6 +607,7 @@ useEffect(() => {
     style={{ background: '#fef9ec', color: '#92650a', border: '1px solid #fde9a2', padding: '6px 10px', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
     <Calendar style={{ width: '13px', height: '13px', flexShrink: 0 }} /><span>{t.bookAppointment}</span>
   </button>
+</div>
 </div>
   </div>
     );

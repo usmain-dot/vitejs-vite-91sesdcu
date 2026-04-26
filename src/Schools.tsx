@@ -224,7 +224,18 @@ export default function Schools({ language = 'en' }: SchoolsProps) {
               {filtered.map(school => {
                 const colors = typeColors[school.type] || typeColors['university'];
                 return (
-                  <div key={school.id} className="bg-white rounded-xl p-6 hover:shadow-lg transition-all" style={{ border: '1px solid #e5e7eb', borderTop: '4px solid ' + colors.border }}>
+                  <div
+                    key={school.id}
+                    className="bg-white rounded-2xl hover:shadow-lg transition-all"
+                    style={{
+                      border: '1px solid #e5e7eb',
+                      padding: '12px',
+                      paddingTop: '0',
+                      borderTop: '4px solid ' + colors.border
+                    }}
+                  >
+                    <div className="p-6">
+
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                       <span style={{ fontSize: '11px', fontWeight: 600, padding: '3px 10px', borderRadius: '20px', background: colors.bg, color: colors.text, textTransform: 'capitalize' }}>
                         {school.type}

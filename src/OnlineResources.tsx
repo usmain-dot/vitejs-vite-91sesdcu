@@ -292,9 +292,15 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
               href={resource.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white rounded-xl p-6 flex flex-col gap-4 hover:shadow-lg transition-all"
-              style={{ border: '1px solid #e5e7eb', textDecoration: 'none' }}
-            >
+              className="group bg-white rounded-2xl flex flex-col gap-4 hover:shadow-lg transition-all"
+              style={{
+                border: '1px solid #e5e7eb',
+                padding: '12px',
+                textDecoration: 'none'
+              }}
+             >
+              <div className="p-6">
+
               {/* Tag */}
               <div className="flex items-center justify-between">
                 <span
@@ -326,6 +332,7 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
               >
                 {t.visitWebsite}
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </div>
               </div>
             </a>
 
