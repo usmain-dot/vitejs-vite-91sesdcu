@@ -166,7 +166,7 @@ export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
             <p className="text-gray-500 text-lg">{ct.noResults}</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
             {filtered.map(space => {
               const tierCfg = tierConfig[space.tier];
               return (
