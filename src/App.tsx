@@ -71,6 +71,8 @@ interface Translation {
   signIn: string;
   loginToMessage: string;
   loginToBook: string;
+  selectCategory: string;
+  browseCategories: string;
 }
 
 type LanguageCode = 'en' | 'es' | 'ar' | 'he' | 'sw';
@@ -88,7 +90,9 @@ const translations: Record<LanguageCode, Translation> = {
     phase3: "Phase 3 Features", messaging: "Direct Messaging", scheduling: "Appointment Scheduling",
     forums: "Community Forums", aiMatching: "AI Service Matching", documents: "Document Storage",
     caseManagement: "Case Management", signIn: "Sign In", 
-    loginToMessage: "Sign in to send messages", loginToBook: "Sign in to book appointments"
+    loginToMessage: "Sign in to send messages", loginToBook: "Sign in to book appointments",
+    selectCategory: "Select a category or search to find services",
+    browseCategories: "Browse housing, healthcare, legal aid, and more"
   },
   es: {
     appName: "Bridge", tagline: "Conectando comunidades con servicios esenciales", search: "Buscar servicios...",
@@ -102,7 +106,9 @@ const translations: Record<LanguageCode, Translation> = {
     phase3: "Funciones Fase 3", messaging: "Mensajería Directa", scheduling: "Programación de Citas",
     forums: "Foros Comunitarios", aiMatching: "Coincidencia de IA", documents: "Almacenamiento de Documentos",
     caseManagement: "Gestión de Casos", signIn: "Iniciar Sesión",
-    loginToMessage: "Inicie sesión para enviar mensajes", loginToBook: "Inicie sesión para reservar citas"
+    loginToMessage: "Inicie sesión para enviar mensajes", loginToBook: "Inicie sesión para reservar citas",
+    selectCategory: "Selecciona una categoría o busca para encontrar servicios",
+    browseCategories: "Explora vivienda, salud, ayuda legal y más"
   },
   ar: {
     appName: "Bridge", tagline: "ربط المجتمعات بالخدمات الأساسية", search: "البحث عن الخدمات...",
@@ -115,7 +121,9 @@ const translations: Record<LanguageCode, Translation> = {
     comingSoon: "قريبا", phase2: "ميزات المرحلة 2", phase3: "ميزات المرحلة 3",
     messaging: "المراسلة المباشرة", scheduling: "جدولة المواعيد", forums: "المنتديات المجتمعية",
     aiMatching: "مطابقة الذكاء الاصطناعي", documents: "تخزين المستندات", caseManagement: "إدارة الحالات",
-    signIn: "تسجيل الدخول", loginToMessage: "تسجيل الدخول لإرسال الرسائل", loginToBook: "تسجيل الدخول لحجز المواعيد"
+    signIn: "تسجيل الدخول", loginToMessage: "تسجيل الدخول لإرسال الرسائل", loginToBook: "تسجيل الدخول لحجز المواعيد",
+    selectCategory: "اختر فئة أو ابحث للعثور على الخدمات",
+    browseCategories: "تصفح الإسكان والرعاية الصحية والمساعدة القانونية والمزيد"
   },
   he: {
     appName: "Bridge", tagline: "חיבור קהילות לשירותים חיוניים", search: "חיפוש שירותים...",
@@ -128,7 +136,9 @@ const translations: Record<LanguageCode, Translation> = {
     comingSoon: "בקרוב", phase2: "תכונות שלב 2", phase3: "תכונות שלב 3",
     messaging: "הודעות ישירות", scheduling: "תזמון פגישות", forums: "פורומים קהילתיים",
     aiMatching: "התאמת AI", documents: "אחסון מסמכים", caseManagement: "ניהול מקרים",
-    signIn: "התחבר", loginToMessage: "התחבר לשליחת הודעות", loginToBook: "התחבר לקביעת פגישות"
+    signIn: "התחבר", loginToMessage: "התחבר לשליחת הודעות", loginToBook: "התחבר לקביעת פגישות",
+    selectCategory: "בחר קטגוריה או חפש כדי למצוא שירותים",
+    browseCategories: "עיין בדיור, בריאות, סיוע משפטי ועוד"
   },
   sw: {
     appName: "Bridge", tagline: "Kuunganisha jamii na huduma muhimu", search: "Tafuta huduma...",
@@ -142,7 +152,9 @@ const translations: Record<LanguageCode, Translation> = {
     phase3: "Vipengele vya Awamu ya 3", messaging: "Ujumbe wa Moja kwa Moja", scheduling: "Ratiba ya Miadi",
     forums: "Majukwaa ya Jamii", aiMatching: "Uoanishaji wa AI", documents: "Uhifadhi wa Hati",
     caseManagement: "Usimamizi wa Kesi", signIn: "Ingia", 
-    loginToMessage: "Ingia kutuma ujumbe", loginToBook: "Ingia kuweka miadi"
+    loginToMessage: "Ingia kutuma ujumbe", loginToBook: "Ingia kuweka miadi",
+    selectCategory: "Chagua kategoria au tafuta kupata huduma",
+    browseCategories: "Vinjari makazi, afya, msaada wa kisheria na zaidi"
   }
 };
 
@@ -842,8 +854,8 @@ if (authLoading || servicesLoading) {
 ) : filteredServices.length === 0 && selectedCategory === '' && searchQuery.trim() === '' ? (
   <div className="text-center py-16 px-6">
     <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔍</div>
-    <p className="text-gray-500 text-lg font-medium">Select a category or search to find services</p>
-    <p className="text-gray-400 text-sm mt-2">Browse housing, healthcare, legal aid, and more</p>
+    <p className="text-gray-500 text-lg font-medium">{t.selectCategory}</p>
+    <p className="text-gray-400 text-sm mt-2">{t.browseCategories}</p>
   </div>
 ) : filteredServices.length === 0 ? (
   <div className="text-center py-16 px-6">
