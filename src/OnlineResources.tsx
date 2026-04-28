@@ -281,8 +281,8 @@ export default function OnlineResources({ language = 'en' }: OnlineResourcesProp
         {activeTab === '' ? (
           <div className="text-center py-16">
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌐</div>
-            <p className="text-gray-500 text-lg font-medium">Select a category above to explore resources</p>
-            <p className="text-gray-400 text-sm mt-2">Housing, Utilities, and Community resources available</p>
+            <p className="text-gray-500 text-lg font-medium">{onlineT.selectPrompt}</p>
+            <p className="text-gray-400 text-sm mt-2">{onlineT.selectSub}</p>
           </div>
         ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
