@@ -143,7 +143,9 @@ export default function Admin({ onClose }: AdminProps) {
         hours: '',
         description: '',
         isOpen: true,
-        distance: 0
+        distance: 0,
+        lat: 0,
+        lng: 0
       });
       setShowAddService(false);
       setEditingService(null);

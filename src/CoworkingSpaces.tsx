@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Building2, MapPin, Globe, Star } from 'lucide-react';
 
 type Borough = 'all' | 'Manhattan' | 'Brooklyn' | 'Queens' | 'Bronx' | 'Staten Island';
@@ -36,51 +37,23 @@ const spaces: CoworkingSpace[] = [
   { id: 12, name: 'NYC Office Suites', tier: 'popular', tagline: 'Executive suites & virtual offices since 1992', borough: 'Manhattan', address: '1180 Avenue of the Americas, New York, NY 10036', website: 'https://www.nycofficesuites.com', priceRange: '$$$', amenities: ['Executive Suites', 'Virtual Office', 'Conference Rooms', 'Receptionist', 'Mail Handling', 'IT Support'], description: "One of NYC's most established executive suite providers with prime Midtown addresses. A trusted choice for businesses wanting a professional NYC presence with full-service support.", multiLocation: true, accentColor: '#344e41', bgColor: '#e9f5ee', textColor: '#1f3a2a' },
 ];
 
-const tierConfig: Record<Tier, { label: string; color: string }> = {
-  all:        { label: 'All',          color: '#374151' },
-  enterprise: { label: 'Enterprise',   color: '#1e40af' },
-  premium:    { label: 'Premium',      color: '#065f46' },
-  community:  { label: 'Community',    color: '#92400e' },
-  popular:    { label: 'Popular Pick', color: '#6d28d9' },
-};
-
 const priceLabel: Record<string, string> = {
   '$': 'Budget-friendly', '$$': 'Moderate', '$$$': 'Premium', '$$$$': 'Enterprise',
 };
 
-type LanguageCode = 'en' | 'es' | 'ar' | 'he' | 'sw';
-
-const coworkingTranslations: Record<LanguageCode, {
-  title: string;
-  subtitle: string;
-  spaceType: string;
-  borough: string;
-  allBoroughs: string;
-  showing: string;
-  of: string;
-  spaces: string;
-  selectPrompt: string;
-  selectSub: string;
-  noResults: string;
-  viewLocations: string;
-  directions: string;
-  multiLocation: string;
-}> = {
-  en: { title: 'Co-Working Spaces in New York', subtitle: "Find flexible workspaces — from hot desks to private offices — across NYC's five boroughs", spaceType: 'Space Type', borough: 'Borough', allBoroughs: 'All Boroughs', showing: 'Showing', of: 'of', spaces: 'spaces', selectPrompt: 'Select a space type to explore', selectSub: 'Enterprise, premium, community and more', noResults: 'No spaces found. Try adjusting your filters.', viewLocations: 'View Locations', directions: 'Directions', multiLocation: 'Multiple NYC locations available' },
-  es: { title: 'Espacios de Coworking en Nueva York', subtitle: 'Encuentra espacios de trabajo flexibles — desde escritorios compartidos hasta oficinas privadas — en los cinco condados de NYC', spaceType: 'Tipo de Espacio', borough: 'Condado', allBoroughs: 'Todos los Condados', showing: 'Mostrando', of: 'de', spaces: 'espacios', selectPrompt: 'Selecciona un tipo de espacio para explorar', selectSub: 'Empresarial, premium, comunitario y más', noResults: 'No se encontraron espacios. Intenta ajustar los filtros.', viewLocations: 'Ver Ubicaciones', directions: 'Cómo Llegar', multiLocation: 'Múltiples ubicaciones en NYC disponibles' },
-  ar: { title: 'مساحات العمل المشترك في نيويورك', subtitle: 'اعثر على مساحات عمل مرنة — من المكاتب المشتركة إلى المكاتب الخاصة — عبر أحياء مدينة نيويورك الخمسة', spaceType: 'نوع المساحة', borough: 'الحي', allBoroughs: 'جميع الأحياء', showing: 'عرض', of: 'من', spaces: 'مساحات', selectPrompt: 'اختر نوع مساحة للاستكشاف', selectSub: 'مؤسسي، مميز، مجتمعي والمزيد', noResults: 'لم يتم العثور على مساحات. حاول تعديل الفلاتر.', viewLocations: 'عرض المواقع', directions: 'الاتجاهات', multiLocation: 'مواقع متعددة في NYC متاحة' },
-  he: { title: 'מרחבי עבודה משותפת בניו יורק', subtitle: 'מצא מרחבי עבודה גמישים — ממשרדים משותפים ועד משרדים פרטיים — ברחבי חמשת הרובעים של NYC', spaceType: 'סוג המרחב', borough: 'רובע', allBoroughs: 'כל הרובעים', showing: 'מציג', of: 'מתוך', spaces: 'מרחבים', selectPrompt: 'בחר סוג מרחב לחקור', selectSub: 'ארגוני, פרמיום, קהילתי ועוד', noResults: 'לא נמצאו מרחבים. נסה לשנות את המסננים.', viewLocations: 'צפה במיקומים', directions: 'הוראות הגעה', multiLocation: 'מיקומים מרובים ב-NYC זמינים' },
-  sw: { title: 'Nafasi za Kufanyia Kazi New York', subtitle: 'Pata maeneo ya kufanya kazi yanayobadilika — kutoka kwa madawati ya pamoja hadi ofisi za kibinafsi — katika wilaya zote tano za NYC', spaceType: 'Aina ya Nafasi', borough: 'Wilaya', allBoroughs: 'Wilaya Zote', showing: 'Inaonyesha', of: 'kati ya', spaces: 'nafasi', selectPrompt: 'Chagua aina ya nafasi kuchunguza', selectSub: 'Biashara, ya juu, ya jamii na zaidi', noResults: 'Hakuna nafasi zilizopatikana. Jaribu kubadilisha vichujio.', viewLocations: 'Tazama Maeneo', directions: 'Maelekezo', multiLocation: 'Maeneo mengi ya NYC yanapatikana' },
-};
-interface CoworkingProps {
-  language?: LanguageCode;
-}
-
-export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
-  const [selectedTier,    setSelectedTier]    = useState<Tier>('all');
+export default function CoworkingSpaces() {
+  const { t } = useTranslation();
+  const [selectedTier, setSelectedTier] = useState<Tier>('all');
   const [selectedBorough, setSelectedBorough] = useState<Borough>('all');
-  const [hasInteracted,   setHasInteracted]   = useState(false);
-  const ct = coworkingTranslations[language];
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const tierConfig: Record<Tier, { label: string; color: string }> = {
+    all:        { label: t('coworking.tierAll'),       color: '#374151' },
+    enterprise: { label: t('coworking.tierEnterprise'), color: '#1e40af' },
+    premium:    { label: t('coworking.tierPremium'),    color: '#065f46' },
+    community:  { label: t('coworking.tierCommunity'),  color: '#92400e' },
+    popular:    { label: t('coworking.tierPopular'),    color: '#6d28d9' },
+  };
 
   const tiers:    Tier[]    = ['all', 'enterprise', 'premium', 'community', 'popular'];
   const boroughs: Borough[] = ['all', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'];
@@ -120,14 +93,14 @@ export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#e0e7ff' }}>
             <Building2 className="w-8 h-8" style={{ color: '#4f46e5' }} />
           </div>
-          <h2 className="text-4xl font-bold mb-3" style={{ color: '#1e293b' }}>{ct.title}</h2>
-          <p className="text-gray-500 text-lg max-w-2xl mx-auto">{ct.subtitle}</p>
+          <h2 className="text-4xl font-bold mb-3" style={{ color: '#1e293b' }}>{t('coworking.title')}</h2>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">{t('coworking.subtitle')}</p>
         </div>
 
         {/* Filters */}
         <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
           <div className="mb-4">
-            <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{ct.spaceType}</p>
+            <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('coworking.spaceType')}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {tiers.map(tier => {
                 const cfg = tierConfig[tier];
@@ -140,30 +113,30 @@ export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
             </div>
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{ct.borough}</p>
+            <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('coworking.borough')}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {boroughs.map(borough => (
-                <button key={borough} onClick={() => { setHasInteracted(true); setSelectedBorough(borough); }} style={btnStyle(selectedBorough === borough, '#1e293b')}>
-                  {borough === 'all' ? ct.allBoroughs : borough}
-                </button>
-              ))}
+                 <button key={borough} onClick={() => { setHasInteracted(true); setSelectedBorough(borough); }} style={btnStyle(selectedBorough === borough, '#1e293b')}>
+                  {borough === 'all' ? t('coworking.boroughAll') : t(`coworking.borough${borough.replace(' ', '')}`)}
+                 </button>
+               ))}
             </div>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mb-4">{ct.showing} {filtered.length} {ct.of} {spaces.length} {ct.spaces}</p>
+        <p className="text-sm text-gray-500 mb-4">{t('coworking.showing')} {filtered.length} {t('coworking.of')} {spaces.length} {t('coworking.spaces')}</p>
 
         {/* Grid */}
         {!hasInteracted ? (
           <div className="text-center py-16">
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏢</div>
-            <p className="text-gray-500 text-lg font-medium">{ct.selectPrompt}</p>
-            <p className="text-gray-400 text-sm mt-2">{ct.selectSub}</p>
+            <p className="text-gray-500 text-lg font-medium">{t('coworking.selectPrompt')}</p>
+            <p className="text-gray-400 text-sm mt-2">{t('coworking.selectSub')}</p>
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">{ct.noResults}</p>
+            <p className="text-gray-500 text-lg">{t('coworking.noResults')}</p>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
@@ -211,7 +184,7 @@ export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
                     {space.multiLocation && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '14px' }}>
                         <Star style={{ width: '13px', height: '13px', color: space.accentColor, flexShrink: 0 }} />
-                        <span style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor }}>{ct.multiLocation}</span>
+                        <span style={{ fontSize: '12px', fontWeight: 500, color: space.accentColor }}>{t('coworking.multiLocation')}</span>
                       </div>
                     )}
 
@@ -228,12 +201,12 @@ export default function CoworkingSpaces({ language = 'en' }: CoworkingProps) {
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <a href={space.website} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '9px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, background: space.accentColor, color: '#ffffff', textDecoration: 'none' }}>
                         <Globe style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                       <span>{ct.viewLocations}</span>
+                       <span>{t('coworking.viewLocations')}</span>
                       </a>
                       {!space.multiLocation && (
                         <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(space.address)}`} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '9px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 500, background: '#f9fafb', color: '#374151', border: '1px solid #e5e7eb', textDecoration: 'none' }}>
                           <MapPin style={{ width: '14px', height: '14px', flexShrink: 0 }} />
-                          <span>{ct.directions}</span>
+                          <span>{t('coworking.directions')}</span>
                         </a>
                       )}
                     </div>

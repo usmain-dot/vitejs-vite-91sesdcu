@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { collection, addDoc, query, where, onSnapshot, serverTimestamp, Timestamp, doc, updateDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import { Send, ArrowLeft, MessageSquare, Trash2, Check, CheckCheck } from 'lucide-react';
@@ -17,7 +18,7 @@ interface Message {
 interface Conversation {
   id: string;
   serviceName: string;
-  serviceId: number;
+  serviceId: string;
   lastMessage: string;
   lastMessageTime: Timestamp | null;
   participants: string[];
@@ -25,12 +26,13 @@ interface Conversation {
 }
 
 interface MessagesProps {
-  serviceId?: number;
+  serviceId?: string;
   serviceName?: string;
   onClose: () => void;
 }
 
 export default function Messages({ serviceId, serviceName, onClose }: MessagesProps) {
+  const { t } = useTranslation();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -121,7 +123,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
 }, [serviceId, serviceName, currentUser, loading]);
 
   // Create conversation with service
-  const createConversation = async (sId: number, sName: string) => {
+  const createConversation = async (sId: string, sName: string) => {
     if (!currentUser) return;
 
     try {
@@ -264,7 +266,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
 
   // Delete message
   const handleDeleteMessage = async (messageId: string) => {
-    if (!confirm('Delete this message?')) return;
+    if (!confirm(t('messages.deleteConfirm'))) return;
 
     try {
       await deleteDoc(doc(db, 'messages', messageId));
@@ -284,7 +286,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
   };
 
  const selectedConvo = conversations.find(c => c.id === selectedConversation)
-  || (selectedConversation ? { serviceName: selectedServiceName || '', id: selectedConversation, serviceId: serviceId || 0, lastMessage: '', lastMessageTime: null, participants: [], typing: {} } : undefined);
+  || (selectedConversation ? { serviceName: selectedServiceName || '', id: selectedConversation, serviceId: serviceId || '', lastMessage: '', lastMessageTime: null, participants: [], typing: {} } : undefined);
   const otherUserTyping = selectedConvo?.typing && Object.entries(selectedConvo.typing).some(
     ([userId, typing]) => userId !== currentUser?.uid && typing
   );
@@ -294,8 +296,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#2a9df4' }}></div>
-          <p className="text-gray-600">Loading messages...</p>
-          <button onClick={onClose} className="mt-4 text-blue-600 hover:underline">Go Back</button>
+          <p className="text-gray-600"> {t('messages.loading')}</p>
+          <button onClick={onClose} className="mt-4 text-blue-600 hover:underline">{t('messages.goBack')}</button>
         </div>
       </div>
     );
@@ -320,7 +322,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
         <div className="p-4 border-b border-gray-200 flex items-center justify-between" style={{ background: '#2a9df4' }}>
           <div className="flex items-center gap-2">
             <MessageSquare className="w-6 h-6 text-white" />
-            <h2 className="text-xl font-bold text-white">Messages</h2>
+            <h2 className="text-xl font-bold text-white">{t('messages.title')}</h2>
           </div>
           <button onClick={onClose} className="text-white hover:bg-white/20 p-2 rounded-lg">
             <ArrowLeft className="w-5 h-5" />
@@ -330,8 +332,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
           {conversations.length === 0 ? (
             <div className="p-8 text-center">
               <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No conversations yet</p>
-              <p className="text-gray-400 text-sm mt-2">Start messaging service providers!</p>
+              <p className="text-gray-500">{t('messages.noConversations')}</p>
+              <p className="text-gray-400 text-sm mt-2">{t('messages.noConversationsSub')}</p>
             </div>
           ) : (
             conversations.map((convo) => (
@@ -346,10 +348,10 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-800">{convo.serviceName}</h3>
-                    <p className="text-sm text-gray-500 truncate">{convo.lastMessage || 'Start a conversation'}</p>
+                    <p className="text-sm text-gray-500 truncate">{convo.lastMessage || t('messages.startConversation')}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    {convo.typing && Object.values(convo.typing).some(t => t) && (
+                    {convo.typing && Object.values(convo.typing).some(isTyping => isTyping) && (
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
                         <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
@@ -383,9 +385,9 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{selectedConvo?.serviceName}</h3>
                 <div className="flex items-center gap-2">
-                  <p className="text-xs text-gray-500">Service Provider</p>
+                  <p className="text-xs text-gray-500">{t('messages.serviceProvider')}</p>
                   {otherUserTyping && (
-                    <p className="text-xs text-blue-600 animate-pulse">typing...</p>
+                    <p className="text-xs text-blue-600 animate-pulse">{t('messages.typing')}</p>
                   )}
                 </div>
               </div>
@@ -396,8 +398,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
               {messages.length === 0 ? (
                 <div className="text-center py-12">
                   <MessageSquare className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-500">No messages yet</p>
-                  <p className="text-gray-400 text-sm">Start the conversation!</p>
+                  <p className="text-gray-500">{t('messages.noMessages')}</p>
+                  <p className="text-gray-400 text-sm">{t('messages.noMessagesSub')}</p>
                 </div>
               ) : (
                 messages.map((message) => {
@@ -485,7 +487,7 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
                     setNewMessage(e.target.value);
                     handleTyping();
                   }}
-                  placeholder="Type a message..."
+                 placeholder={t('messages.placeholder')}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
@@ -503,8 +505,8 @@ export default function Messages({ serviceId, serviceName, onClose }: MessagesPr
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <MessageSquare className="w-20 h-20 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">Select a conversation</h3>
-              <p className="text-gray-400">Choose a conversation from the list to start messaging</p>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">{t('messages.selectConversation')}</h3>
+              <p className="text-gray-400">{t('messages.selectConversationSub')}</p>
             </div>
           </div>
         )}

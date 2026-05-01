@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { collection, addDoc, query, where, onSnapshot, deleteDoc, doc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import { ArrowLeft, Calendar as CalendarIcon, Clock, X, CheckCircle, AlertCircle } from 'lucide-react';
@@ -17,12 +18,13 @@ interface Appointment {
 }
 
 interface AppointmentsProps {
-  serviceId?: number;
+  serviceId?: string;
   serviceName?: string;
   onClose: () => void;
 }
 
 export default function Appointments({ serviceId, serviceName, onClose }: AppointmentsProps) {
+  const { t } = useTranslation();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
@@ -96,7 +98,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
       await addDoc(collection(db, 'appointments'), {
         userId: currentUser.uid,
         userName: currentUser.displayName || 'User',
-        serviceId: serviceId || 0,
+        serviceId: serviceId || '',
         serviceName: serviceName || 'Service',
         date: selectedDate,
         time: selectedTime,
@@ -123,7 +125,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
 
   // Cancel appointment
   const handleCancelAppointment = async (appointmentId: string) => {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return;
+    if (!confirm(t('appointments.cancelConfirm'))) return;
 
     try {
       await deleteDoc(doc(db, 'appointments', appointmentId));
@@ -159,7 +161,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#2a9df4' }}></div>
-          <p className="text-gray-600">Loading appointments...</p>
+          <p className="text-gray-600">{t('appointments.loading')}</p>
         </div>
       </div>
     );
@@ -177,7 +179,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
             </button>
             <div className="flex items-center gap-2">
               <CalendarIcon className="w-6 h-6" style={{ color: '#2a9df4' }} />
-              <h1 className="text-xl font-bold text-gray-800">Appointments</h1>
+              <h1 className="text-xl font-bold text-gray-800">{t('appointments.title')}</h1>
             </div>
           </div>
           {!showBookingForm && (
@@ -186,7 +188,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
               className="px-4 py-2 rounded-lg text-white font-medium"
               style={{ background: '#2a9df4' }}
             >
-              Book New
+              {t('appointments.bookNew')}
             </button>
           )}
         </div>
@@ -197,7 +199,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
         {showBookingForm && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-800">Book Appointment</h2>
+              <h2 className="text-xl font-bold text-gray-800">{t('appointments.bookAppointmentTitle')}</h2>
               <button
                 onClick={() => {
                   setShowBookingForm(false);
@@ -213,7 +215,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
 
             {serviceName && (
               <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                <p className="text-sm text-gray-600">Service</p>
+                <p className="text-sm text-gray-600">{t('appointments.service')}</p>
                 <p className="font-semibold text-gray-800">{serviceName}</p>
               </div>
             )}
@@ -221,15 +223,15 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
             {success ? (
               <div className="text-center py-8">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Appointment Booked!</h3>
-                <p className="text-gray-600">You'll receive a confirmation soon.</p>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('appointments.booked')}</h3>
+                <p className="text-gray-600">{t('appointments.confirmation')}</p>
               </div>
             ) : (
               <form onSubmit={handleBookAppointment} className="space-y-4">
                 {/* Date Selection */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Date
+                    {t('appointments.selectDate')}
                   </label>
                   <input
                     type="date"
@@ -245,7 +247,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
                 {/* Time Selection */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Time
+                    {t('appointments.selectTime')}
                   </label>
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                     {timeSlots.map((time) => (
@@ -268,12 +270,12 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
                 {/* Notes */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Notes (Optional)
+                    {t('appointments.notes')}
                   </label>
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Any specific requests or information..."
+                   placeholder={t('appointments.notesPlaceholder')}
                     rows={3}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
@@ -286,7 +288,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
                   className="w-full py-3 rounded-lg text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ background: '#2a9df4' }}
                 >
-                  {submitting ? 'Booking...' : 'Confirm Appointment'}
+                  {submitting ? t('appointments.booking') : t('appointments.confirm')}
                 </button>
               </form>
             )}
@@ -295,13 +297,13 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
 
         {/* Appointments List */}
         <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Your Appointments</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">{t('appointments.yourAppointments')}</h2>
           
           {appointments.length === 0 ? (
             <div className="bg-white rounded-lg shadow-md p-12 text-center">
               <CalendarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">No appointments yet</p>
-              <p className="text-gray-400 text-sm mt-2">Book your first appointment with a service provider!</p>
+              <p className="text-gray-500 text-lg">{t('appointments.none')}</p>
+              <p className="text-gray-400 text-sm mt-2">{t('appointments.noneSubtitle')}</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -352,7 +354,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
 
                         {appointment.notes && (
                           <div className="bg-gray-50 rounded p-3 text-sm text-gray-700">
-                            <p className="font-medium mb-1">Notes:</p>
+                            <p className="font-medium mb-1">{t('appointments.notesLabel')}</p>
                             <p>{appointment.notes}</p>
                           </div>
                         )}
@@ -360,7 +362,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
                         {!upcoming && (
                           <div className="mt-3 flex items-center gap-2 text-sm text-gray-500">
                             <AlertCircle className="w-4 h-4" />
-                            <span>This appointment has passed</span>
+                            <span>{t('appointments.passed')}</span>
                           </div>
                         )}
                       </div>
@@ -370,7 +372,7 @@ export default function Appointments({ serviceId, serviceName, onClose }: Appoin
                           onClick={() => handleCancelAppointment(appointment.id)}
                           className="ml-4 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-all text-sm font-medium"
                         >
-                          Cancel
+                         {t('appointments.cancel')}
                         </button>
                       )}
                     </div>
