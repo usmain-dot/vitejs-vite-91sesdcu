@@ -85,8 +85,9 @@ export default function CoworkingSpaces() {
   });
 
   return (
-    <section className="py-16" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-20" style={{ background: '#fafafa', borderTop: '1px solid #e5e7eb' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+
 
         {/* Header */}
         <div className="text-center mb-10">
@@ -98,8 +99,11 @@ export default function CoworkingSpaces() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
-          <div className="mb-4">
+        <div className="bg-white rounded-2xl shadow-sm mb-8" style={{ border: '1px solid #e5e7eb', padding: '12px'
+          }}
+        >
+          <div className="p-6">
+
             <p className="text-sm font-semibold text-gray-500 mb-3 uppercase tracking-wide">{t('coworking.spaceType')}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {tiers.map(tier => {

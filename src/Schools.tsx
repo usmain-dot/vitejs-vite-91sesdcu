@@ -159,8 +159,9 @@ export default function Schools() {
   });
 
   return (
-    <section className="py-16" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb' }}>
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-20" style={{ background: '#f0f7ff', borderTop: '1px solid #e5e7eb' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+
 
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#dbeafe' }}>
@@ -170,8 +171,11 @@ export default function Schools() {
           <p className="text-gray-500 text-lg max-w-2xl mx-auto">{t('schools.subtitle')}</p>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 mb-8 shadow-sm" style={{ border: '1px solid #e5e7eb' }}>
-          <div className="mb-4">
+        <div className="bg-white rounded-2xl shadow-sm mb-8" style={{ border: '1px solid #e5e7eb', padding: '12px'
+          }}
+        >
+          <div className="p-6">
+
             <p className="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wide">{t('schools.schoolType')}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {types.map(type => (
@@ -217,7 +221,7 @@ export default function Schools() {
         ) : (
           <>
             <p className="text-sm text-gray-500 mb-4">{t('schools.showing')} {filtered.length} {t('schools.of')} {schools.length} {t('schools.schools')}</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
               {filtered.map(school => {
                 const colors = typeColors[school.type] || typeColors['university'];
                 return (

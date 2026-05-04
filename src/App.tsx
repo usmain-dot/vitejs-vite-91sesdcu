@@ -14,6 +14,7 @@ import OnlineResources from './OnlineResources';
 import AboutSection from './AboutSection';
 import CoworkingSpaces from './CoworkingSpaces';
 import Schools from './Schools';
+import CommunityFavorites from './CommunityFavorites';
 
 // Types
 interface Service {
@@ -601,6 +602,7 @@ if (authLoading || servicesLoading) {
     </main>
 
 <div style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+  <CommunityFavorites /> 
   <CoworkingSpaces />
   <OnlineResources />
   <Schools />
