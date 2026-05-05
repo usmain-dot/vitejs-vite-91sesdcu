@@ -527,7 +527,7 @@ if (authLoading || servicesLoading) {
     <main className="flex-1 py-8" style={{ paddingLeft: '12px', paddingRight: '12px' }}>
       <div style={{ width: '100%' }}>
         {/* Search Bar */}
-        <div className="mb-8 px-4">
+        <div className="px-4" style={{ marginBottom: '16px' }}>
           <div className="relative max-w-2xl mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
