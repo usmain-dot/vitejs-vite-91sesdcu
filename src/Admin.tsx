@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocs } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, getDocs, query, where } from 'firebase/firestore';
 import { db, auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { ArrowLeft, BarChart3, MessageSquare, Calendar, Users, Settings, Plus, Edit, Trash2, Home, Heart, Scale, Briefcase, GraduationCap, UtensilsCrossed, Languages } from 'lucide-react';
-
+import { ArrowLeft, BarChart3, MessageSquare, Calendar, Users, Settings, Plus, Edit, Trash2, Home, Heart, Scale, Briefcase, GraduationCap, UtensilsCrossed, Languages, Star } from 'lucide-react';
 interface AdminProps {
   onClose: () => void;
 }
@@ -31,7 +30,7 @@ interface Stats {
 }
 
 export default function Admin({ onClose }: AdminProps) {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'conversations' | 'appointments' | 'users'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'services' | 'conversations' | 'appointments' | 'users' | 'community'>('dashboard');
   const [services, setServices] = useState<Service[]>([]);
   const [stats, setStats] = useState<Stats>({
     totalUsers: 0,
@@ -45,6 +44,7 @@ export default function Admin({ onClose }: AdminProps) {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [pendingPlaces, setPendingPlaces] = useState<any[]>([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -103,6 +103,15 @@ export default function Admin({ onClose }: AdminProps) {
           totalConversations: conversationsSnap.size,
           totalServices: servicesList.length
         });
+
+        const communitySnap = await getDocs(
+          query(collection(db, 'community_places'), where('status', '==', 'pending'))
+        );
+        const pendingList: any[] = [];
+        communitySnap.forEach(doc => {
+          pendingList.push({ id: doc.id, ...doc.data() });
+        });
+        setPendingPlaces(pendingList);
 
         setLoading(false);
       } catch (error) {
@@ -192,6 +201,27 @@ export default function Admin({ onClose }: AdminProps) {
       lng: service.lng || 0
     });
     setShowAddService(true);
+  };
+
+  const handleApprovePlace = async (placeId: string) => {
+    try {
+      await updateDoc(doc(db, 'community_places', placeId), { status: 'approved' });
+      setPendingPlaces(pendingPlaces.filter(p => p.id !== placeId));
+    } catch (error) {
+      console.error('Error approving place:', error);
+      alert('Failed to approve place');
+    }
+  };
+
+  const handleRejectPlace = async (placeId: string) => {
+    if (!confirm('Reject and delete this submission?')) return;
+    try {
+      await deleteDoc(doc(db, 'community_places', placeId));
+      setPendingPlaces(pendingPlaces.filter(p => p.id !== placeId));
+    } catch (error) {
+      console.error('Error rejecting place:', error);
+      alert('Failed to reject place');
+    }
   };
 
   if (authLoading || loading) {
@@ -285,6 +315,22 @@ export default function Admin({ onClose }: AdminProps) {
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               <span className="font-medium">Users</span>
+            </div>
+          </button>
+          <button
+            onClick={() => setActiveTab('community')}
+            className={`pb-3 px-2 border-b-2 transition-all ${
+              activeTab === 'community' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4" />
+              <span className="font-medium">Community</span>
+              {pendingPlaces.length > 0 && (
+                <span style={{ background: '#ef4444', color: '#fff', borderRadius: '9999px', fontSize: '11px', padding: '1px 7px', fontWeight: 700 }}>
+                  {pendingPlaces.length}
+                </span>
+              )}
             </div>
           </button>
         </div>
@@ -636,6 +682,65 @@ export default function Admin({ onClose }: AdminProps) {
             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 mb-2">User Management</h3>
             <p className="text-gray-400">View and manage users (Coming in full version)</p>
+          </div>
+        )}
+
+        {activeTab === 'community' && (
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Community Submissions
+              {pendingPlaces.length > 0 && (
+                <span style={{ marginLeft: '12px', background: '#ef4444', color: '#fff', borderRadius: '9999px', fontSize: '14px', padding: '2px 10px', fontWeight: 700 }}>
+                  {pendingPlaces.length} pending
+                </span>
+              )}
+            </h2>
+
+            {pendingPlaces.length === 0 ? (
+              <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                <Star className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">No pending submissions</h3>
+                <p className="text-gray-400">All community submissions have been reviewed.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {pendingPlaces.map(place => (
+                  <div key={place.id} className="bg-white rounded-lg shadow-md p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-gray-800">{place.name}</h3>
+                          <span style={{ background: '#fef3c7', color: '#b45309', borderRadius: '9999px', fontSize: '11px', padding: '2px 8px', fontWeight: 600 }}>
+                            {place.category}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">{place.description}</p>
+                        {place.address && (
+                          <p className="text-sm text-gray-500">📍 {place.address}</p>
+                        )}
+                        <p className="text-xs text-gray-400 mt-2">Submitted by community member</p>
+                      </div>
+                      <div className="flex gap-2 ml-4">
+                        <button
+                          onClick={() => handleApprovePlace(place.id)}
+                          className="px-4 py-2 rounded-lg text-white font-medium text-sm"
+                          style={{ background: '#10b981' }}
+                        >
+                          ✓ Approve
+                        </button>
+                        <button
+                          onClick={() => handleRejectPlace(place.id)}
+                          className="px-4 py-2 rounded-lg text-white font-medium text-sm"
+                          style={{ background: '#ef4444' }}
+                        >
+                          ✗ Reject
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
