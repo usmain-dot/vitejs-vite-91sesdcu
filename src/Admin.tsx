@@ -204,14 +204,34 @@ export default function Admin({ onClose }: AdminProps) {
   };
 
   const handleApprovePlace = async (placeId: string) => {
-    try {
-      await updateDoc(doc(db, 'community_places', placeId), { status: 'approved' });
-      setPendingPlaces(pendingPlaces.filter(p => p.id !== placeId));
-    } catch (error) {
-      console.error('Error approving place:', error);
-      alert('Failed to approve place');
-    }
-  };
+  try {
+    const place = pendingPlaces.find(p => p.id === placeId);
+    if (!place) return;
+
+    // Strip metadata fields before copying to services
+    const { id, status, submittedAt, ...serviceData } = place;
+
+    // Copy to main services collection
+    await addDoc(collection(db, 'services'), {
+      ...serviceData,
+      isOpen: serviceData.isOpen ?? true,
+      distance: serviceData.distance ?? 0,
+      lat: serviceData.lat ?? 0,
+      lng: serviceData.lng ?? 0,
+      approvedAt: serverTimestamp(),
+      source: 'community',
+    });
+
+    // Remove from community_places entirely
+    await deleteDoc(doc(db, 'community_places', placeId));
+
+    setPendingPlaces(pendingPlaces.filter(p => p.id !== placeId));
+    alert('✅ Approved! Service is now live.');
+  } catch (error) {
+    console.error('Error approving place:', error);
+    alert('Failed to approve place');
+  }
+};
 
   const handleRejectPlace = async (placeId: string) => {
     if (!confirm('Reject and delete this submission?')) return;
